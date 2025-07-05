@@ -56,7 +56,7 @@ Wifi Jenangan adalah layanan internet RT/RW Net yang dikelola mandiri untuk memb
 2. Install NPM Dependencies \
 `npm i`
 
-3. go to the backend directory and turn on the server, **at this stage make sure laragon is active and the recruitment system is correct** \
+3. go to the backend directory and turn on the server, **at this stage make sure laragon is active and the recruitment system is correct and don't forget to setting .env file** \
 `cd backend` \
 `php artisan ser`
 
