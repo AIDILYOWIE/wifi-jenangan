@@ -1,3 +1,4 @@
+import { CurrentToken } from "../helper/TokenService"
 
 const GuestMiddleware = (props) => {
      if (CurrentToken.get()) {
