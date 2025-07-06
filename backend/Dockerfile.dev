@@ -7,22 +7,26 @@ ENV SERVER_NAME=":8080"
 # Set direktori kerja
 WORKDIR /app
 
-# Salin semua source code ke container
-
 # Install dependensi sistem yang dibutuhkan Laravel
 RUN apt update && apt install -y \
     zip \
     unzip \
     libzip-dev \
+    git \
     && docker-php-ext-install zip \
     && docker-php-ext-enable zip
 
 # Salin binary Composer dari image resmi
 COPY --from=composer:2.8 /usr/bin/composer /usr/bin/composer
 
+# Salin semua source code Laravel ke container
+COPY . .
+
+# Jalankan composer install saat build
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+
 # Expose port sesuai dengan SERVER_NAME
 EXPOSE 8080
 
+# Jalankan Laravel dev server
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
-
-# Start FrankenPHP (otomatis dijalankan dari base image)
