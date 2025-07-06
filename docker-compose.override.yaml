@@ -1,0 +1,42 @@
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend:/app
+      - ./backend/.env:/app/.env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
+  mysql:
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_DATABASE: db_wifi_jenangan
+      MYSQL_USER: wifijenangan
+      MYSQL_PASSWORD: wifijenangan
+      MYSQL_ROOT_PASSWORD: admin_wifi_jenangan
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data: {}

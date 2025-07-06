@@ -1,5 +1,5 @@
 import Login from "../pages/login";
-import AuthMiddleware from "./middleware/AuthMiddleware";
+import AuthMiddleware from "./middleware/AuthMiddleware.jsx";
 import { createBrowserRouter } from "react-router-dom";
 import GuestMiddleware from "./middleware/GuestMiddleware";
 
