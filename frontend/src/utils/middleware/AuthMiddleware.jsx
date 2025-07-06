@@ -4,7 +4,7 @@ import {CurrentToken} from "../helper/TokenService"
 const AuthMiddleware = (props) => {
 
     if (!CurrentToken.get()) {
-        return <Navigate to={'/'}/>
+        return <Navigate to={'/login'}/>
     } else {
         return props.children
     }
