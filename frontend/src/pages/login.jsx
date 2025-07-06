@@ -22,7 +22,7 @@ const Login = () => {
                     <p className="text-(--text-color) text-(length:--size-text-2) cursor-pointer" id="forgetPassword"><a href="">Forget Password?</a></p>
                 </div>
             </div>
-            <Button/>
+            <Button>Sign In</Button>
         </AuthLayout>
     )
 }
