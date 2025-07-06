@@ -1,11 +1,12 @@
 import Login from "../pages/login";
-import AuthMiddleware from "./middleware/authMiddleware";
+import AuthMiddleware from "./middleware/AuthMiddleware";
 import { createBrowserRouter } from "react-router-dom";
+import GuestMiddleware from "./middleware/GuestMiddleware";
 
 const router = createBrowserRouter([
     {
         path : '/login',
-        element :<Login/>
+        element : <GuestMiddleware> <Login/></GuestMiddleware>
     },
     {
         path : '/tes',
