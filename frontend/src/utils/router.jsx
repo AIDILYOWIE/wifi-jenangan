@@ -1,10 +1,11 @@
+import Login from "../pages/login";
 import AuthMiddleware from "./middleware/authMiddleware";
 import { createBrowserRouter } from "react-router-dom";
 
 const router = createBrowserRouter([
     {
-        path : '/',
-        element : <h1>tes /</h1>
+        path : '/login',
+        element :<Login/>
     },
     {
         path : '/tes',
