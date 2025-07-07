@@ -1,13 +1,14 @@
 import Button from "../components/elements/Button"
 import Input from "../components/elements/Input"
 import AuthLayout from "../components/layouts/AuthLayout"
+import logo from "../../public/icon/logo.png"
 
 const Login = () => {
     return (
         <AuthLayout>
             <div className="w-full flex justify-center flex-col gap-[24px]">
                 <div className="w-full flex justify-center">
-                    <img src="../../public/icon/logo.png" alt="" width={"180px"} />
+                    <img src={logo} alt="" width={"180px"} />
                 </div>
                 <div className="w-full flex justify-center items-center flex-col">
                     <p className="font-semibold text-(length:--size-header) w-full text-center">Welcome Back</p>
