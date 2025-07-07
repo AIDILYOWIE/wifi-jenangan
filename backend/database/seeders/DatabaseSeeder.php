@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Paket;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,5 +20,12 @@ class DatabaseSeeder extends Seeder
             'name' => 'a',
             'email' => 'a@a.a',
         ]);
+
+        for ($i=1; $i <= 3; $i++) { 
+            Paket::create([
+                'name' => 'Paket ' . $i *10 . ' mbps',
+                'harga' => $i * 100000
+            ]);
+        }
     }
 }
