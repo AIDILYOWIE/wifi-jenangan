@@ -4,20 +4,48 @@ namespace App\Http\Controllers\Pelanggan;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pelanggan;
+use App\Models\Tagihan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PelangganController extends Controller
 {
 
     private function prepareDataPelanggan($request) {
         $request->validate([
+            'id_paket' => ['required', 'exists:paket,id'],
             'name' => ['required', 'min:3'],
-            'tanggal_pemasangan' => ['required', 'date'],
             'dusun' => ['required'],
-            'desa' => ['required']
+            'desa' => ['required'],
+            'kecamatan' => ['required'],
+            'tanggal_pemasangan' => ['required', 'date'],
         ]);
 
-        return $request->only(['name', 'tanggal_pemasangan', 'dusun', 'desa']);
+        return $request->only(['name', 'tanggal_pemasangan', 'dusun', 'desa', 'kecamatan', 'id_paket']);
+    }
+
+    private function prepareDataTagihan($request, $pelanggan) {
+        $request->validate([
+            'id_pelanggan' => ['exists:users,id']
+        ]);
+
+        $tanggal_pemasangan = Carbon::parse($pelanggan->tanggal_pemasangan);
+        $tanggal_tagihan = $tanggal_pemasangan->copy()->addMonthNoOverflow()->day(20);
+
+        setlocale(LC_TIME, 'id_ID');
+        $nama_bulan = $tanggal_tagihan->isoFormat('MMMM');
+
+        $data_tagihan = [
+            'id_pelanggan' => $pelanggan->id,
+            'name' => 'tagihan ' . $nama_bulan,
+            'tanggal' => $tanggal_tagihan,
+            'total_tagihan' => $pelanggan->paket->harga,
+            'status' => 'Belum Lunas'
+        ];
+
+        return $data_tagihan;
+
     }
     /**
      * Display a listing of the resource.
@@ -45,16 +73,20 @@ class PelangganController extends Controller
     {
         
         $data_pelanggan = $this->prepareDataPelanggan($request);
-
+        DB::beginTransaction();
         try {
             $new_pelanggan = Pelanggan::create($data_pelanggan);
+            $data_tagihan = $this->prepareDataTagihan($request, $new_pelanggan);
+            $new_tagihan = Tagihan::create($data_tagihan);
 
+            DB::commit();
+            
             return response()->json([
                 'message' => 'Pelanggan berhasil ditambahkan.',
-                'data' => $new_pelanggan
             ], 201);
 
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'message' => 'Gagal menambahkan pelanggan.',
                 'error' => $e->getMessage()
@@ -68,7 +100,7 @@ class PelangganController extends Controller
      */
     public function show(string $id)
     {
-        $pelanggan = Pelanggan::find($id);
+        $pelanggan = Pelanggan::with(['paket', 'tagihan'])->find($id);
 
         return response()->json([
             'message' => 'Detail pelanggan berhasil diambil.',
