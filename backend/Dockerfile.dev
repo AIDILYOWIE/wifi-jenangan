@@ -1,6 +1,8 @@
 # Gunakan FrankenPHP dengan PHP 8.4
 FROM dunglas/frankenphp:php8.4
 
+RUN docker-php-ext-install pdo pdo_mysql
+
 # Konfigurasi server
 ENV SERVER_NAME=":8080"
 
