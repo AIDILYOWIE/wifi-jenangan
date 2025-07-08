@@ -17,11 +17,11 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'a',
-            'email' => 'a@a.a',
+            'name' => 'admin',
+            'email' => 'admin@gmail.com',
         ]);
 
-        for ($i=1; $i <= 3; $i++) { 
+        for ($i=1; $i <= 3; $i++) {
             Paket::create([
                 'name' => 'Paket ' . $i *10 . ' mbps',
                 'harga' => $i * 100000
