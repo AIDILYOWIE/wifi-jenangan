@@ -43,13 +43,63 @@ class AuthenticationController extends Controller
 
     }
 
-    public function forgotPassword (Request $request) {
+    public function confirmEmail (Request $request) {
         $request->validate([
-            'credentials' => ['required'],
-            'old_password' => ['required'],
-            'new_password' => ['required', 'min:8'],
-            'confirm_password' => ['required', 'min:8', 'same:new_password']
+            'email' => ['required'],
         ]);
+
+        $input = $request->only('email');
+        $email = $input['email'];
+
+        if (User::where('email', $email)->first()) {
+            session(['email' => $email]);
+            return response()->json([
+                'status' => true,
+                'message' => 'email terkonfirmasi',
+                'email' => session('email')
+            ]);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'email tidak terkonfirmasi',
+            'email' => $email
+        ]);
+    }
+
+    public function changePassword(Request $request) {
+    
+        $request->validate([
+            'email' => ['required'],
+            'old_password' => ['required'],
+            'new_password' => ['required'],
+            'confirm_new_password' => ['required', 'same:new_password']
+        ]);
+
+        $data = $request->only(['email', 'old_password', 'new_password', 'confirm_new_password']);
+        $user = User::where('email', $data['email'])->first();
+        $confirmed_old_password = Hash::check($data['old_password'], $user->password);
+
+        if (!$confirmed_old_password) {
+            return response()->json([
+                'message' => "Gagal merubah password",
+                'errors' => 'Password lama salah!'
+            ], 400);
+        }
+
+        try {
+            $user->password = bcrypt($data['new_password']);
+            $user->save();
+            return response()->json([
+                'message' => "Password berhasil diubah"
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => "Password tidak dapat diubah!",
+                'errors' => $e->getMessage()
+            ]);
+        }
+        
     }
 
 }
