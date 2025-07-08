@@ -61,7 +61,7 @@ class AuthenticationController extends Controller
         return response()->json([
             'status' => false,
             'message' => 'email tidak terkonfirmasi',
-        ]);
+        ], 400);
     }
 
     public function changePassword(Request $request) {
