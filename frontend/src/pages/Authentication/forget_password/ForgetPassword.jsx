@@ -18,7 +18,7 @@ const ForgetPassword = () => {
               email : email
             })
             sessionStorage.setItem('email', email)
-            navigate('/forget-password/change-email')
+            navigate('/forget-password/change-password')
         } catch (error) {
             console.log(error)
         }
