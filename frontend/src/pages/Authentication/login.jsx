@@ -7,6 +7,7 @@ import { CurrentToken } from "../../utils/helper/TokenService"
 import { Link } from "react-router-dom"
 import { toast, ToastContainer } from 'react-toastify'
 import { api } from "../../utils/helper/api"
+import { updateToastToError, updateToastToSuccess } from "../../utils/helper/notification"
 
 const Login = () => {
     const [email, setEmail] = useState('')
@@ -20,29 +21,14 @@ const Login = () => {
                     credentials: email,
                     password: password
                 })
-
-                 toast.update(toastId, {
-                    render: "Login berhasil!",
-                    type: "success",
-                    isLoading: false,
-                    hideProgressBar : true,
-                    autoClose: 3000,
-                    closeOnClick: true
-                });
+                updateToastToSuccess(toastId, "Login berhasil")                 
                 CurrentToken.set(res.data.token)
                 setTimeout(function() {
                     window.location.reload()
                 }, 1500);
             } catch (error) {
                 const error_message = error.response.data.message
-                toast.update(toastId, {
-                    render: error_message,
-                    type: "error",
-                    isLoading: false,
-                    hideProgressBar : true,
-                    autoClose: 2000,
-                    closeOnClick: true
-                });
+                updateToastToError(toastId, error_message)
             }
         }
         login()

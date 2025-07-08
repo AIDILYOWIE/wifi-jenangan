@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom"
 import Button from "../../../components/elements/Button"
 import ForgetPasswordLayout from "./layouts/ForgetPasswordLayout"
 import { api } from "../../../utils/helper/api"
+import { toast, ToastContainer } from "react-toastify"
+import { updateToastToError, updateToastToSuccess } from "../../../utils/helper/notification"
 
 const ForgetPassword = () => {
 
@@ -12,15 +14,21 @@ const ForgetPassword = () => {
   const navigate = useNavigate()
 
   const handleConfirmEmail = () => {
+    const toastId = toast.loading('Mengkonfirmasi Email')
     const confirm = async () => {
         try {
             const res = await api.post('/confirm-email', {
               email : email
             })
+            const success_message = res.data.message
             sessionStorage.setItem('email', email)
-            navigate('/forget-password/change-password')
+            updateToastToSuccess(toastId, success_message)
+            setTimeout(function() {
+              navigate('/forget-password/change-password')
+            }, 1500); 
         } catch (error) {
-            console.log(error)
+          const error_message = error.response.data.message
+          updateToastToError(toastId, error_message)
         }
     }
     confirm()
@@ -28,6 +36,7 @@ const ForgetPassword = () => {
   
   return (
     <ForgetPasswordLayout title="Konfirmasi Email" deskripsi="Ups! Silahkan konfirmasi email dulu agar kami dapat mengenalimu😉">
+      <ToastContainer position="top-center"/>
       <Input placeholder="Masukkan email" type="email" onChange={(e) => {setEmail(e.target.value)}} value={email}></Input>
       <Button onClick={() => {handleConfirmEmail()}} className="!py-2 !w-fit px-3 ml-auto">Konfirmasi</Button>
     </ForgetPasswordLayout>
