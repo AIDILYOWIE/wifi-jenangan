@@ -1,10 +1,10 @@
-import Button from "../components/elements/Button"
-import Input from "../components/elements/Input"
-import AuthLayout from "../components/layouts/AuthLayout"
-import logo from "../../public/icon/logo.png"
+import Button from "../../components/elements/Button"
+import Input from "../../components/elements/Input"
+import AuthLayout from "../../components/layouts/AuthLayout"
+import logo from "../../../public/icon/logo.png"
 import { useState } from "react"
-import { api } from "../utils/api/api"
-import { CurrentToken } from "../utils/helper/TokenService"
+import { api } from "../../utils/api/api"
+import { CurrentToken } from "../../utils/helper/TokenService"
 
 const Login = () => {
     const [email, setEmail] = useState('')
