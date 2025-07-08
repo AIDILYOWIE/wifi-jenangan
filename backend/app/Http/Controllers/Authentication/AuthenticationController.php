@@ -52,18 +52,15 @@ class AuthenticationController extends Controller
         $email = $input['email'];
 
         if (User::where('email', $email)->first()) {
-            session(['email' => $email]);
             return response()->json([
                 'status' => true,
                 'message' => 'email terkonfirmasi',
-                'email' => session('email')
             ]);
         }
 
         return response()->json([
             'status' => false,
             'message' => 'email tidak terkonfirmasi',
-            'email' => $email
         ]);
     }
 
