@@ -3,6 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 import GuestMiddleware from "./middleware/GuestMiddleware";
 import Login from "../pages/Authentication/login.jsx";
 import ForgetPassword from "../pages/Authentication/forget_password/ForgetPassword.jsx";
+import { ChangePassword } from "../pages/Authentication/forget_password/ChangePassword.jsx";
 
 const router = createBrowserRouter([
     {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
     {
         path : '/forget-password/confirm-email',
         element : <GuestMiddleware> <ForgetPassword/></GuestMiddleware>
+    },
+    {
+        path : '/forget-password/change-password',
+        element : <GuestMiddleware> <ChangePassword/></GuestMiddleware>
     },
 ])
 
