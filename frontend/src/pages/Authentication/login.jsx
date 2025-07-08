@@ -3,26 +3,46 @@ import Input from "../../components/elements/Input"
 import AuthLayout from "../../components/layouts/AuthLayout"
 import logo from "../../../public/icon/logo.png"
 import { useState } from "react"
-import { api } from "../../utils/api/api"
 import { CurrentToken } from "../../utils/helper/TokenService"
 import { Link } from "react-router-dom"
+import { toast, ToastContainer } from 'react-toastify'
+import { api } from "../../utils/helper/api"
 
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
     const handleLogin = () => {
+        const toastId = toast.loading('Login process');
         const login = async () => {
             try {
                 const res = await api.post('/login', {
                     credentials: email,
                     password: password
                 })
-                console.log(res)
+
+                 toast.update(toastId, {
+                    render: "Login berhasil!",
+                    type: "success",
+                    isLoading: false,
+                    hideProgressBar : true,
+                    autoClose: 3000,
+                    closeOnClick: true
+                });
                 CurrentToken.set(res.data.token)
-                window.location.reload()
+                setTimeout(function() {
+                    window.location.reload()
+                }, 1500);
             } catch (error) {
-                console.log(error)
+                const error_message = error.response.data.message
+                toast.update(toastId, {
+                    render: error_message,
+                    type: "error",
+                    isLoading: false,
+                    hideProgressBar : true,
+                    autoClose: 2000,
+                    closeOnClick: true
+                });
             }
         }
         login()
@@ -30,6 +50,7 @@ const Login = () => {
 
     return (
         <AuthLayout>
+            <ToastContainer position="top-center"></ToastContainer>
             <div className="w-full flex justify-center flex-col gap-[24px]">
                 <div className="w-full flex justify-center">
                     <img src={logo} alt="" width={"180px"} />
