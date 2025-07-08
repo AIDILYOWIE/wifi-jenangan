@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - ./backend:/app
-      - ./backend/.env:/app/.env
+      - /app/vendor
     ports:
       - "8080:8080"
     depends_on:
