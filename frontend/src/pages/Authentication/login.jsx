@@ -40,13 +40,13 @@ const Login = () => {
                 </div>
             </div>
             <div className="w-full flex flex-col gap-[18px]">
-                <Input label="Email" placeholder="Enter your email..." value={email} onChange={(e) => setEmail(e.target.value)} />
-                <Input label="Password" placeholder="Enter your password..." value={password} onChange={(e) => setPassword(e.target.value)} />
+                <Input label="Email" placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <Input label="Password" placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 <div className="w-full flex justify-end">
                     <p className="text-(--text-color) text-(length:--size-text-2) cursor-pointer" id="forgetPassword"><Link to="/forget-password/confirm-email">Forget Password?</Link></p>
                 </div>
             </div>
-            <Button onClick={() => handleLogin()}>Sign In</Button>
+            <Button onClick={() => handleLogin()} className="!outline-none">Sign In</Button>
         </AuthLayout>
     )
 }
