@@ -10,9 +10,10 @@
   --font-weight-3: 200;
 
   --primary-color: #19297C;
+  --primary-color-hover: ;
   --text-color: #333333;
   --background-color: #fff;
-  --secondary-background-color: #D0D0D0;
+  --secondary-background-color: #8c8c8c;
   --border-color: #A3A3A3;
   --border-radius: 10px;
   --border: 1px solid var(--border-color);
@@ -33,12 +34,23 @@ input:focus {
 }
 
 #button {
-  transition: .3s ease-in;
+  transition: .2s ease-in;
 }
 
-#button:hover {
-  color: var(--primary-color);
-  background-color: var(--background-color);
+#button.primary {
+  background-color: var(--primary-color);
+}
+
+#button.secondary {
+  background-color: var(--secondary-background-color);
+}
+
+#button.primary:hover {
+  background-color: #495dc1;
+}
+
+#button.secondary:hover {
+  background-color: #505050;
 }
 
 .border-1 {
