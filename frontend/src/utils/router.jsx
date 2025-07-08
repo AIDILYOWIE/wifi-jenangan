@@ -9,7 +9,7 @@ const router = createBrowserRouter([
         element : <GuestMiddleware> <Login/></GuestMiddleware>
     },
     {
-        path : '/tes',
+        path : '/',
         element : <AuthMiddleware> <h1>tess midd</h1> </AuthMiddleware>
     }
 ])

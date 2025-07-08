@@ -17,11 +17,11 @@ class AuthenticationController extends Controller
 
         $login_data = $request->only(['credentials', 'password']);
 
-        $valid_credentials = User::where('name', $login_data['credentials'] )->orWhere('email', $login_data['credentials'])->first();
+        $valid_credentials = User::where('email', $login_data['credentials'])->first();
 
         if (!$valid_credentials) {
             return response()->json([
-                'message' => 'username atau email salah!'
+                'message' => 'email atau password salah!'
             ], 401);
         }
 
@@ -29,18 +29,18 @@ class AuthenticationController extends Controller
 
         if (!$valid_password) {
             return response()->json([
-                'message' => 'password salah!'
+                'message' => 'email atau password salah!'
             ], 401);
-            
+
         }
 
         $token = $valid_credentials->createToken('auth_token')->plainTextToken;
-        
+
         return response()->json([
             'message' => 'login berhasil!',
             'token' => $token
         ], 202);
-        
+
     }
 
     public function forgotPassword (Request $request) {
