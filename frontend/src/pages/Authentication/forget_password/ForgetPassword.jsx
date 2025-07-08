@@ -2,8 +2,8 @@ import { useState } from "react"
 import Input from "../../../components/elements/Input"
 import { useNavigate } from "react-router-dom"
 import Button from "../../../components/elements/Button"
-import { api } from "../../../utils/api/api"
 import ForgetPasswordLayout from "./layouts/ForgetPasswordLayout"
+import { api } from "../../../utils/helper/api"
 
 const ForgetPassword = () => {
 

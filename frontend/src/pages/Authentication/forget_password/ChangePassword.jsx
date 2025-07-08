@@ -3,7 +3,8 @@ import Input from "../../../components/elements/Input"
 import ForgetPasswordLayout from "./layouts/ForgetPasswordLayout"
 import { useNavigate } from "react-router-dom"
 import Button from "../../../components/elements/Button"
-import { api } from "../../../utils/api/api"
+import { api } from "../../../utils/helper/api"
+
 
 export const ChangePassword = () => {
 
