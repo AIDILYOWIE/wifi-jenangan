@@ -2,7 +2,7 @@ import React from 'react'
 
 const Button = (props) => {
   const {children, type = "button", variant = "primary", onClick, className} = props
-  const variantClass = variant == "primary" ? 'bg-(--primary-color)' : 'bg-(--secondary-background-color)'
+  const variantClass = variant == "primary" ? 'primary' : 'secondary'
   
   return (
     <button type={type} onClick={onClick} className={`w-full text-center ${variantClass} rounded-(--border-radius) text-(length:--size-text-2) py-[10px] text-(--background-color) cursor-pointer ${className}`} id='button'>
