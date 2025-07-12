@@ -9,8 +9,10 @@
   --font-weight-2: 400;
   --font-weight-3: 200;
 
+  --bg-active-navlink : rgba(25,41,124,30%)
   --primary-color: #19297C;
   --primary-color-hover: ;
+  --text-primary-color: #19297C;
   --text-color: #333333;
   --background-color: #fff;
   --secondary-background-color: #8c8c8c;
@@ -55,4 +57,13 @@ input:focus {
 
 .border-1 {
   border-width: 1px;
+}
+
+.font-poppins {
+  font-family: var(--default-font-family);
+}
+
+.navlink-active {
+  background-color: var(--bg-active-navlink);
+  color: var(--primary-color);
 }
