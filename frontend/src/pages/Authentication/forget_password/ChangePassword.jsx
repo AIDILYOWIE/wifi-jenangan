@@ -3,9 +3,8 @@ import Input from "../../../components/elements/Input"
 import ForgetPasswordLayout from "./layouts/ForgetPasswordLayout"
 import { useNavigate } from "react-router-dom"
 import Button from "../../../components/elements/Button"
-import { api } from "../../../utils/helper/api"
 import { toast, ToastContainer } from "react-toastify"
-import { updateToastToError, updateToastToSuccess } from "../../../utils/helper/notification"
+import { api, updateToastToError, updateToastToSuccess } from "../../../utils/helper/helper"
 
 
 export const ChangePassword = () => {

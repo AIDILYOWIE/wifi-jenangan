@@ -1,13 +1,11 @@
 import Button from "../../components/elements/Button"
 import Input from "../../components/elements/Input"
 import AuthLayout from "../../components/layouts/AuthLayout"
-import logo from "../../../public/icon/logo.png"
+import { logo } from "../../assets/RegisterAsset"
 import { useState } from "react"
-import { CurrentToken } from "../../utils/helper/TokenService"
 import { Link } from "react-router-dom"
 import { toast, ToastContainer } from 'react-toastify'
-import { api } from "../../utils/helper/api"
-import { updateToastToError, updateToastToSuccess } from "../../utils/helper/notification"
+import { api, CurrentToken, updateToastToError, updateToastToSuccess } from "../../utils/helper/helper"
 
 const Login = () => {
     const [email, setEmail] = useState('')
