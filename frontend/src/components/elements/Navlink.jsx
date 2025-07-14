@@ -7,12 +7,14 @@ const Navlink = (props) => {
     const sidebarOpenColor = sidebarOpen ? 'bg-[rgba(25,41,124,30%)]' : 'text-[var(--text-primary-color)]'
 
   return (
-    <NavLink to={props.to} className={({ isActive }) => `py-2.5 ${sidebarOpenClass} rounded-[10px] flex items-center gap-x-2.5
+    <NavLink to={props.to} className={({ isActive }) => `py-2.5 ${sidebarOpenClass} rounded-[10px] flex max-[380px]:flex-col items-center gap-x-2.5
             ${isActive ? sidebarOpenColor : 'text-[var(--text-color)]'
         }`}>
         {props.icon}
+        
+        <p className="text-[9px] min-[380px]:hidden" id="menu-mobile">{props.children}</p>
         {sidebarOpen &&
-            props.children
+          props.children
         }
     </NavLink>
   )
