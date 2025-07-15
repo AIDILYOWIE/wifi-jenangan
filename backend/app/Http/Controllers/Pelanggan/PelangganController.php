@@ -53,7 +53,7 @@ class PelangganController extends Controller
     public function index()
     {
         try {
-            $pelanggan = Pelanggan::orderBy('kode_pelanggan', 'desc');
+            $pelanggan = Pelanggan::orderBy('kode_pelanggan', 'desc')->paginate(10);
             return response()->json([
                 'message' => 'List pelanggan berhasil diambil.',
                 'data' => $pelanggan
