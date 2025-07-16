@@ -40,3 +40,8 @@ export const updateToastToError = (id, message) => {
         closeOnClick: true
     });
 }
+
+// get .env
+export const env = (key, fallback = null) => {
+    return import.meta.env[key] ?? fallback;
+};
