@@ -77,3 +77,6 @@ input:focus {
   color: var(--primary-color);
 }
 
+.no-hover:hover {
+  background-color: inherit !important;
+}
