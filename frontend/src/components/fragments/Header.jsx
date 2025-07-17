@@ -3,7 +3,7 @@ import { AddOutlinedIcon } from "../../assets/RegisterAsset";
 import Button from "../elements/Button";
 import ButtonContext, { ButtonProvider } from "../../../context/ButtonContext";
 
-const HeaderPage = React.memo(({ icon, text, onClick }) => {
+const HeaderPage = React.memo(({ icon, text, onClick, buttonIcon = null, textButton = "Tambah" }) => {
   return (
     <ButtonProvider>
       <div className="w-full flex justify-between">
@@ -22,15 +22,18 @@ const HeaderPage = React.memo(({ icon, text, onClick }) => {
             className=" px-4 py-2 max-[576px]:px-2.5 max-[576px]:py-2 gap-1.5 max-[576px]:text-[12px] !text-sm max-[576px]:rounded-[6px]"
             onClick={onClick}
           >
-            <AddOutlinedIcon
-              sx={{
-                fontSize: {
-                  xs: "18px",
-                  sm: "24px",
-                },
-              }}
-            />
-            Tambah
+            {buttonIcon == null &&
+              <buttonIcon
+                sx={{
+                  fontSize: {
+                    xs: "18px",
+                    sm: "24px",
+                  },
+                }}
+              />
+            }
+            {buttonIcon && buttonIcon }
+            {textButton}
           </Button>
         </div>
       </div>
