@@ -12,6 +12,18 @@ use Illuminate\Support\Facades\DB;
 class PelangganController extends Controller
 {
 
+    public function generateKodePelanggan() {
+        $lastPelanggan = Pelanggan::orderBy('id', 'desc')->first();
+
+        $nextId = $lastPelanggan ? $lastPelanggan->id + 1 : 1;
+        $kodePelanggan = 'PL-' . str_pad($nextId, 4, '0', STR_PAD_LEFT);
+
+        return response()->json([
+            "new_kode_pelanggan" => $kodePelanggan
+        ]);
+    }
+
+
     private function prepareDataPelanggan($request) {
         $request->validate([
             'id_paket' => ['required', 'exists:paket,id'],
@@ -71,7 +83,7 @@ class PelangganController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $data_pelanggan = $this->prepareDataPelanggan($request);
         DB::beginTransaction();
         try {
@@ -80,7 +92,7 @@ class PelangganController extends Controller
             $new_tagihan = Tagihan::create($data_tagihan);
 
             DB::commit();
-            
+
             return response()->json([
                 'message' => 'Pelanggan berhasil ditambahkan.',
             ], 201);
@@ -92,7 +104,7 @@ class PelangganController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-        
+
     }
 
     /**
