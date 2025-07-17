@@ -1,14 +1,26 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
-const Button = (props) => {
-  const {children, type = "button", variant = "primary", onClick, className} = props
+const Button = React.memo((props) => {
+  const {children, type = "button", variant = "primary", className, width = 'w-full', onClick, icon} = props
   const variantClass = variant == "primary" ? 'primary' : 'secondary'
   
   return (
-    <button type={type} onClick={onClick} className={`w-full text-center ${variantClass} rounded-(--border-radius) text-(length:--size-text-2) py-[10px] text-(--background-color) cursor-pointer ${className}`} id='button'>
+
+    <button type={type} onClick={onClick} className={`${width} text-center ${variantClass} rounded-(--border-radius) text-(length:--size-text-2) py-[10px] text-(--background-color) cursor-pointer flex justify-center items-center ${className}`} id='button'>
+        {icon}
         {children}
     </button>
   )
-}
+})
+
+
+export const ButtonAction = React.memo(({children, style}) => {
+
+  return (
+    <button className={`w-max p-2.5 rounded-[10px] flex justify-center items-center ${style}`}>
+      {children}
+    </button>
+  )
+})
 
 export default Button

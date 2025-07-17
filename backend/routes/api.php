@@ -20,6 +20,7 @@ Route::prefix('/v1')->group( function() {
     Route::post('/login', [AuthenticationController::class, 'login']);
     Route::resource('/pelanggan', PelangganController::class)->only(['index', 'store']);
     Route::resource('/pelanggan', PelangganController::class)->except(['index', 'store'])->middleware('validId:pelanggan');
+    Route::get('/new-kode-pelanggan', [PelangganController::class, 'generateKodePelanggan']);
 
     Route::get('/tagihan', [TagihanController::class, 'index']);
     Route::put('/tagihan/{tagihan}', [TagihanController::class, 'confirmTagihan'])->middleware('validId:tagihan');
