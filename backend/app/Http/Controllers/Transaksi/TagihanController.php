@@ -12,7 +12,7 @@ class TagihanController extends Controller
 {
     public function index() {
         try {
-            $tagihan = Tagihan::with('pelanggan')->orderBy('tanggal', 'asc')->paginate(10);
+            $tagihan = Tagihan::with('pelanggan.paket')->orderBy('tanggal', 'asc')->paginate(10);
             return response()->json([
                 'message' => "Data Tagihan Didapatkan!",
                 'data' => $tagihan
