@@ -26,6 +26,7 @@ const SelectPaket = () => {
         const mapped = data.map((item, index) => ({
           id: item.id,
           label: item.id || `Paket ${index + 1}`,
+          name: item.name,
           value: item.harga
             ? `Rp ${item.harga.toLocaleString()}`
             : item.value || `Rp 0`,
@@ -74,7 +75,11 @@ const SelectPaket = () => {
                   } ${selected ? "font-semibold" : "font-normal"}`
                 }
               >
-                {item.value}
+                <div className="flex items-center justify-around">
+                  <p>{item.name}</p>
+                  <p>-</p>
+                  <p>{item.value}</p>
+                </div>
               </ListboxOption>
             )})}
           </ListboxOptions>

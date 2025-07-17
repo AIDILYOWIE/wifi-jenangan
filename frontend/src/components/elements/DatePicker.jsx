@@ -5,7 +5,7 @@ export const DatePicker = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [formatDate, setFormatDate] = useState(null);
+  const [formatDate, setFormatDate] = useState("");
   const inputRef = useRef(null);
   const calendarRef = useRef(null);
   const { setData } = useDataContext();
@@ -30,8 +30,8 @@ export const DatePicker = () => {
 
   const functFormatDate = (date) => {
     if (!date) return "";
-    let dateFormat = date.toISOString().split("T")[0]
-    setData((prev) => ({...prev, tanggal_masuk: date}))
+    let dateFormat = date.toLocaleDateString('en-CA')
+    setData((prev) => ({...prev, tanggal_masuk: dateFormat}))
     setFormatDate(dateFormat);
   };
 
