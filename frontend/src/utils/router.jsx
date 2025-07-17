@@ -8,6 +8,7 @@ import Pelanggan from "../pages/Client_area/Pelanggan/Index.jsx";
 import Dashboard from "../pages/Client_area/Dashboard/Index.jsx";
 import Invoice from "../pages/Invoice/Index.jsx";
 import Transaksi from "../pages/Client_area/Transaksi/Index.jsx";
+import AddPelanggan from "../pages/Client_area/Pelanggan/Action/AddPelanggan.jsx";
 
 const router = createBrowserRouter([
     {
@@ -28,7 +29,16 @@ const router = createBrowserRouter([
     },
     {
         path : '/pelanggan',
-        element : <AuthMiddleware> <Pelanggan/> </AuthMiddleware>
+        children: [
+            {
+                index: true,
+                element: <AuthMiddleware><Pelanggan/></AuthMiddleware> 
+            },
+            {
+                path: 'add',
+                element: <AuthMiddleware> <AddPelanggan/></AuthMiddleware>
+            }
+        ]
     },
     {
         path : '/transaksi',
