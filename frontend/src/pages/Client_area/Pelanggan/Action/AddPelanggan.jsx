@@ -14,14 +14,15 @@ import {
 import Input from "../../../../components/elements/Input";
 import SelectPaket from "../../../../components/elements/Select";
 import DateRangePicker from "../../../../components/elements/DateRangePicker";
-import { api } from "../../../../utils/helper/helper";
+import { api, updateToastToError, updateToastToSuccess } from "../../../../utils/helper/helper";
 import SendData, { SendDataProvider, useDataContext } from "../../../../../context/SendDataContext";
 import { data } from "react-router-dom";
 import { useContext, useState } from "react";
 import { DatePicker } from "../../../../components/elements/DatePicker";
+import { toast, ToastContainer } from "react-toastify";
 
 
-const AddPelanggan = ({ open, setOpen }) => {
+const AddPelanggan = ({ open, setOpen, onClose, newCode }) => {
   const { data } = useDataContext()
   const [nomerPelangan, setNomerPelanggan] = useState('')
   const [namaPelangan, setNamaPelanggan] = useState('')
@@ -30,8 +31,9 @@ const AddPelanggan = ({ open, setOpen }) => {
   const [dusunJalan, setDusunJalan] = useState('')
 
   const handleSubmit = async () => {
+    const toastId = toast.loading("Menambahkan Pelanggan")
     try {
-      await api.post('/pelanggan', {
+      const response = await api.post('/pelanggan', {
         tanggal_pemasangan: data && data.tanggal_masuk,
         name: namaPelangan,
         kecamatan: kecamatan,
@@ -40,18 +42,22 @@ const AddPelanggan = ({ open, setOpen }) => {
         id_paket: data && data.paket_id
       })
 
-      console.log('success')
+      updateToastToSuccess(toastId, response.data.message)
+      window.location.reload()
     } catch (error) {
-      console.log(error)
+      updateToastToError(toastId, error.response.data.message)
     }
   }
 
   return (
     
       <Dialog open={open} onClose={setOpen} className="relative z-10">
+        <ToastContainer
+          position="top-center"
+        />
         <DialogBackdrop
           transition
-          className="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"
+          className="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"
         />
 
         <div className="fixed inset-0 z-10 w-screen overflow-y-auto flex justify-center items-center ">
@@ -62,8 +68,9 @@ const AddPelanggan = ({ open, setOpen }) => {
               </div>
               <div className="w-full flex justify-end gap-2">
                 <Button
-                  className="w-max border-[1px] border-(--primary-color) rounded-[5px] text-(--primary-color) px-3 !py-1.5 gap-1.5"
+                  className="w-max no-hover border-[1px] border-(--primary-color) rounded-[5px] text-(--primary-color) px-3 !py-1.5 gap-1.5 hover:bg-red-700"
                   variant="secondary"
+                  onClick={onClose}
                 >
                   <ArrowBackIosNewOutlinedIcon
                     sx={{
@@ -80,8 +87,9 @@ const AddPelanggan = ({ open, setOpen }) => {
               <div className="grid grid-cols-2 w-full gap-[20px]">
                 <div className="">
                   <Input
-                    label="Nomer Pelanggan"
-                    placeholder="PL-001"
+                    label="Kode Pelanggan"
+                    value={newCode}
+                    disabled={true}
                     variant="text-[12px] !text-(--border-color)  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1"
                   />
                 </div>
