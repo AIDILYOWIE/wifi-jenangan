@@ -14,10 +14,10 @@ const Button = React.memo((props) => {
 })
 
 
-export const ButtonAction = React.memo(({children, style}) => {
+export const ButtonAction = React.memo(({children, style, onClick}) => {
 
   return (
-    <button className={`w-max p-2.5 rounded-[10px] flex justify-center items-center ${style}`}>
+    <button onClick={onClick} className={`w-max p-2.5 rounded-[10px] flex justify-center items-center cursor-pointer ${style}`}>
       {children}
     </button>
   )
