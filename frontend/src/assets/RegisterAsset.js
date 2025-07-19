@@ -21,6 +21,8 @@ import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutl
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import PrintIcon from '@mui/icons-material/Print';
 import CheckIcon from '@mui/icons-material/Check';
+import GridViewIcon from '@mui/icons-material/GridView';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 
 export {
@@ -32,5 +34,5 @@ export {
     NotificationsOutlinedIcon, AddOutlinedIcon, EditIcon,
     DeleteIcon, SearchIcon, PeopleAltOutlinedIcon,
     ArrowBackIosNewOutlinedIcon, CheckOutlinedIcon, PrintIcon,
-    CheckIcon
+    CheckIcon, GridViewIcon, CloudUploadIcon
 }
