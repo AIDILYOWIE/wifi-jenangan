@@ -1,12 +1,10 @@
-
-const Container = (props) => {
+import React from 'react';
+const Container = React.memo((props) => {
   return (
-    <main className="w-full mx-auto px-5">
-        <div className="w-full">
+    <main className="w-full flex justify-center flex-col px-5 gap-[20px] overflow-hidden">
             {props.children}
-        </div>
     </main>
   )
-}
+})
 
 export default Container

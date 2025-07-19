@@ -1,3 +1,8 @@
+// get .env
+export const env = (key, fallback = null) => {
+    return import.meta.env[key] ?? fallback;
+};
+
 // token service
 export const CurrentToken = {
     get : () => localStorage.getItem('auth_token'),
@@ -9,7 +14,7 @@ export const CurrentToken = {
 import axios from "axios";
 
 export const api = axios.create({
-    baseURL: "http://localhost:8080/api/v1",
+    baseURL: env('VITE_API_URL'),
     headers: {
         Accept: "application/json",
         Authorization:`Bearer ${CurrentToken.get()}` 
@@ -41,7 +46,3 @@ export const updateToastToError = (id, message) => {
     });
 }
 
-// get .env
-export const env = (key, fallback = null) => {
-    return import.meta.env[key] ?? fallback;
-};

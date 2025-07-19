@@ -8,7 +8,7 @@ const Sidebar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false) // before : true
   const [showContent, setShowContent] = useState(false) // before : true
 
-  const sidebarOpenClass = sidebarOpen ? 'w-[288px]' : 'w-19'
+  const sidebarOpenClass = sidebarOpen ? 'w-[250px]' : 'w-19'
   
 
   const toggleSidebar = () => {
@@ -21,9 +21,9 @@ const Sidebar = () => {
   }
   
   return (
-    <aside className={`${sidebarOpenClass} overflow-hidden border border-[var(--border-color)] p-5 duration-200 max-[379px]:hidden`}>
+    <aside className={`${sidebarOpenClass} overflow-hidden border-r-[1px] border-[var(--border-color)] p-5 duration-200 max-[800px]:hidden`}>
         <div className="w-full h-full ">
-            <div className="header sticky flex it ems-center justify-between pb-3.5 border-b-[1px] border-[var(--border-color)]">
+            <div className="header sticky flex items-center justify-between pb-3.5 border-b-[1px] border-[var(--border-color)]">
                 {showContent && 
                   <img src={logo} alt="logo" width={155}/>
                 }
