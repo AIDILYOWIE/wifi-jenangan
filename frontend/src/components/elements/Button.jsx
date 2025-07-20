@@ -1,8 +1,10 @@
 import React, { useContext } from 'react'
 
 const Button = React.memo((props) => {
-  const {children, type = "button", variant = "primary", className, width = 'w-full', onClick, icon} = props
+  const {children, type = "button", variant = "primary", className, width = 'w-full', onClick, icon, disabled} = props
   const variantClass = variant == "primary" ? 'primary' : 'secondary'
+
+
   
   return (
 
@@ -14,10 +16,9 @@ const Button = React.memo((props) => {
 })
 
 
-export const ButtonAction = React.memo(({children, style}) => {
-
+export const ButtonAction = React.memo(({children, style, onClick}) => {
   return (
-    <button className={`w-max p-2.5 rounded-[10px] flex justify-center items-center ${style}`}>
+    <button className={`w-max p-2.5 rounded-[10px] flex justify-center items-center ${style}`} onClick={onClick}>
       {children}
     </button>
   )

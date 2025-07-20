@@ -20,6 +20,7 @@ import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import PrintIcon from '@mui/icons-material/Print';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 
 export {
@@ -30,5 +31,6 @@ export {
     ReceiptLongOutlinedIcon, SearchOutlinedIcon,
     NotificationsOutlinedIcon, AddOutlinedIcon, EditIcon,
     DeleteIcon, SearchIcon, PeopleAltOutlinedIcon,
-    ArrowBackIosNewOutlinedIcon, CheckOutlinedIcon, PrintIcon
+    ArrowBackIosNewOutlinedIcon, CheckOutlinedIcon, PrintIcon,
+    DeleteOutlineOutlinedIcon
 }

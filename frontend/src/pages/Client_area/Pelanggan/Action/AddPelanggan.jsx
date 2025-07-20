@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Dialog,
   DialogBackdrop,
@@ -13,58 +14,121 @@ import {
 } from "../../../../assets/RegisterAsset";
 import Input from "../../../../components/elements/Input";
 import SelectPaket from "../../../../components/elements/Select";
-import DateRangePicker from "../../../../components/elements/DateRangePicker";
-import { api, updateToastToError, updateToastToSuccess } from "../../../../utils/helper/helper";
-import SendData, { SendDataProvider, useDataContext } from "../../../../../context/SendDataContext";
-import { data } from "react-router-dom";
-import { useContext, useState } from "react";
+import {
+  api,
+  updateToastToError,
+  updateToastToSuccess,
+} from "../../../../utils/helper/helper";
+import { useDataContext } from "../../../../../context/SendDataContext";
+import { useContext, useEffect, useState } from "react";
 import { DatePicker } from "../../../../components/elements/DatePicker";
 import { toast, ToastContainer } from "react-toastify";
 
+const AddPelanggan = React.memo(
+  ({ open, setOpen, onClose, newCode, title }) => {
+    const { data, type } = useDataContext();
+    const [namaPelangan, setNamaPelanggan] = useState("");
+    const [kecamatan, setKecamatan] = useState("");
+    const [desa, setDesa] = useState("");
+    const [dusunJalan, setDusunJalan] = useState("");
+    const [kodePelanggan, setKodePelanggan] = useState("");
+    const [tanggalMasuk, setTanggalMasuk] = useState(null);
+    const [paket, setPaket] = useState("");
+    const [disabled, setDisabled] = useState(false);
 
-const AddPelanggan = ({ open, setOpen, onClose, newCode }) => {
-  const { data } = useDataContext()
-  const [nomerPelangan, setNomerPelanggan] = useState('')
-  const [namaPelangan, setNamaPelanggan] = useState('')
-  const [kecamatan, setKecamatan] = useState('')
-  const [desa, setDesa] = useState('')
-  const [dusunJalan, setDusunJalan] = useState('')
+    // handle kondisi
+    const handleSubmit = async () => {
+      if (type == "add-pelanggan") {
+        handleAddPelanggan();
+      } else if (type == "edit-pelanggan") {
+        handleEditPelanggan();
+      }
+    };
 
-  const handleSubmit = async () => {
-    const toastId = toast.loading("Menambahkan Pelanggan")
-    try {
-      const response = await api.post('/pelanggan', {
-        tanggal_pemasangan: data && data.tanggal_masuk,
-        name: namaPelangan,
-        kecamatan: kecamatan,
-        desa: desa,
-        dusun: dusunJalan,
-        id_paket: data && data.paket_id
-      })
+    // handle Add Pelanggan
+    const handleAddPelanggan = async () => {
+      const toastId = toast.loading("Menambahkan Pelanggan");
+      try {
+        const response = await api.post("/pelanggan", {
+          tanggal_pemasangan: data && data.tanggal_masuk,
+          name: namaPelangan,
+          kecamatan: kecamatan,
+          desa: desa,
+          dusun: dusunJalan,
+          id_paket: data && data.paket_id,
+        });
 
-      updateToastToSuccess(toastId, response.data.message)
-      window.location.reload()
-    } catch (error) {
-      updateToastToError(toastId, error.response.data.message)
-    }
-  }
+        updateToastToSuccess(toastId, response.data.message);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      } catch (error) {
+        updateToastToError(toastId, error.response.data.message);
+      }
+    };
 
-  return (
-    
+    // handle Edit Pelanggan
+    const handleEditPelanggan = async () => {
+      const toastId = toast.loading("Edit Pelanggan");
+      try {
+        const response = await api.put(`/pelanggan/${data.id}`, {
+          tanggal_pemasangan: data?.tanggal_masuk || tanggalMasuk,
+          name: namaPelangan,
+          kecamatan: kecamatan,
+          desa: dusunJalan,
+          dusun: dusunJalan,
+          id_paket: data?.paket_id || paket,
+        });
+        updateToastToSuccess(toastId, response.data.message);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      } catch (error) {
+        updateToastToError(toastId, error.response.data.message);
+      }
+    };
+
+    // fetch data pelanggan
+    const fetchDataPelanggan = async () => {
+      try {
+        const response = await api.get(`/pelanggan/${data.id}`);
+        const res = response.data.data;
+        setKodePelanggan(res.kode_pelanggan);
+        setTanggalMasuk(res.tanggal_pemasangan);
+        setNamaPelanggan(res.name);
+        setKecamatan(res.kecamatan);
+        setDesa(res.desa);
+        setDusunJalan(res.dusun);
+        setPaket(res.paket.id);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    useEffect(() => {
+      if (data?.id) {
+        fetchDataPelanggan();
+      }
+
+      if (type == "detail-pelanggan") {
+        setDisabled(true);
+      } else {
+        setDisabled(false);
+      }
+    }, [data?.id, type]);
+
+    return (
       <Dialog open={open} onClose={setOpen} className="relative z-10">
-        <ToastContainer
-          position="top-center"
-        />
+        <ToastContainer position="top-center" />
         <DialogBackdrop
           transition
           className="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"
         />
 
         <div className="fixed inset-0 z-10 w-screen overflow-y-auto flex justify-center items-center ">
-          <div className="flex flex-col w-[800px] h-max bg-white rounded-[10px] px-8 py-5 gap-[38px]">
+          <div className="flex flex-col max-[576px]:w-[400px] w-[800px] h-max bg-white rounded-[10px] max-[576px]:px-4 px-8 py-5 gap-[38px]">
             <header className="w-full flex justify-between">
               <div className="w-full">
-                <h1 className="text-[20px] font-[600]">Buat Pelanggan</h1>
+                <h1 className="text-[20px] font-[600]">{title}</h1>
               </div>
               <div className="w-full flex justify-end gap-2">
                 <Button
@@ -84,24 +148,27 @@ const AddPelanggan = ({ open, setOpen, onClose, newCode }) => {
             </header>
 
             <div className="w-full flex flex-col gap-5">
-              <div className="grid grid-cols-2 w-full gap-[20px]">
+              <div className="grid grid-cols-2 max-[576px]:grid-cols-1 w-full gap-[20px]">
                 <div className="">
                   <Input
                     label="Kode Pelanggan"
                     value={newCode}
-                    disabled={true}
+                    onChange={(e) => setKodePelanggan(e.target.value)}
+                    disabled={disabled}
                     variant="text-[12px] !text-(--border-color)  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1"
                   />
                 </div>
                 <div className="">
-                  <DatePicker/>
+                  <DatePicker value={tanggalMasuk} disabled={disabled} />
                 </div>
               </div>
-              <div className="grid grid-cols-2 w-full gap-[20px]">
+              <div className="grid grid-cols-2 max-[576px]:grid-cols-1 w-full gap-[20px]">
                 <div className="">
                   <Input
                     label="Nama Pelanggan"
                     placeholder="Masukan Nama Pelanggan"
+                    value={namaPelangan}
+                    disabled={disabled}
                     onChange={(e) => setNamaPelanggan(e.target.value)}
                     variant="text-[12px] text-(--border-color)  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1"
                   />
@@ -110,16 +177,20 @@ const AddPelanggan = ({ open, setOpen, onClose, newCode }) => {
                   <Input
                     label="Kecamatan"
                     placeholder="Masukan Kecamatan"
+                    value={kecamatan}
+                    disabled={disabled}
                     onChange={(e) => setKecamatan(e.target.value)}
                     variant="text-[12px] text-(--border-color)  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1"
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-2 w-full gap-[20px]">
+              <div className="grid grid-cols-2 max-[576px]:grid-cols-1 w-full gap-[20px]">
                 <div className="">
                   <Input
                     label="Desa"
                     placeholder="Masukan Desa"
+                    value={desa}
+                    disabled={disabled}
                     onChange={(e) => setDesa(e.target.value)}
                     variant="text-[12px] text-(--border-color)  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1"
                   />
@@ -128,37 +199,45 @@ const AddPelanggan = ({ open, setOpen, onClose, newCode }) => {
                   <Input
                     label="Dusun / Jalan"
                     placeholder="Masukan Dusun / Jalan"
+                    value={dusunJalan}
+                    disabled={disabled}
                     onChange={(e) => setDusunJalan(e.target.value)}
                     variant="text-[12px] text-(--border-color)  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1"
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-2 w-full gap-[20px]">
+              <div className="grid grid-cols-2 max-[576px]:grid-cols-1 w-full gap-[20px]">
                 <div className="">
-                  <SelectPaket />
+                  <SelectPaket value={paket} disabled={disabled} />
                 </div>
               </div>
 
               <div className="w-full flex justify-end">
-                <Button
-                  className="w-max rounded-[5px] text-(--background-color) px-3 !py-1.5 gap-1.5"
-                  variant="primary"
-                  onClick={() => handleSubmit()}
-                >
-                  <CheckOutlinedIcon
-                    sx={{
-                      fontSize: "14px",
-                      color: " #ffff",
+                {disabled ? null : (
+                  <Button
+                    className="w-max rounded-[5px] text-(--background-color) px-3 !py-1.5 gap-1.5"
+                    variant="primary"
+                    disabled={disabled}
+                    onClick={() => {
+                      handleSubmit();
                     }}
-                  />
-                  Submit
-                </Button>
+                  >
+                    <CheckOutlinedIcon
+                      sx={{
+                        fontSize: "14px",
+                        color: " #ffff",
+                      }}
+                    />
+                    Submit
+                  </Button>
+                )}
               </div>
             </div>
           </div>
         </div>
       </Dialog>
-  );
-};
+    );
+  }
+);
 
 export default AddPelanggan;
