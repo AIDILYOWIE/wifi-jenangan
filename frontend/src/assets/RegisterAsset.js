@@ -21,6 +21,7 @@ import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutl
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import PrintIcon from '@mui/icons-material/Print';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import CheckIcon from '@mui/icons-material/Check';
 
 
 export {
@@ -33,4 +34,5 @@ export {
     DeleteIcon, SearchIcon, PeopleAltOutlinedIcon,
     ArrowBackIosNewOutlinedIcon, CheckOutlinedIcon, PrintIcon,
     DeleteOutlineOutlinedIcon
+    CheckIcon
 }

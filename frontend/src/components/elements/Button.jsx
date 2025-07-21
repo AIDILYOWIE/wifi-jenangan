@@ -18,7 +18,7 @@ const Button = React.memo((props) => {
 
 export const ButtonAction = React.memo(({children, style, onClick}) => {
   return (
-    <button className={`w-max p-2.5 rounded-[10px] flex justify-center items-center ${style}`} onClick={onClick}>
+    <button className=2{`w-max p-2.5 rounded-[10px] flex justify-center items-center ${style}`} onClick={onClick}>
       {children}
     </button>
   )
