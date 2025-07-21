@@ -42,21 +42,19 @@ class DashboardController extends Controller
                 ->limit(5)
                 ->get();
 
-            $tagihanTanggal = Tagihan::whereBetween('tanggal', [$data['start_date'], $data['end_date']])
+            $tagihanTanggal = Tagihan::with('pelanggan.paket')->whereBetween('tanggal', [$data['start_date'], $data['end_date']])
                 ->limit(5)
                 ->get();
 
             return response()->json([
-                'success' => true,
                 'belum_lunas_sum' => $belumLunasSum,
                 'lunas_sum' => $lunasSum,
-                'pelanggan_masuk' => $pelangganMasuk,
-                'tagihan_tanggal' => $tagihanTanggal,
+                'pelanggan' => $pelangganMasuk,
+                'tagihan' => $tagihanTanggal,
             ]);
 
         } catch (Exception $e) {
             return response()->json([
-                'success' => false,
                 'message' => 'Terjadi kesalahan pada server.',
                 'error' => $e->getMessage(),
             ], 500);
