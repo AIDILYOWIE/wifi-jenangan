@@ -10,7 +10,6 @@ import { toast, ToastContainer } from 'react-toastify';
 const Table = () => {
 
     const [dataInvoice, setDataInvoice] = useState([])
-
     const now = new Date().toLocaleDateString('en-CA')
 
     const getDataInvoice = async () => {

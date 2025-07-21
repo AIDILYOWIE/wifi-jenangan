@@ -1,5 +1,5 @@
 "use client";
-
+import React from "react";
 import { useContext, useEffect, useState } from "react";
 import {
   Listbox,
@@ -9,21 +9,21 @@ import {
 } from "@headlessui/react";
 import { ArrowBackIosNewOutlinedIcon } from "../../assets/RegisterAsset";
 import { api } from "../../utils/helper/helper";
-import SendData, { useDataContext } from "../../../context/SendDataContext";
+import { useDataContext } from "../../../context/SendDataContext";
 
-const SelectPaket = () => {
+const SelectPaket = React.memo(({value, disabled}) => {
   const [paketList, setPaketList] = useState([]);
   const [selected, setSelected] = useState(null);
-  const { setData } = useDataContext()
+  const { setData, data } = useDataContext()
 
   useEffect(() => {
     const fetchPaket = async () => {
       try {
         const response = await api.get("/paket");
-        const data = response.data.data;
+        const dataPaket = response.data.data;
 
         // Jika data array, ubah ke format label/value
-        const mapped = data.map((item, index) => ({
+        const mapped = dataPaket.map((item, index) => ({
           id: item.id,
           label: item.id || `Paket ${index + 1}`,
           name: item.name,
@@ -41,6 +41,15 @@ const SelectPaket = () => {
     fetchPaket();
   }, []);
 
+  useEffect(() => {
+    if(paketList.length > 0 && value) {
+      const found = paketList.find((item) => item.id === value)
+      if (found) {
+        setSelected(found)
+      }
+    }
+  }, [paketList, value])
+
   return (
     <div className="w-full flex flex-col gap-[7px]">
       <label htmlFor="" className="text-[14px] text-(--text-color)">
@@ -52,7 +61,7 @@ const SelectPaket = () => {
         setData((prev) => ({...prev, paket_id: item.id}))
       }}>
         <div className="relative">
-          <ListboxButton className="flex justify-between items-center w-full text-[12px] text-(--text-color) border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-2 gap-1 focus:outline-none">
+          <ListboxButton disabled={disabled} className="flex justify-between items-center w-full text-[12px] text-(--text-color) border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-2 gap-1 focus:outline-none">
             {selected?.value || "Pilih Paket"}
             <ArrowBackIosNewOutlinedIcon
               className="rotate-270"
@@ -87,6 +96,6 @@ const SelectPaket = () => {
       </Listbox>
     </div>
   );
-};
+});
 
 export default SelectPaket;

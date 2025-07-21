@@ -1,7 +1,7 @@
 import React from 'react';
 const Container = React.memo((props) => {
   return (
-    <main className="w-full flex justify-center flex-col px-5 gap-[20px] overflow-hidden">
+    <main className="w-full h-full flex justify-start flex-col px-5 gap-[20px] overflow-hidden relative">
             {props.children}
     </main>
   )
