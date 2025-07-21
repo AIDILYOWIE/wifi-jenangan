@@ -1,14 +1,21 @@
 import { useState, useRef, useEffect, useContext } from "react";
 import { useDataContext } from "../../../context/SendDataContext";
+import React from "react";
 
-export const DatePicker = () => {
+export const DatePicker = React.memo(({ value = null, disabled, onChange }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [formatDate, setFormatDate] = useState("");
   const inputRef = useRef(null);
   const calendarRef = useRef(null);
-  const { setData } = useDataContext();
+  const { setData, data } = useDataContext();
+
+  useEffect(() => {
+    if (value) {
+      setFormatDate(value);
+    }
+  }, [value]);
 
   // Handle clicks outside the component to close calendar
   useEffect(() => {
@@ -30,9 +37,9 @@ export const DatePicker = () => {
 
   const functFormatDate = (date) => {
     if (!date) return "";
-    let dateFormat = date.toLocaleDateString('en-CA')
-    setData((prev) => ({...prev, tanggal_masuk: dateFormat}))
-    setFormatDate(dateFormat);
+    let dateFormat = date.toLocaleDateString("en-CA");
+    setData((prev) => ({ ...prev, tanggal_masuk: dateFormat }));
+    console.log(data);
   };
 
   const handleInputClick = () => {
@@ -41,8 +48,10 @@ export const DatePicker = () => {
 
   const handleDateSelect = (date) => {
     setSelectedDate(date);
+    let dateFormat = date.toLocaleDateString("en-CA");
+    setData((prev) => ({...prev, tanggal_masuk: dateFormat}))
     setIsCalendarOpen(false);
-    functFormatDate(date);
+    setFormatDate(dateFormat);
   };
 
   const getDaysInMonth = (date) => {
@@ -140,6 +149,7 @@ export const DatePicker = () => {
             ref={inputRef}
             type="text"
             value={formatDate}
+            disabled={disabled}
             onClick={handleInputClick}
             readOnly
             className={`w-full  focus:outline-none transition-all duration-200 cursor-pointer text-[12px]  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-2 gap-1`}
@@ -216,4 +226,4 @@ export const DatePicker = () => {
       </div>
     </div>
   );
-};
+});

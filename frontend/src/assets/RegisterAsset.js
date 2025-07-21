@@ -20,6 +20,7 @@ import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import PrintIcon from '@mui/icons-material/Print';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import CheckIcon from '@mui/icons-material/Check';
 import GridViewIcon from '@mui/icons-material/GridView';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -34,5 +35,6 @@ export {
     NotificationsOutlinedIcon, AddOutlinedIcon, EditIcon,
     DeleteIcon, SearchIcon, PeopleAltOutlinedIcon,
     ArrowBackIosNewOutlinedIcon, CheckOutlinedIcon, PrintIcon,
-    CheckIcon, GridViewIcon, CloudUploadIcon
+    CheckIcon, GridViewIcon, CloudUploadIcon,
+    DeleteOutlineOutlinedIcon, CheckIcon
 }
