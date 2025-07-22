@@ -9,6 +9,7 @@ import Dashboard from "../pages/Client_area/Dashboard/Index.jsx";
 import Invoice from "../pages/Invoice/Index.jsx";
 import Transaksi from "../pages/Client_area/Transaksi/Index.jsx";
 import AddPelanggan from "../pages/Client_area/Pelanggan/Action/AddPelanggan.jsx";
+import PrintPage from "../pages/Invoice/Action/PrintPage.jsx";
 
 const router = createBrowserRouter([
     {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
     {
         path : '/invoice',
         element : <AuthMiddleware> <Invoice/> </AuthMiddleware>
+    },
+    {
+        path : '/invoice/:id/print',
+        element : <AuthMiddleware> <PrintPage/> </AuthMiddleware>
     },
 ])
 
