@@ -16,7 +16,7 @@ const BaseLayout = React.memo((props) => {
         <BottomBar/>
 
       <div className="flex flex-col items-center w-full gap-y-5 bg-(--secondary-background-color) max-[800px]:pb-[90px]">
-        <Navbar />
+        {/* <Navbar /> */}
         <Container>
           {props.children}
         </Container>

@@ -13,14 +13,15 @@ use PhpParser\Node\Expr;
 
 class TagihanController extends Controller
 {
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
 
         $request->validate([
-            "now" => ['required','date'],
+            "now" => ['required', 'date'],
         ]);
 
         $now = $request->only('now');
-        
+
         try {
             $tagihan = Tagihan::with('pelanggan.paket')->where('tanggal', '<=', $now)->where('status', 'belum lunas')->orderBy('tanggal', 'asc')->paginate(10);
             return response()->json([
@@ -35,7 +36,8 @@ class TagihanController extends Controller
         }
     }
 
-    public function indexTagihanLunas(Request $request) {
+    public function indexTagihanLunas(Request $request)
+    {
 
         $request->validate([
             'start_date' => ['required', 'date'],
@@ -43,7 +45,7 @@ class TagihanController extends Controller
         ]);
 
         $data = $request->only('start_date', 'end_date');
-        
+
         try {
             $tagihan = Tagihan::with('pelanggan.paket')->whereBetween('tanggal', [$data['start_date'], $data['end_date']])->orderBy('tanggal', 'asc')->paginate(10);
             return response()->json([
@@ -58,7 +60,8 @@ class TagihanController extends Controller
         }
     }
 
-    public function show(string $id) {
+    public function show(string $id)
+    {
         try {
             $tagihan = Tagihan::with('pelanggan.paket')->find($id);
             return response()->json([
@@ -71,16 +74,17 @@ class TagihanController extends Controller
                 'error' => $e->getMessage()
             ]);
         }
-        
     }
 
-    public function confirmTagihan(Request $request, $id) {
+
+    public function confirmTagihan(Request $request, $id)
+    {
         $tagihan = Tagihan::with('pelanggan.paket')->find($id);
-        $tagihan->status = 'Lunas';
 
         DB::beginTransaction();
 
         try {
+            $tagihan->status = 'Lunas';
             $tagihan->save();
 
             $tanggal_sebelumnya = Carbon::parse($tagihan->tanggal);
@@ -103,15 +107,12 @@ class TagihanController extends Controller
                 'tagihan_terkonfirmasi' => $tagihan,
                 'tagihan_selanjutnya' => $tagihan_selanjutnya
             ]);
-
-
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'message' => "Gagal Mengkonfirmasi Tagihan!",
                 "error" => $e->getMessage()
             ]);
         }
-        
-
     }
 }

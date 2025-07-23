@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useDateRange } from "../../../context/DateRangeContext";
 
 const DateRangePicker = React.memo(({ placeholder = "Masukan Tanggal" }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,6 +9,7 @@ const DateRangePicker = React.memo(({ placeholder = "Masukan Tanggal" }) => {
   const [hoverDate, setHoverDate] = useState(null);
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
+  const { setDateRange } = useDateRange();
 
   const months = [
     "January",
@@ -42,6 +44,13 @@ const DateRangePicker = React.memo(({ placeholder = "Masukan Tanggal" }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    setDateRange({
+      start: startDate,
+      end: endDate,
+    });
+  }, [startDate, endDate]);
+
   const formatDate = (date) => {
     if (!date) return "";
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -50,7 +59,6 @@ const DateRangePicker = React.memo(({ placeholder = "Masukan Tanggal" }) => {
 
   const getDisplayText = () => {
     if (startDate && endDate) {
-      console.log()
       return `${formatDate(startDate)} - ${formatDate(endDate)}`;
     }
     if (startDate) {
@@ -133,15 +141,15 @@ const DateRangePicker = React.memo(({ placeholder = "Masukan Tanggal" }) => {
           onMouseLeave={() => setHoverDate(null)}
           className={`
             w-10 h-10 rounded-lg text-sm font-medium transition-all duration-200
-            hover:bg-primary hover:text-background hover:scale-105 focus:outline-none 
+            hover:cursor-pointer hover:text-(--primary-color) focus:outline-none 
             ${
               isSelected
-                ? "bg-primary text-background shadow-lg"
+                ? "bg-(--primary-color) text-(--background-color) shadow-lg"
                 : isInRange
                 ? "bg-blue-100 text-(--primary-color)"
                 : isToday
                 ? "bg-gray-100 text-primary font-bold"
-                : "text-(--text-color) hover:text-blue-600"
+                : "text-gray-700 hover:text-blue-600"
             }
           `}
         >
@@ -154,48 +162,46 @@ const DateRangePicker = React.memo(({ placeholder = "Masukan Tanggal" }) => {
   };
 
   return (
-    <div className="relative inline-block w-full">
-      <div className="w-full flex flex-col gap-[7px]">
-        <label htmlFor="" className="text-(length:--size-text-2)">Tanggal Masuk</label>
-        <button
-          ref={buttonRef}
-          onClick={() => setIsOpen(!isOpen)}
-          className="
-        w-full flex justify-between items-center text-[12px] text-(--border-color) border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1
+    <div className="relative inline-block">
+      <button
+        ref={buttonRef}
+        onClick={() => setIsOpen(!isOpen)}
+        className="
+        w-max flex justify-between border-[1px] border-(--border-color)  items-center max-[576px]:px-[15px] max-[576px]:py-[5px] px-[20px] py-[10px] rounded-[10px] bg-white gap-[10px] cursor-pointer focus:outline-none
+          transition-all duration-200 font-semibold
         "
+      >
+        <span
+          className={
+            "text-(--text-color) max-[570px]:text-[12px] text-[14px] font-(--font-weight-2)"
+          }
         >
-          <span
-            className={
-              "text-background text-background max-[850px]:text-[14px]"
-            }
-          >
-            {getDisplayText()}
-          </span>
-          <svg
-            className={`w-[14px] text-background h-[24px] transition-transform duration-200 ${
-              isOpen ? "rotate-180" : ""
-            }`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
-        </button>
-      </div>
+          {getDisplayText()}
+        </span>
+        <svg
+          className={`w-[20px] text-(--text-color) h-[20px] transition-transform duration-200 ${
+            isOpen ? "rotate-180" : ""
+          }`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
 
       {isOpen && (
         <div
           ref={dropdownRef}
           className="
-            absolute top-full -left-17 max-[576px]:-left-20 mt-2 bg-white border border-gray-200 rounded-xl shadow-2xl
+            absolute top-full -left-30 max-[576px]:-left-20 mt-2 bg-white border-gray-200 rounded-xl shadow-2xl
             z-50 p-6 min-w-80 max-[576px]:min-w-65
-             transition-all duration-200 animate-fadeIn
+             transition-all duration-200 animate-fadeIn text-(--text-color) 
           "
         >
           {/* Calendar Header */}
