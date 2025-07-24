@@ -17,12 +17,12 @@ Route::prefix('/v1')->group( function() {
 
     Route::post('/confirm-email', [AuthenticationController::class, 'confirmEmail']);
     Route::post('/change-password', [AuthenticationController::class, 'changePassword']);
-    
+
     Route::post('/login', [AuthenticationController::class, 'login']);
     Route::resource('/pelanggan', PelangganController::class)->only(['index', 'store']);
     Route::resource('/pelanggan', PelangganController::class)->except(['index', 'store'])->middleware('validId:pelanggan');
     Route::get('/new-kode-pelanggan', [PelangganController::class, 'generateKodePelanggan']);
-    
+
     Route::get('/dashboard', [DashboardController::class, 'index']);
 
     Route::get('/tagihan', [TagihanController::class, 'index']);

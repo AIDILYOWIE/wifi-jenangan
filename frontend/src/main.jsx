@@ -5,11 +5,14 @@ import { RouterProvider } from "react-router-dom";
 import router from "./utils/router";
 import ButtonContext from "../context/ButtonContext";
 import { SendDataProvider } from "../context/SendDataContext";
+import { DateRangeProvider } from "../context/DateRangeContext";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <SendDataProvider>
-      <RouterProvider router={router}></RouterProvider>
+      <DateRangeProvider>
+        <RouterProvider router={router}></RouterProvider>
+      </DateRangeProvider>
     </SendDataProvider>
   </StrictMode>
 );

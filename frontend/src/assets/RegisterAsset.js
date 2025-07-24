@@ -36,5 +36,5 @@ export {
     DeleteIcon, SearchIcon, PeopleAltOutlinedIcon,
     ArrowBackIosNewOutlinedIcon, CheckOutlinedIcon, PrintIcon,
     CheckIcon, GridViewIcon, CloudUploadIcon,
-    DeleteOutlineOutlinedIcon, CheckIcon
+    DeleteOutlineOutlinedIcon
 }

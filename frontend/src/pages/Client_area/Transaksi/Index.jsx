@@ -9,6 +9,7 @@ const Invoice = () => {
       <HeaderPage
         text={"Transaksi"}
         canCreate = {false}
+        isHidden={false}
         icon={
           <ReceiptOutlinedIcon
             sx={{
@@ -20,6 +21,7 @@ const Invoice = () => {
             }}
           />
         }
+        type='date-range'
       />
       <div className="w-ful p-5 bg-white border-[1px] border-(--border-color) rounded-[10px]">
         <div className="w-full overflow-x-auto">
