@@ -21,6 +21,7 @@ const Table = () => {
   const { dateRange } = useDateRange();
 
   const getDataTransaksi = async (payload) => {
+
     try {
       const response = await api.get("/transaksi", {
         params: {
@@ -34,6 +35,19 @@ const Table = () => {
       console.log(error);
     }
   };
+
+  const getDataTransaksi = async () => {
+    try {
+      const dateNow = new Date(Date.now())
+      console.log(dateNow)
+    const response = await api.get('/tagihan', {
+      now: dateNow
+    })
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const confirmTagihan = (id) => {
     const toastId = toast.loading("Mengkonfirmasi...");
@@ -52,6 +66,7 @@ const Table = () => {
 
   useEffect(() => {
     // jangan lupa dirubah sesuai inputan
+    
     const startDate = dateRange.start ? dateRange.start : null;
     const endDate = dateRange.end ? dateRange.end : null;
 

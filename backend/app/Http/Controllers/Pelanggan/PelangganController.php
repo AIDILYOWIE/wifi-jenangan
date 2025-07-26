@@ -26,12 +26,12 @@ class PelangganController extends Controller
 
     private function prepareDataPelanggan($request) {
         $request->validate([
-            'id_paket' => ['required', 'exists:paket,id'],
-            'name' => ['required', 'min:3'],
-            'dusun' => ['required'],
-            'desa' => ['required'],
-            'kecamatan' => ['required'],
             'tanggal_pemasangan' => ['required', 'date'],
+            'name' => ['required', 'min:3'],
+            'kecamatan' => ['required'],
+            'desa' => ['required'],
+            'dusun' => ['required'],
+            'id_paket' => ['required', 'exists:paket,id'],
         ]);
 
         return $request->only(['name', 'tanggal_pemasangan', 'dusun', 'desa', 'kecamatan', 'id_paket']);
@@ -45,6 +45,7 @@ class PelangganController extends Controller
         $tanggal_pemasangan = Carbon::parse($pelanggan->tanggal_pemasangan);
 
         $tanggal_tagihan = $this->createTanggalTagihan($pelanggan);
+
 
         setlocale(LC_TIME, 'id_ID');
         $nama_bulan = $tanggal_tagihan->isoFormat('MMMM');

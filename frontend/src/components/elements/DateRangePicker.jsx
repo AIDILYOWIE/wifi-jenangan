@@ -271,9 +271,6 @@ const DateRangePicker = React.memo(({ placeholder = "Masukan Tanggal" }) => {
                 onClick={() => {
                   setStartDate(null);
                   setEndDate(null);
-                  if (onDateRangeChange) {
-                    onDateRangeChange({ startDate: null, endDate: null });
-                  }
                 }}
                 className="
                   w-full py-2 px-4 text-sm font-medium text-gray-700 

@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useContext } from "react";
 import { useDataContext } from "../../../context/SendDataContext";
 import React from "react";
 
-export const DatePicker = React.memo(({ value = null, disabled, onChange }) => {
+export const DatePicker = React.memo(({ value = null, disabled, onChange, variant }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -152,7 +152,7 @@ export const DatePicker = React.memo(({ value = null, disabled, onChange }) => {
             disabled={disabled}
             onClick={handleInputClick}
             readOnly
-            className={`w-full  focus:outline-none transition-all duration-200 cursor-pointer text-[12px]  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-2 gap-1`}
+            className={`w-full ${variant}  focus:outline-none transition-all duration-200 cursor-pointer text-[12px]  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-2 gap-1`}
             placeholder="Masukan Tanggal"
           />
         </div>

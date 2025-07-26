@@ -85,7 +85,7 @@ const Pelanggan = () => {
         open={open}
         setOpen={() => {
           setOpen(false);
-          setType(null);
+          setType('add-pelanggan');
         }}
         onClose={() => {
           setOpen(false);

@@ -11,7 +11,7 @@ import { ArrowBackIosNewOutlinedIcon } from "../../assets/RegisterAsset";
 import { api } from "../../utils/helper/helper";
 import { useDataContext } from "../../../context/SendDataContext";
 
-const SelectPaket = React.memo(({value, disabled}) => {
+const SelectPaket = React.memo(({value, disabled, variant}) => {
   const [paketList, setPaketList] = useState([]);
   const [selected, setSelected] = useState(null);
   const { setData, data } = useDataContext()
@@ -61,7 +61,7 @@ const SelectPaket = React.memo(({value, disabled}) => {
         setData((prev) => ({...prev, paket_id: item.id}))
       }}>
         <div className="relative">
-          <ListboxButton disabled={disabled} className="flex justify-between items-center w-full text-[12px] text-(--text-color) border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-2 gap-1 focus:outline-none">
+          <ListboxButton disabled={disabled} className={`flex justify-between items-center w-full ${variant} text-[12px] text-(--text-color) border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-2 gap-1 focus:outline-none`}>
             {selected?.value || "Pilih Paket"}
             <ArrowBackIosNewOutlinedIcon
               className="rotate-270"
