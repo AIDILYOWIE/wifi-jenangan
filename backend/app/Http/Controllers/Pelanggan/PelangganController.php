@@ -43,7 +43,8 @@ class PelangganController extends Controller
         ]);
 
         $tanggal_pemasangan = Carbon::parse($pelanggan->tanggal_pemasangan);
-        $tanggal_tagihan = $tanggal_pemasangan->copy()->addMonthNoOverflow()->day(20);
+
+        $tanggal_tagihan = $this->createTanggalTagihan($pelanggan);
 
         setlocale(LC_TIME, 'id_ID');
         $nama_bulan = $tanggal_tagihan->isoFormat('MMMM');
@@ -58,6 +59,17 @@ class PelangganController extends Controller
 
         return $data_tagihan;
 
+    }
+
+    private function createTanggalTagihan($pelanggan) {
+        $tanggal_pemasangan = Carbon::parse($pelanggan->tanggal_pemasangan);
+        if ($tanggal_pemasangan->day <= 20) {
+            $tanggal_tagihan = $tanggal_pemasangan->copy()->addMonth()->day(20);
+        } else {
+            $tanggal_tagihan = $tanggal_pemasangan->copy()->addMonth()->day(28);
+        }
+
+        return $tanggal_tagihan;
     }
     /**
      * Display a listing of the resource.
@@ -127,8 +139,29 @@ class PelangganController extends Controller
     {
         $pelanggan = Pelanggan::find($id);
 
-        $data_pelanggan = $this->prepareDataPelanggan($request);
-        $pelanggan->update($data_pelanggan);
+        DB::beginTransaction();
+
+        try {
+            $data_pelanggan = $this->prepareDataPelanggan($request);
+            $pelanggan->update($data_pelanggan);
+
+            $last_tagihan = $pelanggan->tagihan()
+            ->where('status', 'Belum Lunas')
+            ->orderByDesc('tanggal')
+            ->first();
+
+            $tanggal_tagihan = $this->createTanggalTagihan($pelanggan);
+
+            $last_tagihan->update([
+                'tanggal' => $tanggal_tagihan,
+            ]);
+
+            DB::commit();
+            
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
 
         return response()->json([
             'message' => 'Data pelanggan berhasil diperbarui.',
