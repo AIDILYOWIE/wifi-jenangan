@@ -20,15 +20,17 @@ const Table = () => {
 
   const { dateRange } = useDateRange();
 
-  const getDataTransaksiWithDateRange = async (startDate, endDate) => {
+  const getDataTransaksi = async (payload) => {
+
     try {
       const response = await api.get("/transaksi", {
         params: {
-          start_date: startDate,
-          end_date: endDate,
+          start_date: payload?.start_date,
+          end_date: payload?.end_date,
         },
       });
       setDataTransaksi(response.data.data.data);
+      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -64,12 +66,25 @@ const Table = () => {
 
   useEffect(() => {
     // jangan lupa dirubah sesuai inputan
-    const startDate = new Date(dateRange.start);
-    const endDate = new Date(dateRange.end);
+    
+    const startDate = dateRange.start ? dateRange.start : null;
+    const endDate = dateRange.end ? dateRange.end : null;
 
-    // getDataTransaksi()
+    const formatDate = (dateObj) => {
+      const year = dateObj.getFullYear();
+      const month = String(dateObj.getMonth() + 1).padStart(2, "0"); // bulan dimulai dari 0
+      const day = String(dateObj.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    };
 
-    getDataTransaksiWithDateRange(startDate, endDate);
+    const payload = {
+      start_date: startDate ? formatDate(startDate) : null,
+      end_date: endDate ? formatDate(endDate) : null,
+    };
+
+    console.log(payload);
+
+    getDataTransaksi(payload);
   }, [dateRange]);
   return (
     <div className=" min-[1100px]:w-full max-[1100px]:w-[1000px] flex">

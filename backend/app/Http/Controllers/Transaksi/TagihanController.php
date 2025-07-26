@@ -40,17 +40,28 @@ class TagihanController extends Controller
     {
 
         $request->validate([
-            'start_date' => ['required', 'date'],
-            'end_date' => ['required', 'date']
+            'start_date' => ['nullable', 'date'],
+            'end_date' => ['nullable', 'date']
         ]);
 
-        $data = $request->only('start_date', 'end_date');
+        $data   = $request->only('start_date', 'end_date');
+        $query  = Tagihan::with('pelanggan.paket')->orderBy('tanggal', 'asc');
 
         try {
-            $tagihan = Tagihan::with('pelanggan.paket')->whereBetween('tanggal', [$data['start_date'], $data['end_date']])->orderBy('tanggal', 'asc')->paginate(10);
+            if ($data) {
+                $start = Carbon::parse($data['start_date'])->startOfDay();
+                $end   = Carbon::parse($data['end_date'])->endOfDay();
+                $query->whereBetween('tanggal', [$start, $end]);
+            }
+
+            $tagihan = $query->paginate(10);
+
             return response()->json([
                 'message' => "Data Tagihan Didapatkan!",
-                'data' => $tagihan
+                'data' => $tagihan,
+                "payload" => [
+                    $start, $end
+                ]
             ]);
         } catch (Exception $e) {
             return response()->json([
