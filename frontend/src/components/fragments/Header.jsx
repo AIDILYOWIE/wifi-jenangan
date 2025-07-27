@@ -31,7 +31,7 @@ const HeaderPage = React.memo(
             }`}
           >
             {type === "date-range" ? (
-              <DateRangePicker/>
+              <DateRangePicker />
             ) : (
               <Button
                 width="w-max"
@@ -40,7 +40,7 @@ const HeaderPage = React.memo(
                 onClick={onClick}
               >
                 {buttonIcon}
-                {textButton}
+                <h6 className="max-[576px]:hidden">{textButton}</h6>
               </Button>
             )}
           </div>

@@ -21,13 +21,13 @@
   --border-radius: 8px;
   --border: 1px solid var(--border-color);
   --box-shadow: 2px 2px 6px rgba(0, 0, 0, 20%);
-  --color-edit: #FFDC00;
+  --color-edit: #ffdc00;
   --bg-edit: rgba(251, 217, 0, 20%);
-  --color-delete: #FF0004;
+  --color-delete: #ff0004;
   --bg-delete: rgba(255, 0, 4, 20%);
-  --color-detail: #5FC7FF;
+  --color-detail: #5fc7ff;
   --bg-detail: rgba(95, 199, 255, 20%);
-  --color-status: #00FF00;
+  --color-status: #00ff00;
   --bg-status: rgba(0, 255, 25, 20%);
 }
 
@@ -79,4 +79,16 @@ input:focus {
 
 .no-hover:hover {
   background-color: inherit !important;
+}
+
+#d-sudah-bayar {
+  background-image: url("/public/bg-sudah-bayar.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#d-belum-bayar {
+  background-image: url("/public/bg-belum-bayar.png");
+  background-size: cover;
+  background-repeat: no-repeat;
 }
