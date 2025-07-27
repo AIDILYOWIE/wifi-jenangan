@@ -26,12 +26,12 @@ class PelangganController extends Controller
 
     private function prepareDataPelanggan($request) {
         $request->validate([
-            'id_paket' => ['required', 'exists:paket,id'],
-            'name' => ['required', 'min:3'],
-            'dusun' => ['required'],
-            'desa' => ['required'],
-            'kecamatan' => ['required'],
             'tanggal_pemasangan' => ['required', 'date'],
+            'name' => ['required', 'min:3'],
+            'kecamatan' => ['required'],
+            'desa' => ['required'],
+            'dusun' => ['required'],
+            'id_paket' => ['required', 'exists:paket,id'],
         ]);
 
         return $request->only(['name', 'tanggal_pemasangan', 'dusun', 'desa', 'kecamatan', 'id_paket']);
@@ -89,7 +89,6 @@ class PelangganController extends Controller
         try {
             $new_pelanggan = Pelanggan::create($data_pelanggan);
             $data_tagihan = $this->prepareDataTagihan($request, $new_pelanggan);
-            $new_tagihan = Tagihan::create($data_tagihan);
 
             DB::commit();
 
