@@ -45,6 +45,7 @@ class PelangganController extends Controller
         $tanggal_pemasangan = Carbon::parse($pelanggan->tanggal_pemasangan);
         $tanggal_tagihan = $tanggal_pemasangan->copy()->addMonthNoOverflow()->day(20);
 
+
         setlocale(LC_TIME, 'id_ID');
         $nama_bulan = $tanggal_tagihan->isoFormat('MMMM');
 
@@ -89,6 +90,7 @@ class PelangganController extends Controller
         try {
             $new_pelanggan = Pelanggan::create($data_pelanggan);
             $data_tagihan = $this->prepareDataTagihan($request, $new_pelanggan);
+            $new_tagihan = Tagihan::create($data_tagihan);
 
             DB::commit();
 
