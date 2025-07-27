@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   Dialog,
@@ -106,8 +105,20 @@ const AddPelanggan = React.memo(
       }
     };
     useEffect(() => {
-      if (data?.id) {
+      if (
+        data?.id &&
+        (type == "edit-pelanggan" || type == "detail-pelanggan")
+      ) {
         fetchDataPelanggan();
+      }
+
+      if (type == "add-pelanggan") {
+        setTanggalMasuk("");
+        setNamaPelanggan("");
+        setKecamatan("");
+        setDesa("");
+        setDusunJalan("");
+        setPaket("");
       }
 
       if (type == "detail-pelanggan") {
@@ -155,12 +166,20 @@ const AddPelanggan = React.memo(
                     label="Kode Pelanggan"
                     value={newCode}
                     onChange={(e) => setKodePelanggan(e.target.value)}
-                    disabled={disabled}
-                    variant="text-[12px] !text-(--border-color)  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1"
+                    disabled={true}
+                    variant={`text-[12px] !text-(--border-color)  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1`}
                   />
                 </div>
                 <div className="">
-                  <DatePicker value={tanggalMasuk} disabled={disabled} />
+                  <DatePicker
+                    value={tanggalMasuk}
+                    disabled={disabled}
+                    variant={`${
+                      type == "edit-pelanggan" || type == "add-pelanggan"
+                        ? "!text-(--text-color) "
+                        : "!text-(--border-color) "
+                    }`}
+                  />
                 </div>
               </div>
               <div className="grid grid-cols-2 max-[576px]:grid-cols-1 w-full gap-[20px]">
@@ -171,7 +190,11 @@ const AddPelanggan = React.memo(
                     value={namaPelangan}
                     disabled={disabled}
                     onChange={(e) => setNamaPelanggan(e.target.value)}
-                    variant="text-[12px] text-(--border-color)  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1"
+                    variant={`text-[12px] ${
+                      type == "edit-pelanggan" || type == "add-pelanggan"
+                        ? "!text-(--text-color) "
+                        : "!text-(--border-color) "
+                    }  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1`}
                   />
                 </div>
                 <div className="">
@@ -181,7 +204,11 @@ const AddPelanggan = React.memo(
                     value={kecamatan}
                     disabled={disabled}
                     onChange={(e) => setKecamatan(e.target.value)}
-                    variant="text-[12px] text-(--border-color)  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1"
+                    variant={`text-[12px] ${
+                      type == "edit-pelanggan" || type == "add-pelanggan"
+                        ? "!text-(--text-color) "
+                        : "!text-(--border-color) "
+                    }  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1`}
                   />
                 </div>
               </div>
@@ -193,7 +220,11 @@ const AddPelanggan = React.memo(
                     value={desa}
                     disabled={disabled}
                     onChange={(e) => setDesa(e.target.value)}
-                    variant="text-[12px] text-(--border-color)  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1"
+                    variant={`text-[12px] ${
+                      type == "edit-pelanggan" || type == "add-pelanggan"
+                        ? "!text-(--text-color) "
+                        : "!text-(--border-color) "
+                    } border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1`}
                   />
                 </div>
                 <div className="">
@@ -203,13 +234,25 @@ const AddPelanggan = React.memo(
                     value={dusunJalan}
                     disabled={disabled}
                     onChange={(e) => setDusunJalan(e.target.value)}
-                    variant="text-[12px] text-(--border-color)  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1"
+                    variant={`text-[12px] ${
+                      type == "edit-pelanggan" || type == "add-pelanggan"
+                        ? "!text-(--text-color) "
+                        : "!text-(--border-color) "
+                    } border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1`}
                   />
                 </div>
               </div>
               <div className="grid grid-cols-2 max-[576px]:grid-cols-1 w-full gap-[20px]">
                 <div className="">
-                  <SelectPaket value={paket} disabled={disabled} />
+                  <SelectPaket
+                    value={paket}
+                    disabled={disabled}
+                    variant={`${
+                      type == "edit-pelanggan" || type == "add-pelanggan"
+                        ? "!text-(--text-color) "
+                        : "!text-(--border-color) "
+                    }`}
+                  />
                 </div>
               </div>
 
