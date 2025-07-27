@@ -8,7 +8,7 @@ const Button = React.memo((props) => {
   
   return (
 
-    <button type={type} onClick={onClick} className={`${width} text-center ${variantClass} rounded-(--border-radius) text-(length:--size-text-2) py-[10px] text-(--background-color) cursor-pointer flex justify-center items-center ${className}`} id='button'>
+    <button type={type} onClick={onClick} className={`${width} text-center space-x-[1px] tracking-[.5px] ${variantClass} rounded-(--border-radius) text-(length:--size-text-2) py-[10px] text-(--background-color) cursor-pointer flex justify-center items-center ${className}`} id='button'>
         {icon}
         {children}
     </button>

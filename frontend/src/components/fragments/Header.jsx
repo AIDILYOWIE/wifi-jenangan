@@ -14,7 +14,6 @@ const HeaderPage = React.memo(
     isHidden,
     type,
   }) => {
-    console.log(type)
     return (
       <ButtonProvider>
         <div className="w-full flex justify-between max-[576px]:flex-col gap-[10px]">
@@ -22,7 +21,7 @@ const HeaderPage = React.memo(
             <div className=" p-2.5 rounded-[10px] bg-(--background-color) w-max h-max">
               {icon}
             </div>
-            <h1 className=" text-2xl max-[576px]:text-[20px] font-semibold">
+            <h1 className=" text-2xl max-[576px]:text-[20px] font-semibold text-(--text-color)">
               {text}
             </h1>
           </div>
@@ -41,7 +40,7 @@ const HeaderPage = React.memo(
                 onClick={onClick}
               >
                 {buttonIcon}
-                <div className="max-[576px]:hidden">{textButton}</div>
+                {textButton}
               </Button>
             )}
           </div>
