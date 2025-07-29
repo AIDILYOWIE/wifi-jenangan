@@ -40,10 +40,12 @@ class DashboardController extends Controller
 
             $pelangganMasuk = Pelanggan::whereBetween('tanggal_pemasangan', [$data['start_date'], $data['end_date']])
                 ->limit(5)
+                ->orderByDesc('tanggal_pemasangan')
                 ->get();
-
+                
             $tagihanTanggal = Tagihan::with('pelanggan.paket')->whereBetween('tanggal', [$data['start_date'], $data['end_date']])
                 ->limit(5)
+                ->orderByDesc('tanggal')
                 ->get();
 
             return response()->json([
