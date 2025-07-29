@@ -1,5 +1,5 @@
 import logo from '../../assets/icon/logo.png'
-import { arrow_down, Home, PeopleOutlinedIcon, ReceiptLongOutlinedIcon, ReceiptOutlinedIcon } from '../../assets/RegisterAsset'
+import { arrow_down, Home, PeopleOutlinedIcon, ReceiptLongOutlinedIcon, ReceiptOutlinedIcon, RssFeedIcon } from '../../assets/RegisterAsset'
 import Navlink from '../elements/Navlink'
 
 const BottomBar = () => {
@@ -12,6 +12,7 @@ const BottomBar = () => {
                 <Navlink to="/pelanggan" icon={<PeopleOutlinedIcon/>}> Pelanggan</Navlink>
                 <Navlink to="/transaksi" icon={<ReceiptOutlinedIcon/>}> Transaksi</Navlink>
                 <Navlink to="/invoice" icon={<ReceiptLongOutlinedIcon/>}> Invoice</Navlink>
+                <Navlink to="/paket" icon={<RssFeedIcon/>}> Paket</Navlink>
             </div>
         </div>
     </footer>

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import logo from '../../assets/icon/logo.png'
-import { arrow_down, Home, PeopleOutlinedIcon, ReceiptLongOutlinedIcon, ReceiptOutlinedIcon } from '../../assets/RegisterAsset'
+import { arrow_down, Home, PeopleOutlinedIcon, ReceiptLongOutlinedIcon, ReceiptOutlinedIcon, RssFeedIcon } from '../../assets/RegisterAsset'
 import Navlink from '../elements/Navlink'
 
 const Sidebar = () => {
@@ -37,6 +37,10 @@ const Sidebar = () => {
                 <Navlink to="/pelanggan" sidebarOpen={sidebarOpen} icon={<PeopleOutlinedIcon/>}> Pelanggan</Navlink>
                 <Navlink to="/transaksi" sidebarOpen={sidebarOpen} icon={<ReceiptOutlinedIcon/>}> Transaksi</Navlink>
                 <Navlink to="/invoice" sidebarOpen={sidebarOpen} icon={<ReceiptLongOutlinedIcon/>}> Invoice</Navlink>
+                {showContent && 
+                  <h1 className='ps-5 text-xs mt-10 text-[var(--text-color)]'>SUPPORT</h1>
+                }
+                <Navlink to="/paket" sidebarOpen={sidebarOpen} icon={<RssFeedIcon/>}> Paket</Navlink>
 
             </div>
         </div>
