@@ -10,6 +10,7 @@ class Paket extends Model
     use HasFactory;
 
     protected $table = "paket",
+              $hidden = ['created_at', 'updated_at', 'id'],
               $guarded = [];
 
     public function pelanggan() {
