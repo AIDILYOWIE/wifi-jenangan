@@ -36,7 +36,7 @@ const Table = () => {
     }
   };
 
-  const getDataTransaksi = async () => {
+  const getDataTagihan = async () => {
     try {
       const dateNow = new Date(Date.now())
       console.log(dateNow)
