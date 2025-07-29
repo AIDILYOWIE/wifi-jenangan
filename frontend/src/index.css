@@ -94,3 +94,21 @@ input:focus {
   background-position: center;
   background-repeat: no-repeat;
 }
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  @page {
+    size: 80mm auto;
+    margin: 0;
+  }
+
+  /* Pastikan semua warna latar tetap tercetak */
+  .print-bg {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

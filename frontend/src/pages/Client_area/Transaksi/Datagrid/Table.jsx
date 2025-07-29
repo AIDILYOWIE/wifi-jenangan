@@ -21,52 +21,23 @@ const Table = () => {
   const { dateRange } = useDateRange();
 
   const getDataTransaksi = async (payload) => {
-
     try {
+      console.log('fecth')
       const response = await api.get("/transaksi", {
         params: {
           start_date: payload?.start_date,
           end_date: payload?.end_date,
         },
       });
-      setDataTransaksi(response.data.data.data);
-      console.log(response.data);
+      setDataTransaksi(response.data.data?.data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const getDataTransaksi = async () => {
-    try {
-      const dateNow = new Date(Date.now())
-      console.log(dateNow)
-    const response = await api.get('/tagihan', {
-      now: dateNow
-    })
-      console.log(response)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  const confirmTagihan = (id) => {
-    const toastId = toast.loading("Mengkonfirmasi...");
-    api
-      .put(`/tagihan/${id}`)
-      .then((res) => {
-        updateToastToSuccess(toastId, "Tagihan berhasil dikonfirmasi!");
-        setTimeout(function () {
-          window.location.reload();
-        }, 1000);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   useEffect(() => {
     // jangan lupa dirubah sesuai inputan
-    
+
     const startDate = dateRange.start ? dateRange.start : null;
     const endDate = dateRange.end ? dateRange.end : null;
 
@@ -77,14 +48,13 @@ const Table = () => {
       return `${year}-${month}-${day}`;
     };
 
-    const payload = {
-      start_date: startDate ? formatDate(startDate) : null,
-      end_date: endDate ? formatDate(endDate) : null,
-    };
+      const payload = {
+        start_date: startDate ? formatDate(startDate) : null,
+        end_date: endDate ? formatDate(endDate) : null,
+      };
+      
+      getDataTransaksi(payload);
 
-    console.log(payload);
-
-    getDataTransaksi(payload);
   }, [dateRange]);
   return (
     <div className=" min-[1100px]:w-full max-[1100px]:w-[1000px] flex">
@@ -132,39 +102,6 @@ const Table = () => {
           dataTransaksi.map((item, i) => (
             <TableBody type="status" key={i}>
               <Status value={item.status} />
-            </TableBody>
-          ))}
-      </div>
-      <div className="w-full">
-        <TableHead value="Action" style="rounded-r-[10px]" />
-        {dataTransaksi &&
-          dataTransaksi.map((item, i) => (
-            <TableBody type="action" key={i}>
-              {item.status == "Lunas" && (
-                <ButtonAction style={"bg-(--bg-detail)"}>
-                  <SearchIcon
-                    sx={{
-                      color: "#5FC7FF",
-                      fontSize: "20px",
-                    }}
-                  />
-                </ButtonAction>
-              )}
-              {item.status == "Belum Lunas" && (
-                <ButtonAction
-                  onClick={() => {
-                    confirmTagihan(item.id);
-                  }}
-                  style={"bg-green-200"}
-                >
-                  <CheckIcon
-                    sx={{
-                      color: "#008000",
-                      fontSize: "20px",
-                    }}
-                  />
-                </ButtonAction>
-              )}
             </TableBody>
           ))}
       </div>
