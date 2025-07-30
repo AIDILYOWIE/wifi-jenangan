@@ -74,7 +74,7 @@ const Dashboard = () => {
               Sudah bayar
             </h3>
             <h1 className="text-[length:24px] font-semibold">
-              {dataDashboard.lunas_sum?.toLocaleString("id-ID", {
+              {'Rp 0' || dataDashboard.lunas_sum?.toLocaleString("id-ID", {
                 style: "currency",
                 currency: "IDR",
                 minimumFractionDigits: 0,
@@ -89,7 +89,7 @@ const Dashboard = () => {
               Belum bayar
             </h3>
             <h1 className="text-[length:24px] font-semibold">
-              {dataDashboard.belum_lunas_sum?.toLocaleString("id-ID", {
+              {'Rp 0' || dataDashboard.belum_lunas_sum?.toLocaleString("id-ID", {
                 style: "currency",
                 currency: "IDR",
                 minimumFractionDigits: 0,
