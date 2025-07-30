@@ -71,11 +71,6 @@ class PelangganController extends Controller
             ->orderByDesc('tanggal')
             ->first();
 
-        // jika ada tagihan lunas, maka tagihan lunas terakhir +1 bulan
-        if ($last_tagihan_lunas) {
-            $tanggal_last_tagihan = Carbon::parse($last_tagihan_lunas->tanggal);
-            $tanggal_tagihan = $tanggal_last_tagihan->copy()->addMonth();
-        }
 
         // jika tidak ada tagihan lunas, maka tagihan terbaru = tanggal pemasangan + 1 atau 2 bulan
         if (!$last_tagihan_lunas) {
@@ -96,7 +91,13 @@ class PelangganController extends Controller
     public function index()
     {
         try {
-            $pelanggan = Pelanggan::orderByDesc('kode_pelanggan')->get();
+            $pelanggan = Pelanggan::with('tagihan')->orderByDesc('kode_pelanggan')->get();
+
+            $pelanggan = $pelanggan->map(function ($item) {
+                $item->have_tagihan_lunas = $item->tagihan->contains('status', 'Lunas');
+                return $item;
+            });
+
             return response()->json([
                 'message' => 'List pelanggan berhasil diambil.',
                 'data' => $pelanggan
@@ -172,6 +173,7 @@ class PelangganController extends Controller
             $tanggal_tagihan = $this->createTanggalTagihan($pelanggan);
 
             $last_tagihan->update([
+                'paket' => $data_pelanggan->id_paket,
                 'tanggal' => $tanggal_tagihan,
             ]);
 
