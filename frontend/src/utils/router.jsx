@@ -49,10 +49,6 @@ const router = createBrowserRouter([
         path : '/invoice',
         element : <AuthMiddleware> <Invoice/> </AuthMiddleware>
     },
-    {
-        path : '/invoice/:id/print',
-        element : <AuthMiddleware> <PrintPage/> </AuthMiddleware>
-    },
 ])
 
 export default router

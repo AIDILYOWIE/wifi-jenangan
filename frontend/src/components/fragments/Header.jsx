@@ -16,7 +16,7 @@ const HeaderPage = React.memo(
   }) => {
     return (
       <ButtonProvider>
-        <div className="w-full flex justify-between max-[576px]:flex-col gap-[10px]">
+        <div className={`w-full flex max-[576px]:flex-col justify-between gap-[10px]`}>
           <div className="w-full flex items-center gap-2.5">
             <div className=" p-2.5 rounded-[10px] bg-(--background-color) w-max h-max">
               {icon}
@@ -36,11 +36,11 @@ const HeaderPage = React.memo(
               <Button
                 width="w-max"
                 variant="primary"
-                className=" px-4 py-2 max-[576px]:px-2.5 max-[576px]:py-2 gap-1.5 max-[576px]:text-[12px] !text-sm max-[576px]:rounded-[6px] max-[576px]:absolute max-[576px]:bottom-0 max-[576px]:right-[8px]"
+                className={` px-4 py-2 max-[576px]:px-2.5 max-[576px]:py-2 gap-1.5 max-[576px]:text-[12px] !text-sm max-[576px]:rounded-[6px] ${text == 'Dashboard' ? '' : 'max-[576px]:absolute max-[576px]:bottom-0' }  max-[576px]:right-[8px]`}
                 onClick={onClick}
               >
                 {buttonIcon}
-                <h6 className="max-[576px]:hidden">{textButton}</h6>
+                <h6 className={`${text == 'Dashboard' ? '' : 'max-[576px]:hidden' }`}>{textButton}</h6>
               </Button>
             )}
           </div>

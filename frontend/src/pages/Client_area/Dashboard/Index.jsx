@@ -3,16 +3,19 @@ import { api } from "../../../utils/helper/helper";
 import BaseLayout from "../../../components/layouts/BaseLayout";
 import { useEffect, useState } from "react";
 import HeaderPage from "../../../components/fragments/Header";
-import { TablePelanggan, TableTransaksi } from "./Datagrid/Datagrid";
+import { TableTransaksi } from "./Datagrid/Datagrid";
 import { Link } from "react-router-dom";
+import { useDateRange } from "../../../../context/DateRangeContext";
 
 const Dashboard = () => {
   const [dataDashboard, setDataDashboard] = useState([]);
+  const { dateRange } = useDateRange();
 
-  const start_date = new Date(2025, 8, 1);
-  const end_date = new Date(2025, 8, 1);
+  const start_date = new Date(dateRange?.start);
+  const end_date = new Date(dateRange?.end);
 
-  async function getDataDashboard() {
+
+  const getDataDashboard = async () => {
     try {
       const response = await api.get("/dashboard", {
         params: {
@@ -20,16 +23,16 @@ const Dashboard = () => {
           end_date: end_date,
         },
       });
+      console.log(response.data)
       setDataDashboard(response.data);
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     getDataDashboard();
-  }, []);
+  }, [dateRange]);
 
   return (
     <BaseLayout>
@@ -48,12 +51,13 @@ const Dashboard = () => {
           }
           text={"Dashboard"}
           textButton={"Export"}
+          type={"date-range"}
           buttonIcon={
             <CloudUploadIcon
               sx={{
                 fontSize: {
-                  sm: "14px",
-                  md: "18px",
+                  xs: "20px",
+                  md: "24px",
                 },
               }}
             />
@@ -61,9 +65,9 @@ const Dashboard = () => {
         />
       </div>
       <main className="flex flex-col gap-y-[20px]">
-        <div className="card grid grid-cols-2 max-sm:grid-cols-1 items-center w-full gap-5 max-sm:gap-2 h-[110px]">
+        <div className="card grid grid-cols-2 max-sm:grid-cols-1 items-center w-full gap-5 max-sm:gap-2">
           <div
-            className="rounded-xl flex flex-col items-start justify-center px-5 py-2.5 text-white shadow-lg w-full h-full d-sudah-bayar"
+            className="rounded-xl flex flex-col items-start justify-center px-5 py-2.5 text-white shadow-lg w-full h-[97px] d-sudah-bayar"
             id="d-sudah-bayar"
           >
             <h3 className=" opacity-80 text-[length:14px] font-light">
@@ -78,7 +82,7 @@ const Dashboard = () => {
             </h1>
           </div>
           <div
-            className="overflow-hidden rounded-xl bg-gradient-to-br from-red-700 to-red-600 flex flex-col items-start justify-center px-5 py-2.5 text-white w-full h-full"
+            className="overflow-hidden rounded-xl bg-gradient-to-br from-red-700 to-red-600 flex flex-col items-start justify-center px-5 py-2.5 text-white w-full h-[97px] "
             id="d-belum-bayar"
           >
             <h3 className="text-[length:14px] font-light opacity-80">
@@ -96,17 +100,28 @@ const Dashboard = () => {
 
         <div className="w-ful p-5 bg-white border-[1px] border-(--border-color) rounded-[10px] flex flex-col gap-[18px]">
           <div className="w-full flex justify-between">
-            <h1 className=" font-semibold text-[length:20px] text-(--text-color)">Pelanggan</h1>
-            <Link  className="px-[10px] py-[5px] !rounded-[5px] !border-[1px] !border-(--border-color) text-[length:14px] text-(--border-color)" to={'/pelanggan'}>View All</Link>
+            <h1 className=" font-semibold text-[length:20px] text-(--text-color)">
+              Pelanggan
+            </h1>
+            <Link
+              className="px-[10px] py-[5px] !rounded-[5px] !border-[1px] !border-(--border-color) text-[length:14px] text-(--border-color)"
+              to={"/pelanggan"}
+            >
+              View All
+            </Link>
           </div>
           <div className="w-full overflow-x-auto">
-            <TablePelanggan />
+            {/* <TablePelanggan /> */}
           </div>
         </div>
         <div className="w-ful p-5 bg-white border-[1px] border-(--border-color) rounded-[10px] flex flex-col gap-[18px]">
           <div className="w-full flex justify-between">
-            <h1 className=" font-semibold text-[length:20px] text-(--text-color)">Transaksi</h1>
-            <button  className="px-[10px] py-[5px] !rounded-[5px] !border-[1px] !border-(--border-color) text-[length:14px] text-(--border-color)">View All</button>
+            <h1 className=" font-semibold text-[length:20px] text-(--text-color)">
+              Transaksi
+            </h1>
+            <button className="px-[10px] py-[5px] !rounded-[5px] !border-[1px] !border-(--border-color) text-[length:14px] text-(--border-color)">
+              View All
+            </button>
           </div>
           <div className="w-full overflow-x-auto">
             <TableTransaksi />

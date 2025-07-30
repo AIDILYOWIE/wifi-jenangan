@@ -45,13 +45,24 @@ class TagihanController extends Controller
         ]);
 
         $data   = $request->only('start_date', 'end_date');
-        $query  = Tagihan::with('pelanggan.paket')->orderBy('tanggal', 'asc');
+        $query  = Tagihan::with('pelanggan.paket')->orderBy('tanggal', 'desc');
 
         try {
             if ($data) {
                 $start = Carbon::parse($data['start_date'])->startOfDay();
                 $end   = Carbon::parse($data['end_date'])->endOfDay();
                 $query->whereBetween('tanggal', [$start, $end]);
+
+                $tagihan = $query->paginate(10);
+
+                return response()->json([
+                    'message' => "Data Tagihan Didapatkan!",
+                    'data' => $tagihan,
+                    "payload" => [
+                        $start,
+                        $end
+                    ]
+                ]);
             }
 
             $tagihan = $query->get();
@@ -59,9 +70,6 @@ class TagihanController extends Controller
             return response()->json([
                 'message' => "Data Tagihan Didapatkan!",
                 'data' => $tagihan,
-                "payload" => [
-                    $start, $end
-                ]
             ]);
         } catch (Exception $e) {
             return response()->json([
