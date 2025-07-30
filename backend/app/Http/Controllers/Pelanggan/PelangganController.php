@@ -64,21 +64,39 @@ class PelangganController extends Controller
 
     private function createTanggalTagihan($pelanggan) {
         $tanggal_pemasangan = Carbon::parse($pelanggan->tanggal_pemasangan);
-        if ($tanggal_pemasangan->day <= 20) {
-            $tanggal_tagihan = $tanggal_pemasangan->copy()->addMonth()->day(20);
-        } else {
-            $tanggal_tagihan = $tanggal_pemasangan->copy()->addMonth()->day(28);
+        
+        // Ambil tagihan terakhir yang statusnya lunas
+        $last_tagihan_lunas = $pelanggan->tagihan()
+            ->where('status', 'lunas')
+            ->orderByDesc('tanggal')
+            ->first();
+
+        // jika ada tagihan lunas, maka tagihan lunas terakhir +1 bulan
+        if ($last_tagihan_lunas) {
+            $tanggal_last_tagihan = Carbon::parse($last_tagihan_lunas->tanggal);
+            $tanggal_tagihan = $tanggal_last_tagihan->copy()->addMonth();
         }
+
+        // jika tidak ada tagihan lunas, maka tagihan terbaru = tanggal pemasangan + 1 atau 2 bulan
+        if (!$last_tagihan_lunas) {
+            if ($tanggal_pemasangan->day <= 20) {
+                $tanggal_tagihan = $tanggal_pemasangan->copy()->addMonth()->day(20);
+            } else {
+                $tanggal_tagihan = $tanggal_pemasangan->copy()->addMonths(2)->day(1);
+            }
+        }
+
 
         return $tanggal_tagihan;
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         try {
-            $pelanggan = Pelanggan::orderBy('kode_pelanggan', 'desc')->paginate(10);
+            $pelanggan = Pelanggan::orderByDesc('kode_pelanggan')->get();
             return response()->json([
                 'message' => 'List pelanggan berhasil diambil.',
                 'data' => $pelanggan

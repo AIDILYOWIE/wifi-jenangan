@@ -12,39 +12,59 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request) 
     {
         try {
             $request->validate([
-                "start_date" => ['required', 'date'],
-                "end_date" => ['required', 'date']
+                "start_date" => ['nullable', 'date'],
+                "end_date" => ['nullable', 'date'],
+                "now" => ['nullable', 'date']
             ]);
 
-            $data = $request->only('start_date', 'end_date');
+            $startDate = $request->start_date;
+            $endDate = $request->end_date;
+            $now = $request->now;
 
-            $belumLunasSum = Tagihan::where('status', 'Belum Lunas')
-                ->whereBetween('tanggal', [$data['start_date'], $data['end_date']])
-                ->with('pelanggan.paket')
-                ->get()
-                ->sum(function($t) {
-                    return optional(optional($t->pelanggan)->paket)->harga ?? 0;
-                });
+            // Handle kondisi input kosong semua
+            if (!$startDate && !$endDate && !$now) {
+                return response()->json([
+                    'message' => 'Harap isi start_date & end_date atau now.'
+                ], 422);
+            }
 
-            $lunasSum = Tagihan::where('status', 'Lunas')
-                ->whereBetween('tanggal', [$data['start_date'], $data['end_date']])
-                ->with('pelanggan.paket')
-                ->get()
-                ->sum(function($t) {
-                    return optional(optional($t->pelanggan)->paket)->harga ?? 0;
-                });
+            // Query base
+            $belumLunasQuery = Tagihan::where('status', 'Belum Lunas')->with('pelanggan.paket');
+            $lunasQuery = Tagihan::where('status', 'Lunas')->with('pelanggan.paket');
+            $tagihanQuery = Tagihan::with('pelanggan.paket');
+            $pelangganQuery = Pelanggan::query();
 
-            $pelangganMasuk = Pelanggan::whereBetween('tanggal_pemasangan', [$data['start_date'], $data['end_date']])
-                ->limit(5)
-                ->get();
+            if ($startDate && $endDate) {
+                $belumLunasQuery->whereBetween('tanggal', [$startDate, $endDate]);
+                $lunasQuery->whereBetween('tanggal', [$startDate, $endDate]);
+                $tagihanQuery->whereBetween('tanggal', [$startDate, $endDate]);
+                $pelangganQuery->whereBetween('tanggal_pemasangan', [$startDate, $endDate]);
+            } elseif ($now) {
+                $nowDate = Carbon::parse($now);
+                $bulan = $nowDate->month;
+                $tahun = $nowDate->year;
 
-            $tagihanTanggal = Tagihan::with('pelanggan.paket')->whereBetween('tanggal', [$data['start_date'], $data['end_date']])
-                ->limit(5)
-                ->get();
+                $belumLunasQuery->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun);
+                $lunasQuery->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun);
+                $tagihanQuery->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun);
+                $pelangganQuery->whereMonth('tanggal_pemasangan', $bulan)->whereYear('tanggal_pemasangan', $tahun);
+            }
+
+            $belumLunasSum = $belumLunasQuery->get()->sum(function ($t) {
+                return optional(optional($t->pelanggan)->paket)->harga ?? 0;
+            });
+
+            $lunasSum = $lunasQuery->get()->sum(function ($t) {
+                return optional(optional($t->pelanggan)->paket)->harga ?? 0;
+            });
+
+            $pelangganMasuk = $pelangganQuery->limit(5)->orderByDesc('tanggal_pemasangan')->get();
+
+            $tagihanTanggal = $tagihanQuery->limit(5)->orderByDesc('tanggal')->get();
 
             return response()->json([
                 'belum_lunas_sum' => $belumLunasSum,
@@ -60,6 +80,4 @@ class DashboardController extends Controller
             ], 500);
         }
     }
-
-
 }

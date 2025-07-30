@@ -35,6 +35,34 @@ const Table = () => {
     }
   };
 
+  const getDataTagihan = async () => {
+    try {
+      const dateNow = new Date(Date.now())
+      console.log(dateNow)
+    const response = await api.get('/tagihan', {
+      now: dateNow
+    })
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const confirmTagihan = (id) => {
+    const toastId = toast.loading("Mengkonfirmasi...");
+    api
+      .put(`/tagihan/${id}`)
+      .then((res) => {
+        updateToastToSuccess(toastId, "Tagihan berhasil dikonfirmasi!");
+        setTimeout(function () {
+          window.location.reload();
+        }, 1000);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     // jangan lupa dirubah sesuai inputan
 

@@ -23,7 +23,7 @@ class TagihanController extends Controller
         $now = $request->only('now');
 
         try {
-            $tagihan = Tagihan::with('pelanggan.paket')->where('tanggal', '<=', $now)->where('status', 'belum lunas')->orderBy('tanggal', 'asc')->paginate(10);
+            $tagihan = Tagihan::with('pelanggan.paket')->where('tanggal', '<=', $now)->where('status', 'belum lunas')->orderBy('tanggal', 'asc')->get();
             return response()->json([
                 'message' => "Data Tagihan Didapatkan!",
                 'data' => $tagihan
@@ -65,7 +65,7 @@ class TagihanController extends Controller
                 ]);
             }
 
-            $tagihan = $query->paginate(10);
+            $tagihan = $query->get();
 
             return response()->json([
                 'message' => "Data Tagihan Didapatkan!",
