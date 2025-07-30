@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\DB;
 class PelangganController extends Controller
 {
 
-    public function generateKodePelanggan() {
+    public function generateKodePelanggan()
+    {
         $lastPelanggan = Pelanggan::orderBy('id', 'desc')->first();
 
         $nextId = $lastPelanggan ? $lastPelanggan->id + 1 : 1;
@@ -24,7 +25,8 @@ class PelangganController extends Controller
     }
 
 
-    private function prepareDataPelanggan($request) {
+    private function prepareDataPelanggan($request)
+    {
         $request->validate([
             'tanggal_pemasangan' => ['required', 'date'],
             'name' => ['required', 'min:3'],
@@ -37,7 +39,8 @@ class PelangganController extends Controller
         return $request->only(['name', 'tanggal_pemasangan', 'dusun', 'desa', 'kecamatan', 'id_paket']);
     }
 
-    private function prepareDataTagihan($request, $pelanggan) {
+    private function prepareDataTagihan($request, $pelanggan)
+    {
         $request->validate([
             'id_pelanggan' => ['exists:users,id']
         ]);
@@ -59,12 +62,12 @@ class PelangganController extends Controller
         ];
 
         return $data_tagihan;
-
     }
 
-    private function createTanggalTagihan($pelanggan) {
+    private function createTanggalTagihan($pelanggan)
+    {
         $tanggal_pemasangan = Carbon::parse($pelanggan->tanggal_pemasangan);
-        
+
         // Ambil tagihan terakhir yang statusnya lunas
         $last_tagihan_lunas = $pelanggan->tagihan()
             ->where('status', 'lunas')
@@ -92,11 +95,6 @@ class PelangganController extends Controller
     {
         try {
             $pelanggan = Pelanggan::with('tagihan')->orderByDesc('kode_pelanggan')->get();
-
-            $pelanggan = $pelanggan->map(function ($item) {
-                $item->have_tagihan_lunas = $item->tagihan->contains('status', 'Lunas');
-                return $item;
-            });
 
             return response()->json([
                 'message' => 'List pelanggan berhasil diambil.',
@@ -128,7 +126,6 @@ class PelangganController extends Controller
             return response()->json([
                 'message' => 'Pelanggan berhasil ditambahkan.',
             ], 201);
-
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
@@ -136,7 +133,6 @@ class PelangganController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-
     }
 
     /**
@@ -145,6 +141,8 @@ class PelangganController extends Controller
     public function show(string $id)
     {
         $pelanggan = Pelanggan::with(['paket', 'tagihan'])->find($id);
+
+        $pelanggan->have_tagihan_lunas = $pelanggan->tagihan->contains('status', 'Lunas');
 
         return response()->json([
             'message' => 'Detail pelanggan berhasil diambil.',
@@ -166,9 +164,9 @@ class PelangganController extends Controller
             $pelanggan->update($data_pelanggan);
 
             $last_tagihan = $pelanggan->tagihan()
-            ->where('status', 'Belum Lunas')
-            ->orderByDesc('tanggal')
-            ->first();
+                ->where('status', 'Belum Lunas')
+                ->orderByDesc('tanggal')
+                ->first();
 
             $tanggal_tagihan = $this->createTanggalTagihan($pelanggan);
 
@@ -178,7 +176,6 @@ class PelangganController extends Controller
             ]);
 
             DB::commit();
-
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;
