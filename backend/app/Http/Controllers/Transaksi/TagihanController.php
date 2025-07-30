@@ -57,11 +57,7 @@ class TagihanController extends Controller
 
                 return response()->json([
                     'message' => "Data Tagihan Didapatkan!",
-                    'data' => $tagihan,
-                    "payload" => [
-                        $start,
-                        $end
-                    ]
+                    'data' => $tagihan
                 ]);
             }
 

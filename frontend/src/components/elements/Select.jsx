@@ -17,6 +17,7 @@ const SelectPaket = React.memo(({value, disabled, variant}) => {
   const { setData, data } = useDataContext()
 
   useEffect(() => {
+
     const fetchPaket = async () => {
       try {
         const response = await api.get("/paket");
@@ -58,6 +59,7 @@ const SelectPaket = React.memo(({value, disabled, variant}) => {
 
       <Listbox value={selected} onChange={(item) => {
         setSelected(item)
+        console.log('get id', item)
         setData((prev) => ({...prev, paket_id: item.id}))
       }}>
         <div className="relative">

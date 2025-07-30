@@ -25,7 +25,7 @@ const Table = React.memo(({ onEdit }) => {
   const getDataPelanggan = async () => {
     try {
       const response = await api.get("/pelanggan");
-      setDataPelanggan(response.data.data.data);
+      setDataPelanggan(response.data?.data);
     } catch (error) {
       console.log(error);
     }

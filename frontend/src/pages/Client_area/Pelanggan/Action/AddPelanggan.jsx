@@ -48,14 +48,15 @@ const AddPelanggan = React.memo(
     // handle Add Pelanggan
     const handleAddPelanggan = async () => {
       const toastId = toast.loading("Menambahkan Pelanggan");
+      console.log(data);
       try {
         const response = await api.post("/pelanggan", {
-          tanggal_pemasangan: data && data.tanggal_masuk,
+          tanggal_pemasangan: data?.tanggal_masuk,
           name: namaPelangan,
           kecamatan: kecamatan,
           desa: desa,
           dusun: dusunJalan,
-          id_paket: data && data.paket_id,
+          id_paket: data?.paket_id,
         });
 
         updateToastToSuccess(toastId, response.data.message);

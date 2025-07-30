@@ -18,12 +18,13 @@ const Table = () => {
   const [isPrintReady, setIsPrintReady] = useState(false);
   const now = new Date().toLocaleDateString("en-CA");
 
+
   const getDataInvoice = async () => {
     try {
       const response = await api.get("/tagihan", {
         params: { now },
       });
-      setDataInvoice(response.data.data.data);
+      setDataInvoice(response.data.data)
     } catch (error) {
       console.log(error);
     }
@@ -105,31 +106,31 @@ const Table = () => {
       <div className="min-[1000px]:w-full max-[1000px]:w-[1000px] flex">
         <div className="w-full">
           <TableHead value="Kode Pelanggan" style="rounded-l-[10px]" />
-          {dataInvoice.map((item, i) => (
+          {dataInvoice?.map((item, i) => (
             <TableBody value={item.pelanggan.kode_pelanggan} key={i} />
           ))}
         </div>
         <div className="w-full">
           <TableHead value="Nama Pelanggan" />
-          {dataInvoice.map((item, i) => (
+          {dataInvoice?.map((item, i) => (
             <TableBody value={item.pelanggan.name} key={i} />
           ))}
         </div>
         <div className="w-full">
           <TableHead value="Tanggal Tagihan" />
-          {dataInvoice.map((item, i) => (
+          {dataInvoice?.map((item, i) => (
             <TableBody value={item.tanggal} key={i} />
           ))}
         </div>
         <div className="w-full">
           <TableHead value="Paket" />
-          {dataInvoice.map((item, i) => (
-            <TableBody value={item.pelanggan.paket.harga + "/Bln"} key={i} />
+          {dataInvoice?.map((item, i) => (
+            <TableBody value={item.pelanggan.paket.harga.toLocaleString('id-ID', {style: 'currency', currency: 'IDR', minimumFractionDigits: 0}) + "/Bln"} key={i} />
           ))}
         </div>
         <div className="w-full">
           <TableHead value="Action" style="rounded-r-[10px]" />
-          {dataInvoice.map((item, i) => (
+          {dataInvoice?.map((item, i) => (
             <TableBody type="action" key={i}>
               <ButtonAction
                 onClick={() => confirmTagihan(item.id)}
