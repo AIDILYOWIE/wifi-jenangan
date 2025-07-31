@@ -48,29 +48,28 @@ Wifi Jenangan adalah layanan internet RT/RW Net yang dikelola mandiri untuk memb
 
 ---
 
-## 📝 Installation & Usage
+## 📝 Installation & Usage with docker
 
-1. Clone this project \
-```git clone https://github.com/AIDILYOWIE/wifi-jenangan.git```
+1. Clone this project
+```bash
+ git clone https://github.com/AIDILYOWIE/wifi-jenangan.git
+```
 
-2. Install Composer \
-```composer install```
+2. Copy .env
+```bash
+cp .env.example .env
+```
 
-3. Add .env \
-```cp .env.example .env```
+3. Build docker container
+```bash
+docker compose up --build
+```
 
-4. Build docker container
-```docker compose up --build```
+4. Migrate the seed
+```bash
+php artisan migrate --seed
+```
 
-5. Migrate the seed
-```php artisan migrate --seed```
+5. Now, your backend run in `http://localhost:8080/`, and your frontend run in `http://localhost:5173/`
 
-3. go to the backend directory and turn on the server, **at this stage make sure laragon is active and the recruitment system is correct and don't forget to setting .env file** \
-`cd backend` \
-`php artisan ser`
-
-4. then, create new cmd or terminal, and go to frontend directory and turn on the server to access this web page \
-`cd frontend`\
-`npm run dev` 
-
-5. Congrats!! you success use this project. Enjoy 
+7. Congrats!! you success use this project. Enjoy 
