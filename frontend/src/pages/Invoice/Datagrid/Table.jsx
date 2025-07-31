@@ -36,7 +36,6 @@ const Table = () => {
 
   // Callback untuk onReady dari PrintPage
   const handlePrintReady = useCallback(() => {
-    console.log("Print component ready");
     setIsPrintReady(true);
   }, []);
 
@@ -45,11 +44,9 @@ const Table = () => {
     contentRef: printComponentRef,
     documentTitle: `Invoice-${selectedId}`,
     onBeforeGetContent: () => {
-      console.log("Preparing to print...");
       return Promise.resolve();
     },
     onAfterPrint: () => {
-      console.log("Print completed");
       setTriggerPrint(false);
       setSelectedId(null);
       setIsPrintReady(false);
@@ -64,7 +61,6 @@ const Table = () => {
   });
 
   const handlePrint = (id) => {
-    console.log("Starting print process for ID:", id);
     setSelectedId(id);
     setTriggerPrint(true);
     setIsPrintReady(false);
@@ -73,14 +69,11 @@ const Table = () => {
   // Effect untuk memulai print ketika data sudah siap
   useEffect(() => {
     if (isPrintReady && printComponentRef.current && triggerPrint && selectedId) {
-      console.log("All conditions met, starting print...");
       // Delay untuk memastikan component sudah ter-render sempurna
       const timer = setTimeout(() => {
         if (printComponentRef.current) {
-          console.log("Executing print function");
           reactToPrintFn();
         } else {
-          console.error("Print ref is null");
           toast.error("Komponen print tidak siap");
         }
       }, 200);

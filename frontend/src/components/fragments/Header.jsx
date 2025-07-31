@@ -26,13 +26,13 @@ const HeaderPage = React.memo(
             </h1>
           </div>
           <div
-            className={`w-full  justify-end items-center ${
+            className={`w-full justify-end items-center gap-x-3 ${
               isHidden !== true ? "flex" : "hidden"
             }`}
           >
-            {type === "date-range" ? (
+            {type === "date-range" &&
               <DateRangePicker />
-            ) : (
+            }
               <Button
                 width="w-max"
                 variant="primary"
@@ -42,7 +42,6 @@ const HeaderPage = React.memo(
                 {buttonIcon}
                 <h6 className={`${text == 'Dashboard' ? '' : 'max-[576px]:hidden' }`}>{textButton}</h6>
               </Button>
-            )}
           </div>
         </div>
       </ButtonProvider>

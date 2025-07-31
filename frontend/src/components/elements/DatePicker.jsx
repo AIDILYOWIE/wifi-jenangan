@@ -39,7 +39,6 @@ export const DatePicker = React.memo(({ value = null, disabled, onChange, varian
     if (!date) return "";
     let dateFormat = date.toLocaleDateString("en-CA");
     setData((prev) => ({ ...prev, tanggal_masuk: dateFormat }));
-    console.log(data);
   };
 
   const handleInputClick = () => {
