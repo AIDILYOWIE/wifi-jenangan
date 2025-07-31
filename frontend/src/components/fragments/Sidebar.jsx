@@ -12,7 +12,6 @@ const Sidebar = () => {
   
 
   const toggleSidebar = () => {
-    console.log("open");
     setSidebarOpen(!sidebarOpen)
 
     setTimeout(function() {

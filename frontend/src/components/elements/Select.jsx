@@ -59,7 +59,6 @@ const SelectPaket = React.memo(({value, disabled, variant}) => {
 
       <Listbox value={selected} onChange={(item) => {
         setSelected(item)
-        console.log('get id', item)
         setData((prev) => ({...prev, paket_id: item.id}))
       }}>
         <div className="relative">

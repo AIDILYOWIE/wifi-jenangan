@@ -25,7 +25,6 @@ const Login = () => {
                     window.location.reload()
                 }, 1500);
             } catch (error) {
-                console.log(error)
                 const error_message = error.response.data.message
                 updateToastToError(toastId, error_message)
             }

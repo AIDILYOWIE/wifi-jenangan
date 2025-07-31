@@ -6,14 +6,29 @@ import HeaderPage from "../../../components/fragments/Header";
 import { TableTransaksi } from "./Datagrid/Datagrid";
 import { Link } from "react-router-dom";
 import { useDateRange } from "../../../../context/DateRangeContext";
+import { useReactToPrint } from "react-to-print";
+import { useRef } from "react";
+import DashboardPrintPage from "./DashboardPrintPage";
 
 const Dashboard = () => {
   const [dataDashboard, setDataDashboard] = useState([]);
+  const [printPage, setPrintPage] = useState()
   const { dateRange } = useDateRange();
 
   const start_date = new Date(dateRange?.start);
   const end_date = new Date(dateRange?.end);
 
+  const contentRef = useRef(null);
+  const reactToPrintFn =  useReactToPrint({ contentRef });
+  
+  const handlePrint = async () => {
+    setPrintPage(true);
+
+    setTimeout(() => {
+      reactToPrintFn();
+      setPrintPage(false);
+    }, 100);
+  };
 
   const getDataDashboard = async () => {
     try {
@@ -23,7 +38,6 @@ const Dashboard = () => {
           end_date: end_date,
         },
       });
-      console.log(response.data)
       setDataDashboard(response.data);
     } catch (error) {
       console.log(error);
@@ -52,6 +66,7 @@ const Dashboard = () => {
           text={"Dashboard"}
           textButton={"Export"}
           type={"date-range"}
+          onClick={() => {handlePrint()}}
           buttonIcon={
             <CloudUploadIcon
               sx={{
@@ -64,7 +79,13 @@ const Dashboard = () => {
           }
         />
       </div>
-      <main className="flex flex-col gap-y-[20px]">
+      {/* <DashboardPrintPage ref={contentRef}></DashboardPrintPage> */}
+      {printPage && (
+        <div className="invisible absolute">
+          <DashboardPrintPage ref={contentRef} />
+        </div>
+      )}
+      <main className="flex flex-col gap-y-[20px]" >
         <div className="card grid grid-cols-2 max-sm:grid-cols-1 items-center w-full gap-5 max-sm:gap-2">
           <div
             className="rounded-xl flex flex-col items-start justify-center px-5 py-2.5 text-white shadow-lg w-full h-[97px] d-sudah-bayar"

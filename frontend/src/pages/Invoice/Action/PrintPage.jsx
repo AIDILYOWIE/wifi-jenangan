@@ -13,7 +13,6 @@ const PrintPage = forwardRef(({ id, onReady }, ref) => {
       const response = await api.get(`/tagihan/${id}`);
       setDataTagihan(response.data.data);
     } catch (error) {
-      console.log("Error fetching tagihan:", error);
     } finally {
       setIsLoading(false);
     }
@@ -30,7 +29,6 @@ const PrintPage = forwardRef(({ id, onReady }, ref) => {
     if (!isLoading && dataTagihan?.id && onReady) {
       // Delay sedikit untuk memastikan DOM sudah ter-render sempurna
       const timer = setTimeout(() => {
-        console.log("PrintPage calling onReady with data:", dataTagihan?.pelanggan?.name);
         onReady();
       }, 100);
       
