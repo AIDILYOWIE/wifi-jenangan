@@ -1,38 +1,40 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import logo from '../../assets/icon/logo.png'
 import { arrow_down, Home, PeopleOutlinedIcon, ReceiptLongOutlinedIcon, ReceiptOutlinedIcon } from '../../assets/RegisterAsset'
 import Navlink from '../elements/Navlink'
 
-const Sidebars = () => {
+const Sidebars = ({ setSidebarIsOpen }) => {
 
-  const [sidebarOpen, setSidebarOpen] = useState(false) // before : true
-  const [showContent, setShowContent] = useState(false) // before : true
+  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [showContent, setShowContent] = useState(true)
 
   const sidebarOpenClass = sidebarOpen ? 'w-[250px]' : 'w-19'
   
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen)
+    setSidebarIsOpen(!sidebarOpen)
 
     setTimeout(function() {
       setShowContent(!showContent)
     }, 100);
+
   }
   
   return (
-    <aside className={`${sidebarOpenClass} overflow-hidden border-r-[1px] border-[var(--border-color)] p-5 duration-200 max-[800px]:hidden`}>
+    <aside className={`${sidebarOpenClass} fixed top-0 z-90 bg-white min-h-svh overflow-hidden border-r-[1px] border-[var(--border-color)] p-5 duration-200 max-[800px]:hidden`}>
         <div className="w-full h-full ">
-            <div className="header sticky flex items-center justify-between pb-3.5 border-b-[1px] border-[var(--border-color)]">
-                {showContent && 
+            <div className="header sticky min-h-18 flex items-center justify-between pb-3.5 border-b-[1px] border-[var(--border-color)]">
+                {sidebarOpen && 
                   <img src={logo} alt="logo" width={120}/>
                 }
                 <img src={arrow_down} alt="icon" className={` ${sidebarOpen ? 'rotate-90' : '-rotate-90'}  cursor-pointer`} width={36} onClick={() => {toggleSidebar()}} />
             </div>
             <div className="body pt-7 flex flex-col gap-y-1.5">
-                {showContent && 
-                  <h1 className='ps-5 text-xs text-[var(--text-color)]'>MAIN MENU</h1>
-                }
                 <Navlink to="/" sidebarOpen={sidebarOpen} icon={<Home/>}>  Dashboard</Navlink>
+                {sidebarOpen && 
+                  <h1 className='ps-3 text-sm font-medium text-gray-500 mt-3'>MENU UTAMA</h1>
+                }
                 <Navlink to="/pelanggan" sidebarOpen={sidebarOpen} icon={<PeopleOutlinedIcon/>}> Pelanggan</Navlink>
                 <Navlink to="/transaksi" sidebarOpen={sidebarOpen} icon={<ReceiptOutlinedIcon/>}> Transaksi</Navlink>
                 <Navlink to="/invoice" sidebarOpen={sidebarOpen} icon={<ReceiptLongOutlinedIcon/>}> Invoice</Navlink>
