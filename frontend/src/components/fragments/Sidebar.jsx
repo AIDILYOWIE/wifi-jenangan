@@ -3,7 +3,7 @@ import logo from '../../assets/icon/logo.png'
 import { arrow_down, Home, PeopleOutlinedIcon, ReceiptLongOutlinedIcon, ReceiptOutlinedIcon } from '../../assets/RegisterAsset'
 import Navlink from '../elements/Navlink'
 
-const Sidebar = () => {
+const Sidebars = () => {
 
   const [sidebarOpen, setSidebarOpen] = useState(false) // before : true
   const [showContent, setShowContent] = useState(false) // before : true
@@ -24,7 +24,7 @@ const Sidebar = () => {
         <div className="w-full h-full ">
             <div className="header sticky flex items-center justify-between pb-3.5 border-b-[1px] border-[var(--border-color)]">
                 {showContent && 
-                  <img src={logo} alt="logo" width={155}/>
+                  <img src={logo} alt="logo" width={120}/>
                 }
                 <img src={arrow_down} alt="icon" className={` ${sidebarOpen ? 'rotate-90' : '-rotate-90'}  cursor-pointer`} width={36} onClick={() => {toggleSidebar()}} />
             </div>
@@ -43,4 +43,4 @@ const Sidebar = () => {
   )
 }
 
-export default Sidebar
+export default Sidebars
