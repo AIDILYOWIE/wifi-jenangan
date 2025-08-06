@@ -95,6 +95,19 @@ input:focus {
   background-repeat: no-repeat;
 }
 
+.pro-sidebar .pro-menu-item {
+  color: var(--text-color) !important;
+  font-size: var(--size-text-2) !important;
+  border-radius: 10px !important;
+}
+
+.pro-sidebar .pro-menu-item:hover {
+  background-color: var(--bg-active-navlink) !important;
+  color: var(--primary-color) !important;
+  border-radius: 10px !important;
+
+}
+
 @media print {
   body {
     -webkit-print-color-adjust: exact;
