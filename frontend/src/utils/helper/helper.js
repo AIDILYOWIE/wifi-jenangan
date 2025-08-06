@@ -46,3 +46,12 @@ export const updateToastToError = (id, message) => {
     });
 }
 
+let apiCalled
+export const throttle = ( fn, time) => {
+    if (apiCalled) return;
+    apiCalled = true
+    fn()
+    setTimeout(function() {
+        apiCalled = false
+    }, time);
+}
