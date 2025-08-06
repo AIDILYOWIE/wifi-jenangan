@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import {
   Dialog,
   DialogBackdrop,
@@ -16,6 +16,7 @@ import Input from "../../../../components/elements/Input";
 import SelectPaket from "../../../../components/elements/Select";
 import {
   api,
+  throttle,
   updateToastToError,
   updateToastToSuccess,
 } from "../../../../utils/helper/helper";
@@ -39,18 +40,19 @@ const AddPelanggan = React.memo(
 
 
     // handle kondisi
-    const handleSubmit = async () => {
+    const handleSubmit = () => {throttle(async () => {
       if (type == "add-pelanggan") {
         handleAddPelanggan();
       } else if (type == "edit-pelanggan") {
         handleEditPelanggan();
+      } else {
+        setDisabled(false)
       }
-    };
+    }, 3000)}
 
     // handle Add Pelanggan
     const handleAddPelanggan = async () => {
       const toastId = toast.loading("Menambahkan Pelanggan");
-      console.log(data);
       try {
         const response = await api.post("/pelanggan", {
           tanggal_pemasangan: data?.tanggal_masuk,
@@ -133,7 +135,7 @@ const AddPelanggan = React.memo(
     }, [data?.id, type]);
 
     return (
-      <Dialog open={open} onClose={setOpen} className="relative z-10">
+      <Dialog open={open} onClose={setOpen} className="relative z-90">
         <ToastContainer position="top-center" />
         <DialogBackdrop
           transition
@@ -257,9 +259,8 @@ const AddPelanggan = React.memo(
               </div>
 
               <div className="w-full flex justify-end">
-                {disabled ? null : (
                   <Button
-                    className="w-max rounded-[5px] text-(--background-color) px-3 !py-1.5 gap-1.5"
+                    className={` ${disabled ? 'hidden' : ''} w-max rounded-[5px] text-(--background-color) px-3 !py-1.5 gap-1.5`}
                     variant="primary"
                     disabled={disabled}
                     onClick={() => {
@@ -274,7 +275,6 @@ const AddPelanggan = React.memo(
                     />
                     Submit
                   </Button>
-                )}
               </div>
             </div>
           </div>

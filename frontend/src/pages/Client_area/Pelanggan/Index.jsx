@@ -12,23 +12,29 @@ import { api } from "../../../utils/helper/helper";
 import { useDataContext } from "../../../../context/SendDataContext";
 import PopupDelete from "./Action/PopUp";
 import {ImgNull} from "../../../assets/RegisterAsset";
-import Pagination from "@mui/material/pagination"
+import Pagination from "../../../components/fragments/Pagination";
+import { useParams, useSearchParams } from "react-router-dom";
 
 const Pelanggan = () => {
   const [open, setOpen] = useState(false);
+
+  const [searchParams] = useSearchParams();
+  const page = searchParams.get("page") || "1";
+
   const [newCode, setNewCode] = useState("");
   const { type, setType, setData, data } = useDataContext();
+  const [paginateData, setPaginateData] = useState();
   const [title, setTitle] = useState('')
-    const [dataPelanggan, setDataPelanggan] = useState([])
+  const [dataPelanggan, setDataPelanggan] = useState([])
 
     const getDataPelanggan = async () => {
         try {
-            const response = await api.get("/pelanggan");
-            setDataPelanggan(response.data?.data);
-            console.log(response);
+            const response = await api.get("/pelanggan?page=" + page );
+            setDataPelanggan(response.data?.data.data);
+            setPaginateData(response.data?.data);
             setData((prev) => ({
                 ...prev,
-                dataPelanggan: response.data?.data
+                dataPelanggan: response.data?.data.data
             }))
         } catch (error) {
             console.log(error);
@@ -37,7 +43,7 @@ const Pelanggan = () => {
 
     useEffect(() => {
         getDataPelanggan();
-    }, []);
+    }, [page]);
 
   function toggleModalCreate() {
     setType("add-pelanggan");
@@ -100,10 +106,10 @@ const Pelanggan = () => {
                 <img src={ImgNull} className={'w-[300px] max-[576px]:w-[200px]'} alt={"null data"}/>
             </div>
         ) : (
-            <div className="w-full p-5 bg-white border-[1px] border-(--border-color) rounded-[10px]">
-                <div className="w-full overflow-x-auto">
+            <div className="w-full p-5 bg-white border-[1px] border-(--border-color) rounded-[10px] ">
+                <div className="w-full overflow-x-auto flex flex-col">
                     <Table />
-                    <Pagination />
+                    <Pagination data={paginateData}/>
                 </div>
             </div>
         )}

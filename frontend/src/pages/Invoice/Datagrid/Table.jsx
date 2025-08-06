@@ -4,7 +4,7 @@ import {
   TableHead,
 } from "../../../components/elements/TableStructure";
 import { ButtonAction } from "../../../components/elements/Button";
-import { api, updateToastToSuccess } from "../../../utils/helper/helper";
+import { api, throttle, updateToastToError, updateToastToSuccess } from "../../../utils/helper/helper";
 import { CheckIcon, PrintIcon } from "../../../assets/RegisterAsset";
 import { toast, ToastContainer } from "react-toastify";
 import PrintPage from "../Action/PrintPage";
@@ -64,7 +64,7 @@ const Table = ({dataInvoice}) => {
     }
   }, [isPrintReady, triggerPrint, selectedId, reactToPrintFn]);
 
-  const confirmTagihan = (id) => {
+  const confirmTagihan = (id) => {throttle(() => {
     const toastId = toast.loading("Mengkonfirmasi...");
     api
       .put(`/tagihan/${id}`)
@@ -72,8 +72,9 @@ const Table = ({dataInvoice}) => {
         updateToastToSuccess(toastId, "Tagihan berhasil dikonfirmasi!");
         setTimeout(() => window.location.reload(), 1000);
       })
-      .catch((err) => console.log(err));
-  };
+      .catch((err) => updateToastToError(toastId, err.response.data.message));
+  
+  }, 3000)};
 
   return (
     <>
