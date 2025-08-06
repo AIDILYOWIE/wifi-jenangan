@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rules\Date;
 use PhpParser\Node\Expr;
 
 class TagihanController extends Controller
@@ -53,7 +54,7 @@ class TagihanController extends Controller
                 $end   = Carbon::parse($data['end_date'])->endOfDay();
                 $query->whereBetween('tanggal', [$start, $end]);
 
-                $tagihan = $query->paginate(10);
+                $tagihan = $query->get();
 
                 return response()->json([
                     'message' => "Data Tagihan Didapatkan!",
@@ -61,7 +62,11 @@ class TagihanController extends Controller
                 ]);
             }
 
-            $tagihan = $query->get();
+            $nowDate = Carbon::parse(Carbon::now());
+            $startDate = $nowDate->copy()->startOfMonth()->toDateString();
+            $endDate = $nowDate->copy()->endOfMonth()->toDateString();
+
+            $tagihan = $query->whereBetween('tanggal', [$startDate, $endDate])->get();
 
             return response()->json([
                 'message' => "Data Tagihan Didapatkan!",
