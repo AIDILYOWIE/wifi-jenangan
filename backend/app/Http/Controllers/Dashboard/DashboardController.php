@@ -12,67 +12,63 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request) 
+    public function index(Request $request)
     {
         try {
             $request->validate([
                 "start_date" => ['nullable', 'date'],
                 "end_date" => ['nullable', 'date'],
-                "now" => ['nullable', 'date']
             ]);
 
             $startDate = $request->start_date;
             $endDate = $request->end_date;
-            $now = $request->now;
 
-            // Handle kondisi input kosong semua
-            if (!$startDate && !$endDate && !$now) {
-                return response()->json([
-                    'message' => 'Harap isi start_date & end_date atau now.'
-                ], 422);
+            // Jika tidak ada start_date & end_date, gunakan bulan dari "now" atau hari ini
+            if (!$startDate) {
+                $nowDate = Carbon::parse(Carbon::now());
+                $startDate = $nowDate->copy()->startOfMonth()->toDateString();
+                $endDate = $nowDate->copy()->endOfMonth()->toDateString();
             }
 
-            // Query base
-            $belumLunasQuery = Tagihan::where('status', 'Belum Lunas')->with('pelanggan.paket');
-            $lunasQuery = Tagihan::where('status', 'Lunas')->with('pelanggan.paket');
-            $tagihanQuery = Tagihan::with('pelanggan.paket');
-            $pelangganQuery = Pelanggan::query();
+            $startDate = Carbon::parse($startDate)->timezone('Asia/Jakarta')->toDateString();
+            $endDate = Carbon::parse($endDate)->timezone('Asia/Jakarta')->toDateString();
 
-            if ($startDate && $endDate) {
-                $belumLunasQuery->whereBetween('tanggal', [$startDate, $endDate]);
-                $lunasQuery->whereBetween('tanggal', [$startDate, $endDate]);
-                $tagihanQuery->whereBetween('tanggal', [$startDate, $endDate]);
-                $pelangganQuery->whereBetween('tanggal_pemasangan', [$startDate, $endDate]);
-            } elseif ($now) {
-                $nowDate = Carbon::parse($now);
-                $bulan = $nowDate->month;
-                $tahun = $nowDate->year;
+            // Base query dengan eager loading
+            $baseQuery = Tagihan::with('pelanggan.paket')->whereBetween('tanggal', [$startDate, $endDate]);
 
-                $belumLunasQuery->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun);
-                $lunasQuery->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun);
-                $tagihanQuery->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun);
-                $pelangganQuery->whereMonth('tanggal_pemasangan', $bulan)->whereYear('tanggal_pemasangan', $tahun);
-            }
+            // Hitung total berdasarkan status
+            $belumLunasSum = (clone $baseQuery)
+                ->where('status', 'Belum Lunas')
+                ->get()
+                ->sum(fn($t) => optional(optional($t->pelanggan)->paket)->harga ?? 0);
 
-            $belumLunasSum = $belumLunasQuery->get()->sum(function ($t) {
-                return optional(optional($t->pelanggan)->paket)->harga ?? 0;
-            });
+            $lunasSum = (clone $baseQuery)
+                ->where('status', 'Lunas')
+                ->get()
+                ->sum(fn($t) => optional(optional($t->pelanggan)->paket)->harga ?? 0);
 
-            $lunasSum = $lunasQuery->get()->sum(function ($t) {
-                return optional(optional($t->pelanggan)->paket)->harga ?? 0;
-            });
+            // Ambil 5 pelanggan terbaru (berdasarkan tanggal_pemasangan di rentang yang sama)
+            $pelangganMasuk = Pelanggan::whereBetween('tanggal_pemasangan', [$startDate, $endDate])
+                ->orderByDesc('tanggal_pemasangan')
+                ->limit(5)
+                ->get();
 
-            $pelangganMasuk = $pelangganQuery->limit(5)->orderByDesc('tanggal_pemasangan')->get();
-
-            $tagihanTanggal = $tagihanQuery->limit(5)->orderByDesc('tanggal')->get();
+            // Ambil 5 tagihan terbaru
+            $tagihanTanggal = (clone $baseQuery)
+                ->orderByDesc('tanggal')
+                ->limit(5)
+                ->get();
 
             return response()->json([
                 'belum_lunas_sum' => $belumLunasSum,
                 'lunas_sum' => $lunasSum,
                 'pelanggan' => $pelangganMasuk,
                 'tagihan' => $tagihanTanggal,
+                'date' => [
+                    'start' => $startDate,
+                    'end' => $endDate
+                ]
             ]);
-
         } catch (Exception $e) {
             return response()->json([
                 'message' => 'Terjadi kesalahan pada server.',
