@@ -75,7 +75,13 @@ const PopupDelete = () => {
               <button
                 type="button"
                 data-autofocus
-                onClick={() => setOpen(false)}
+                onClick={() => {
+                  setOpen(false)
+                  setData((prev) => ({
+                    ...prev,
+                    popupDelete: false,
+                  }))
+                }}
                 className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-light text-(--border-color) border-(--border-color) border-[1px] ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto"
               >
                 Cancel

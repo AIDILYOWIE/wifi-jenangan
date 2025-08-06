@@ -1,5 +1,5 @@
 // import { DataGrid, gridClasses } from '@mui/x-data-grid';
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   DeleteIcon,
   SearchIcon,
@@ -18,22 +18,10 @@ import {
 import { useDataContext } from "../../../../../context/SendDataContext";
 import { toast, ToastContainer } from "react-toastify";
 
-const Table = React.memo(({ onEdit }) => {
-  const [dataPelanggan, setDataPelanggan] = useState([]);
+const Table = React.memo(() => {
   const { setData, setType, data } = useDataContext();
+  const dataPelanggan = data?.dataPelanggan
 
-  const getDataPelanggan = async () => {
-    try {
-      const response = await api.get("/pelanggan");
-      setDataPelanggan(response.data?.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getDataPelanggan();
-  }, []);
 
   const handleEdit = (id) => {
     setData((prev) => ({
@@ -56,7 +44,6 @@ const Table = React.memo(({ onEdit }) => {
         } catch (error) {
           updateToastToError(toastId, error.response.data.message);
         }
-        
       }
     };
     handleDelete();
