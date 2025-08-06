@@ -94,7 +94,7 @@ class PelangganController extends Controller
     public function index()
     {
         try {
-            $pelanggan = Pelanggan::with('tagihan')->orderByDesc('kode_pelanggan')->get();
+            $pelanggan = Pelanggan::with('tagihan')->orderByDesc('kode_pelanggan')->paginate(1);
 
             return response()->json([
                 'message' => 'List pelanggan berhasil diambil.',
@@ -157,33 +157,40 @@ class PelangganController extends Controller
     {
         $pelanggan = Pelanggan::find($id);
 
-        DB::beginTransaction();
-
-        try {
-            $data_pelanggan = $this->prepareDataPelanggan($request);
-            $pelanggan->update($data_pelanggan);
-
-            $last_tagihan = $pelanggan->tagihan()
-                ->where('status', 'Belum Lunas')
-                ->orderByDesc('tanggal')
-                ->first();
-
-            $tanggal_tagihan = $this->createTanggalTagihan($pelanggan);
-
-            $last_tagihan->update([
-                'tanggal' => $tanggal_tagihan,
+        if ($pelanggan->tagihan->count() === 1) {
+            DB::beginTransaction();
+    
+            try {
+                $data_pelanggan = $this->prepareDataPelanggan($request);
+                $pelanggan->update($data_pelanggan);
+    
+                $last_tagihan = $pelanggan->tagihan()
+                    ->where('status', 'Belum Lunas')
+                    ->orderByDesc('tanggal')
+                    ->first();
+    
+                $tanggal_tagihan = $this->createTanggalTagihan($pelanggan);
+    
+                $last_tagihan->update([
+                    'tanggal' => $tanggal_tagihan,
+                ]);
+    
+                DB::commit();
+            } catch (\Throwable $th) {
+                DB::rollBack();
+                throw $th;
+            }
+    
+            return response()->json([
+                'message' => 'Data pelanggan berhasil diperbarui.',
+                'data' => $pelanggan
             ]);
-
-            DB::commit();
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            throw $th;
+        } else {
+            return response()->json([
+                'message' => "Pelanggan tidak dapat diubah karena sudah memiliki tagihan lunas"
+            ], 400);
         }
 
-        return response()->json([
-            'message' => 'Data pelanggan berhasil diperbarui.',
-            'data' => $pelanggan
-        ]);
     }
 
     /**
