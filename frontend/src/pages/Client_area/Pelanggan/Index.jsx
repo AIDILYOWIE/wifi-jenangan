@@ -11,12 +11,33 @@ import AddPelanggan from "./Action/AddPelanggan";
 import { api } from "../../../utils/helper/helper";
 import { useDataContext } from "../../../../context/SendDataContext";
 import PopupDelete from "./Action/PopUp";
+import {ImgNull} from "../../../assets/RegisterAsset";
+import Pagination from "@mui/material/pagination"
 
 const Pelanggan = () => {
   const [open, setOpen] = useState(false);
   const [newCode, setNewCode] = useState("");
-  const { type, data, setType } = useDataContext();
+  const { type, setType, setData, data } = useDataContext();
   const [title, setTitle] = useState('')
+    const [dataPelanggan, setDataPelanggan] = useState([])
+
+    const getDataPelanggan = async () => {
+        try {
+            const response = await api.get("/pelanggan");
+            setDataPelanggan(response.data?.data);
+            console.log(response);
+            setData((prev) => ({
+                ...prev,
+                dataPelanggan: response.data?.data
+            }))
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getDataPelanggan();
+    }, []);
 
   function toggleModalCreate() {
     setType("add-pelanggan");
@@ -74,11 +95,18 @@ const Pelanggan = () => {
           />
         }
       />
-      <div className="w-ful p-5 bg-white border-[1px] border-(--border-color) rounded-[10px]">
-        <div className="w-full overflow-x-auto">
-          <Table />
-        </div>
-      </div>
+        {dataPelanggan.length == 0 ? (
+            <div className={"w-full flex justify-center"}>
+                <img src={ImgNull} className={'w-[300px] max-[576px]:w-[200px]'} alt={"null data"}/>
+            </div>
+        ) : (
+            <div className="w-full p-5 bg-white border-[1px] border-(--border-color) rounded-[10px]">
+                <div className="w-full overflow-x-auto">
+                    <Table />
+                    <Pagination />
+                </div>
+            </div>
+        )}
 
       {/* Modal */}
       <AddPelanggan

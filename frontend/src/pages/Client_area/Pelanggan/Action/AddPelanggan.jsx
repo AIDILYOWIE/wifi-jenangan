@@ -35,6 +35,8 @@ const AddPelanggan = React.memo(
     const [tanggalMasuk, setTanggalMasuk] = useState(null);
     const [paket, setPaket] = useState("");
     const [disabled, setDisabled] = useState(false);
+    const [haveTagihan, setHaveTagihan] = useState(false);
+
 
     // handle kondisi
     const handleSubmit = async () => {
@@ -94,13 +96,14 @@ const AddPelanggan = React.memo(
       try {
         const response = await api.get(`/pelanggan/${data.id}`);
         const res = response.data.data;
+        setHaveTagihan(res.have_tagihan_lunas);
         setKodePelanggan(res.kode_pelanggan);
         setTanggalMasuk(res.tanggal_pemasangan);
         setNamaPelanggan(res.name);
         setKecamatan(res.kecamatan);
         setDesa(res.desa);
         setDusunJalan(res.dusun);
-        setPaket(res.paket.id);
+        setPaket(res.paket.id || paket);
       } catch (error) {
         console.log(error);
       }
@@ -172,15 +175,11 @@ const AddPelanggan = React.memo(
                   />
                 </div>
                 <div className="">
-                  <DatePicker
-                    value={tanggalMasuk}
-                    disabled={disabled}
-                    variant={`${
-                      type == "edit-pelanggan" || type == "add-pelanggan"
-                        ? "!text-(--text-color) "
-                        : "!text-(--border-color) "
-                    }`}
-                  />
+                    <DatePicker
+                      value={tanggalMasuk}
+                      disabled={haveTagihan}
+                      type={type}
+                    />
                 </div>
               </div>
               <div className="grid grid-cols-2 max-[576px]:grid-cols-1 w-full gap-[20px]">

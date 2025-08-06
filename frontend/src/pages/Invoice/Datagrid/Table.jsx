@@ -10,29 +10,11 @@ import { toast, ToastContainer } from "react-toastify";
 import PrintPage from "../Action/PrintPage";
 import { useReactToPrint } from "react-to-print";
 
-const Table = () => {
-  const [dataInvoice, setDataInvoice] = useState([]);
+const Table = ({dataInvoice}) => {
   const [selectedId, setSelectedId] = useState(null);
   const [triggerPrint, setTriggerPrint] = useState(false);
   const printComponentRef = useRef(null);
   const [isPrintReady, setIsPrintReady] = useState(false);
-  const now = new Date().toLocaleDateString("en-CA");
-
-
-  const getDataInvoice = async () => {
-    try {
-      const response = await api.get("/tagihan", {
-        params: { now },
-      });
-      setDataInvoice(response.data.data)
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getDataInvoice();
-  }, [now]);
 
   // Callback untuk onReady dari PrintPage
   const handlePrintReady = useCallback(() => {
@@ -144,9 +126,9 @@ const Table = () => {
       </div>
 
       {/* Komponen PrintPage - harus tetap ada di DOM saat printing */}
-      <div style={{ 
-        position: 'absolute', 
-        left: '-9999px', 
+      <div style={{
+        position: 'absolute',
+        left: '-9999px',
         top: '-9999px',
         visibility: triggerPrint ? 'visible' : 'hidden'
       }}>
@@ -158,6 +140,7 @@ const Table = () => {
           />
         )}
       </div>
+
     </>
   );
 };

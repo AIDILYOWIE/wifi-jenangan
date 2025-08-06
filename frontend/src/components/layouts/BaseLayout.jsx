@@ -8,8 +8,6 @@ import React from 'react';
 
 const BaseLayout = React.memo((props) => {
 
-  const location = useLocation()
-
   return (
     <div className="w-full min-h-screen flex">
         <Sidebar/>

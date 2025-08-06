@@ -1,9 +1,51 @@
-import { ReceiptOutlinedIcon } from "../../../assets/RegisterAsset"
+import {ImgNull, ReceiptOutlinedIcon} from "../../../assets/RegisterAsset"
 import HeaderPage from "../../../components/fragments/Header"
 import BaseLayout from "../../../components/layouts/BaseLayout"
 import Table from "./Datagrid/Table"
+import {useEffect, useState} from "react";
+import {useDateRange} from "../../../../context/DateRangeContext.jsx";
+import {api} from "../../../utils/helper/helper.js";
 
-const Invoice = () => {
+const Transaksi = () => {
+    const [dataTransaksi, setDataTransaksi] = useState([]);
+    const { dateRange } = useDateRange();
+
+
+    const getDataTransaksi = async (payload) => {
+        try {
+            const response = await api.get("/transaksi", {
+                params: {
+                    start_date: payload?.start_date,
+                    end_date: payload?.end_date,
+                },
+            });
+            setDataTransaksi(response.data?.data);
+            console.log(dataTransaksi)
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    useEffect(() => {
+        // jangan lupa dirubah sesuai inputan
+
+        const startDate = dateRange.start ? dateRange.start : null;
+        const endDate = dateRange.end ? dateRange.end : null;
+
+        const formatDate = (dateObj) => {
+            const year = dateObj.getFullYear();
+            const month = String(dateObj.getMonth() + 1).padStart(2, "0"); // bulan dimulai dari 0
+            const day = String(dateObj.getDate()).padStart(2, "0");
+            return `${year}-${month}-${day}`;
+        };
+
+        const payload = {
+            start_date: startDate ? formatDate(startDate) : null,
+            end_date: endDate ? formatDate(endDate) : null,
+        };
+
+        getDataTransaksi(payload);
+
+    }, [dateRange]);
   return (
     <BaseLayout >
       <HeaderPage
@@ -23,14 +65,20 @@ const Invoice = () => {
         }
         type='date-range'
       />
-      <div className="w-ful p-5 bg-white border-[1px] border-(--border-color) rounded-[10px]">
-        <div className="w-full overflow-x-auto">
-          <Table />
-        </div>
-      </div>
+        {dataTransaksi.length === 0 ? (
+            <div className={"w-full flex justify-center"}>
+                <img src={ImgNull} className={'w-[300px] max-[576px]:w-[200px]'} alt={"null data"}/>
+            </div>
+        ) : (
+            <div className="w-full p-5 bg-white border-[1px] border-(--border-color) rounded-[10px]">
+                <div className="w-full overflow-x-auto">
+                    <Table dataTransaksi={dataTransaksi} />
+                </div>
+            </div>
+        )}
 
     </BaseLayout>
   )
 }
 
-export default Invoice
+export default Transaksi

@@ -1,31 +1,70 @@
-import React from 'react'
+import React from "react";
+import logo from "../../../assets/icon/logo.png"
 
 const DashboardPrintPage = (props) => {
+  const data = props.data;
+  console.log(data);
   return (
-    <div className='w-full flex flex-col items-center text-center max-w-md' ref={props.ref}>
-        <h1 className='text-3xl font-semibold'>LAPORAN</h1>
-        <p className='text-sm max-w-xs'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum nostrum repellat sunt?</p>
-        <h2 className='text-sm mt-2'>*************************</h2>
-        <h1 className='text-sm font-medium'>27-05-2025 <span>-</span> 27-06-2025</h1>
-        <h2 className='text-sm'>*************************</h2>
-        <div className="w-full flex items-center justify-between">
-            <div className="title">
-                <h1 className=' font-semibold'>Sudah Bayar</h1>
-                <h1 className=' font-semibold'>Belum Bayar</h1>
-            </div>
-            <div className="value">
-                <h1 className='text-green-600 font-semibold'>Rp. 4.567.818</h1>
-                <h1 className='text-red-600 font-semibold'>Rp. 1.567.818</h1>
-            </div>
+    <div
+      className="w-full min-h-svh items-start text-center p-6 grid-rows-3 grid"
+      ref={props.ref}
+    >
+      <div className={'grid  row grid-cols-2 border-b-[1px] border-(--text-color) pb-[70px]'}>
+        <div className={'col '}>
+          <img alt={"logo"} src={logo} width={'160px'}/>
+          <div className='w-full'>
+            <h3 className="text-start text-[length:14px] font-normal mt-[20px]">{data.date?.start} - {data.date?.end}</h3>
+          </div>
         </div>
-        <h1>-----------------</h1>
-        <h1 className='-mt-5'>-----------------</h1>
-        <div className="w-full flex items-center justify-between">
-            <h1 className='text-xl font-semibold'>Total Selisih</h1>
-            <h1 className='text-xl text-blue-600 font-semibold'>Rp. 9.283.028</h1>
+        <div className={'col min-h-full flex flex-col gap-[20px]'}>
+          <div className='w-full'>
+            <h1 className="text-end text-[length:24px] font-bold leading-[26px]">LAPORAN</h1>
+          </div>
+          <div className='w-full'>
+            <h3 className="text-start text-[length:14px] font-normal">PT. ARSYA BINTANG NUSANTARA</h3>
+            <h3 className="text-start text-[length:14px] font-normal">JENANGAN, PONOROGO</h3>
+          </div>
         </div>
-    </div>
-  )
-}
+      </div>
 
-export default DashboardPrintPage
+      <div className={'grid  row grid-cols-2 justify-start '}>
+        <div className={'col-span-2 flex  justify-between mb-[20px]'}>
+          <div className={''}>
+            <h1 className="text-start text-[length:18px] font-normal">Uang Lunas :</h1>
+          </div>
+          <div className={''}>
+            <h1 className="text-end text-[length:20px] font-[600]">{data.lunas_sum?.toLocaleString("id-ID", {
+              style: "currency",
+              currency: "IDR",
+              minimumFractionDigits: 0,
+            }) || "Rp 0"}</h1>
+          </div>
+        </div>
+        <div className={'col-span-2 flex justify-between pb-[20px]'}>
+          <div className={''}>
+            <h1 className="text-start text-[length:18px] font-normal">Uang Belum Lunas :</h1>
+          </div>
+          <div className={''}>
+            <h1 className="text-end text-[length:20px] font-[600]">{data.belum_lunas_sum?.toLocaleString("id-ID", {
+              style: "currency",
+              currency: "IDR",
+              minimumFractionDigits: 0,
+            }) || "Rp 0"}</h1>
+          </div>
+        </div>
+
+        <div className={'col-span-2 flex justify-between mt-[20px] pt-[20px] border-t-[1px] border-(--text-color)'}>
+          <h1 className={'text-start font-semibold text-[length:20px]'}>Total</h1>
+          <h1 className={'text-start font-semibold text-[length:20px]'}>{(data?.lunas_sum - data?.belum_lunas_sum).toLocaleString("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+          }) || "Rp 0"}</h1>
+        </div>
+      </div>
+
+    </div>
+  );
+};
+
+export default DashboardPrintPage;

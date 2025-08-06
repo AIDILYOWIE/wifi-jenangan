@@ -171,7 +171,6 @@ class PelangganController extends Controller
             $tanggal_tagihan = $this->createTanggalTagihan($pelanggan);
 
             $last_tagihan->update([
-                'paket' => $data_pelanggan->id_paket,
                 'tanggal' => $tanggal_tagihan,
             ]);
 
