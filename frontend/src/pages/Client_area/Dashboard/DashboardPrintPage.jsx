@@ -3,7 +3,6 @@ import logo from "../../../assets/icon/logo.png"
 
 const DashboardPrintPage = (props) => {
   const data = props.data;
-  console.log(data);
   return (
     <div
       className="w-full min-h-svh items-start text-center p-6 grid-rows-3 grid"

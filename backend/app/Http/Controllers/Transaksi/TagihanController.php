@@ -24,7 +24,7 @@ class TagihanController extends Controller
         $now = $request->only('now');
 
         try {
-            $tagihan = Tagihan::with('pelanggan.paket')->where('tanggal', '<=', $now)->where('status', 'belum lunas')->orderBy('tanggal', 'asc')->get();
+            $tagihan = Tagihan::with('pelanggan.paket')->where('tanggal', '<=', $now)->where('status', 'belum lunas')->orderBy('tanggal', 'asc')->paginate(10);
             return response()->json([
                 'message' => "Data Tagihan Didapatkan!",
                 'data' => $tagihan
@@ -57,7 +57,7 @@ class TagihanController extends Controller
                 $tagihan = $query->get();
 
                 return response()->json([
-                    'message' => "Data Tagihan Didapatkan!",
+                    'message' => "Data Transaksi Didapatkan!",
                     'data' => $tagihan
                 ]);
             }
@@ -66,10 +66,10 @@ class TagihanController extends Controller
             $startDate = $nowDate->copy()->startOfMonth()->toDateString();
             $endDate = $nowDate->copy()->endOfMonth()->toDateString();
 
-            $tagihan = $query->whereBetween('tanggal', [$startDate, $endDate])->get();
+            $tagihan = $query->whereBetween('tanggal', [$startDate, $endDate])->paginate(10);
 
             return response()->json([
-                'message' => "Data Tagihan Didapatkan!",
+                'message' => "Data Transaksi Didapatkan!",
                 'data' => $tagihan,
             ]);
         } catch (Exception $e) {

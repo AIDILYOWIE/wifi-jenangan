@@ -15,8 +15,7 @@ const Invoice = () => {
             const response = await api.get("/tagihan", {
                 params: { now },
             });
-            console.log(response)
-            setDataInvoice(response.data.data)
+            setDataInvoice(response.data?.data.data)
 
         } catch (error) {
             console.log(error);

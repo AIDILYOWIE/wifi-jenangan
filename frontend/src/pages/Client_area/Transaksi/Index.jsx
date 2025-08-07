@@ -5,28 +5,34 @@ import Table from "./Datagrid/Table"
 import {useEffect, useState} from "react";
 import {useDateRange} from "../../../../context/DateRangeContext.jsx";
 import {api} from "../../../utils/helper/helper.js";
+import Pagination from "../../../components/fragments/Pagination.jsx";
+import { useSearchParams } from "react-router-dom";
 
 const Transaksi = () => {
     const [dataTransaksi, setDataTransaksi] = useState([]);
     const { dateRange } = useDateRange();
 
+    const [searchParams] = useSearchParams();
+    const page = searchParams.get("page") || "1";
+
+    const [paginateData, setPaginateData] = useState();
+
 
     const getDataTransaksi = async (payload) => {
         try {
-            const response = await api.get("/transaksi", {
+            const response = await api.get(`/transaksi?page=${page}`, {
                 params: {
                     start_date: payload?.start_date,
                     end_date: payload?.end_date,
                 },
             });
-            setDataTransaksi(response.data?.data);
-            console.log(dataTransaksi)
+            setDataTransaksi(response.data?.data?.data);
+            setPaginateData(response.data?.data);
         } catch (error) {
             console.log(error);
         }
     };
     useEffect(() => {
-        // jangan lupa dirubah sesuai inputan
 
         const startDate = dateRange.start ? dateRange.start : null;
         const endDate = dateRange.end ? dateRange.end : null;
@@ -65,14 +71,15 @@ const Transaksi = () => {
         }
         type='date-range'
       />
-        {dataTransaksi.length === 0 ? (
+        {dataTransaksi?.length === 0 ? (
             <div className={"w-full flex justify-center"}>
                 <img src={ImgNull} className={'w-[300px] max-[576px]:w-[200px]'} alt={"null data"}/>
             </div>
         ) : (
             <div className="w-full p-5 bg-white border-[1px] border-(--border-color) rounded-[10px]">
-                <div className="w-full overflow-x-auto">
+                <div className="w-full overflow-x-auto flex flex-col">
                     <Table dataTransaksi={dataTransaksi} />
+                    <Pagination data={paginateData}/>
                 </div>
             </div>
         )}
