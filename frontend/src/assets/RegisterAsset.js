@@ -25,6 +25,8 @@ import CheckIcon from '@mui/icons-material/Check';
 import GridViewIcon from '@mui/icons-material/GridView';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import ImgNull from '../../public/null.png'
+import ChevronLeftOutlinedIcon from '@mui/icons-material/ChevronLeftOutlined';
+import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 
 
 export {
@@ -37,5 +39,7 @@ export {
     DeleteIcon, SearchIcon, PeopleAltOutlinedIcon,
     ArrowBackIosNewOutlinedIcon, CheckOutlinedIcon, PrintIcon,
     CheckIcon, GridViewIcon, CloudUploadIcon,
-    DeleteOutlineOutlinedIcon, ImgNull
+    DeleteOutlineOutlinedIcon, ImgNull, ChevronLeftOutlinedIcon,
+    ChevronRightOutlinedIcon
+
 }

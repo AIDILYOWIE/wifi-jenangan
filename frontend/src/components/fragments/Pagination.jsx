@@ -1,28 +1,38 @@
 import { Link } from "react-router-dom";
+import { ChevronRightOutlinedIcon, ChevronLeftOutlinedIcon }  from "../../assets/RegisterAsset.js"
+import {useEffect, useState} from "react";
 
 const Pagination = ({ data }) => {
-	const current_page = Number(data.current_page);
-	const last_page = Number(data.last_page);
-	const prev_disable = data.prev_page_url === null;
-	const next_disable = data.next_page_url === null;
+	const [prevDisabled, setPrevDisabled] =  useState(false);
+	const [nextDisabled, setNextDisabled] =  useState(false);
+	const [lastPage, setLastPage] =  useState(0);
+	const [currentPage, setCurrentPage] =  useState(0);
 
-	const createPagination = () => {
-		const pages = [];
+	useEffect(() => {
 
-		if (last_page <= 5) {
-			for (let i = 1; i <= last_page; i++) pages.push(i);
-		} else if (current_page <= 2) {
-			pages.push(1, 2, 3, "...", last_page);
-		} else if (current_page === 3) {
-			pages.push(1, "...", 2, 3, 4, "...", last_page);
-		} else if (current_page > 3 && current_page < last_page - 2) {
-			pages.push(1, "...", current_page - 1, current_page, current_page + 1, "...", last_page);
-		} else {
-			pages.push(1, "...", last_page - 2, last_page - 1, last_page);
-		}
+		setCurrentPage(Number(data?.current_page))
+		setLastPage(Number(data?.last_page))
+		setPrevDisabled(data?.prev_page_url === null)
+		setNextDisabled(data?.next_page_url === null)
+	}, [data]);
 
-		return pages;
-	};
+		const createPagination = () => {
+			const pages = [];
+
+			if (lastPage <= 5) {
+				for (let i = 1; i <= lastPage; i++) pages.push(i);
+			} else if (currentPage <= 2) {
+				pages.push(1, 2, 3, "...", lastPage);
+			} else if (currentPage === 3) {
+				pages.push(1, "...", 2, 3, 4, "...", lastPage);
+			} else if (currentPage > 3 && currentPage < lastPage - 2) {
+				pages.push(1, "...", currentPage - 1, currentPage, currentPage + 1, "...", lastPage);
+			} else {
+				pages.push(1, "...", lastPage - 2, lastPage - 1, lastPage);
+			}
+
+			return pages;
+		};
 
 
 	const pages = createPagination();
@@ -31,18 +41,22 @@ const Pagination = ({ data }) => {
 		<div className=" flex items-center justify-center gap-2 mt-6 select-none ml-auto">
 			{/* Tombol Previous */}
 			<Link
-				to={`/pelanggan?page=${current_page - 1}`}
-				className={`px-3 py-1.5 rounded-lg border text-sm font-medium ${
-					prev_disable
-						? "bg-gray-100 text-gray-400 pointer-events-none"
-						: "bg-white hover:bg-gray-100 text-gray-700"
+				to={`/pelanggan?page=${currentPage - 1}`}
+				className={`flex items-center px-3 py-1.5 rounded-[5px] border-[1px] border-(--border-color) text-[12px] font-normal ${
+					prevDisabled
+						? "bg-gray-100 text-(--border-color) pointer-events-none"
+						: "bg-white hover:bg-gray-100"
 				}`}
 			>
-				&laquo; Previous
+				<ChevronLeftOutlinedIcon sx={{
+					fontSize: "16px"
+				}}/>
+				Kembali
 			</Link>
 
 			{/* Nomor halaman */}
 			{pages.map((page, index) => {
+				if(!Number.isFinite(page)) return null;
 				if (page === "...") {
 					return (
 						<span key={index} className="px-2 text-gray-500">
@@ -55,9 +69,9 @@ const Pagination = ({ data }) => {
 					<Link
 						key={index}
 						to={`/pelanggan?page=${page}`}
-						className={`px-3 py-1.5 rounded-lg text-sm font-medium border ${
-							current_page === page
-								? "bg-indigo-600 text-white"
+						className={`px-3 py-1.5 rounded-[5px] text-[12px] font-normal border-[1px] border-(--border-color) ${
+							currentPage === page
+								? "bg-(--border-color) border-none text-white border-white" 
 								: "bg-white hover:bg-gray-100 text-gray-700"
 						}`}
 					>
@@ -68,14 +82,17 @@ const Pagination = ({ data }) => {
 
 			{/* Tombol Next */}
 			<Link
-				to={`/pelanggan?page=${current_page + 1}`}
-				className={`px-3 py-1.5 rounded-lg border text-sm font-medium ${
-					next_disable
-						? "bg-gray-100 text-gray-400 pointer-events-none"
-						: "bg-white hover:bg-gray-100 text-gray-700"
+				to={`/pelanggan?page=${currentPage + 1}`}
+				className={`flex items-center px-3 py-1.5 rounded-[5px] border-[1px] border-(--border-color) text-[12px] font-normal ${
+					nextDisabled
+						? "bg-gray-100 text-(--border-color) pointer-events-none"
+						: "bg-white hover:bg-gray-100"
 				}`}
 			>
-				Next &raquo;
+				Next <ChevronRightOutlinedIcon sx={{
+					fontSize: "16px"
+				}}
+			/>
 			</Link>
 		</div>
 	);

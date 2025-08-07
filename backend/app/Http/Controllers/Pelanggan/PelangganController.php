@@ -8,6 +8,7 @@ use App\Models\Tagihan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use function Illuminate\Events\queueable;
 
 class PelangganController extends Controller
 {
@@ -74,18 +75,15 @@ class PelangganController extends Controller
             ->orderByDesc('tanggal')
             ->first();
 
-
         // jika tidak ada tagihan lunas, maka tagihan terbaru = tanggal pemasangan + 1 atau 2 bulan
         if (!$last_tagihan_lunas) {
             if ($tanggal_pemasangan->day <= 20) {
-                $tanggal_tagihan = $tanggal_pemasangan->copy()->addMonth()->day(20);
+                return $tanggal_pemasangan->copy()->addMonth()->day(20);
             } else {
-                $tanggal_tagihan = $tanggal_pemasangan->copy()->addMonths(2)->day(1);
+                return $tanggal_pemasangan->copy()->addMonths(2)->day(1);
             }
         }
 
-
-        return $tanggal_tagihan;
     }
 
     /**
@@ -94,7 +92,7 @@ class PelangganController extends Controller
     public function index()
     {
         try {
-            $pelanggan = Pelanggan::with('tagihan')->orderByDesc('kode_pelanggan')->paginate(1);
+            $pelanggan = Pelanggan::with('tagihan')->orderByDesc('kode_pelanggan')->paginate(10);
 
             return response()->json([
                 'message' => 'List pelanggan berhasil diambil.',
@@ -156,40 +154,37 @@ class PelangganController extends Controller
     public function update(Request $request, string $id)
     {
         $pelanggan = Pelanggan::find($id);
-
-        if ($pelanggan->tagihan->count() === 1) {
+        
             DB::beginTransaction();
-    
+
             try {
                 $data_pelanggan = $this->prepareDataPelanggan($request);
                 $pelanggan->update($data_pelanggan);
-    
+
                 $last_tagihan = $pelanggan->tagihan()
                     ->where('status', 'Belum Lunas')
                     ->orderByDesc('tanggal')
                     ->first();
-    
-                $tanggal_tagihan = $this->createTanggalTagihan($pelanggan);
-    
-                $last_tagihan->update([
-                    'tanggal' => $tanggal_tagihan,
-                ]);
-    
+
+                if($pelanggan->tagihan->count() === 1) {
+                    $tanggal_tagihan = $this->createTanggalTagihan($pelanggan);
+
+                    $last_tagihan->update([
+                        'tanggal' => $tanggal_tagihan,
+                    ]);
+                }
+
+
                 DB::commit();
             } catch (\Throwable $th) {
                 DB::rollBack();
                 throw $th;
             }
-    
+
             return response()->json([
                 'message' => 'Data pelanggan berhasil diperbarui.',
                 'data' => $pelanggan
             ]);
-        } else {
-            return response()->json([
-                'message' => "Pelanggan tidak dapat diubah karena sudah memiliki tagihan lunas"
-            ], 400);
-        }
 
     }
 

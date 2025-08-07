@@ -6,26 +6,26 @@ import {
 import React from "react";
 
 export const DatePicker = React.memo(
-  ({ value = null, disabled, onChange, type }) => {
+  ({ value = null, disabled, type, haveTagihan }) => {
     const [selectedDate, setSelectedDate] = useState(null);
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [formatDate, setFormatDate] = useState("");
     const inputRef = useRef(null);
     const calendarRef = useRef(null);
-    const { setData, data } = useDataContext();
-    const [variant, setVariant] = useState("");
+    const { setData } = useDataContext();
+    const [color, setColor] = useState("");
 
     useEffect(() => {
       if (type == "edit-pelanggan" || type == "add-pelanggan") {
-        if (disabled == true) {
-          return setVariant("!text-(--border-color)");
+        if(haveTagihan) {
+          return setColor("!text-(--border-color)")
         }
-        return setVariant("!text-(--text-color)");
+        return setColor("!text-(--text-color)");
       } else {
-       return setVariant("!text-(--border-color)");
+       return setColor("!text-(--border-color)");
       }
-    }, [type]);
+    }, [type, haveTagihan]);
 
     useEffect(() => {
       if (value) {
@@ -156,7 +156,7 @@ export const DatePicker = React.memo(
             className="flex flex-col gap-[7px]"
           >
             <label
-              className={`text-(--text-color) transition-all duration-200 pointer-events-none top-3 text-[14px] font-normal`}
+              className={` transition-all duration-200 pointer-events-none top-3 text-[14px] font-normal max-[576px]:text-[12px]`}
             >
               Tanggal Masuk
             </label>
@@ -164,10 +164,10 @@ export const DatePicker = React.memo(
               ref={inputRef}
               type="text"
               value={formatDate}
-              disabled={disabled}
+              disabled={disabled ? disabled : haveTagihan}
               onClick={handleInputClick}
               readOnly
-              className={`w-full ${variant} focus:outline-none transition-all duration-200 cursor-pointer text-[12px]  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-2 gap-1`}
+              className={`w-full ${color} focus:outline-none transition-all duration-200 cursor-pointer text-[12px] max-[576px]:text-[10px] max-[576px]:rounded-[5px] border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-2 gap-1`}
               placeholder="Masukan Tanggal"
             />
           </div>

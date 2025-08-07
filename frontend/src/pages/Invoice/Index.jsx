@@ -5,10 +5,12 @@ import Table from "./Datagrid/Table"
 import {ImgNull} from "../../assets/RegisterAsset";
 import {api} from "../../utils/helper/helper.js";
 import {useEffect, useState} from "react";
+import Pagination from "../../components/fragments/Pagination.jsx";
 const now = new Date().toLocaleDateString("en-CA");
 
 const Invoice = () => {
     const [dataInvoice, setDataInvoice] = useState([]);
+    const [paginateData, setPaginateData] = useState([]);
 
     const getDataInvoice = async () => {
         try {
@@ -16,6 +18,7 @@ const Invoice = () => {
                 params: { now },
             });
             setDataInvoice(response.data?.data.data)
+            setPaginateData(response.data?.data)
 
         } catch (error) {
             console.log(error);
@@ -41,7 +44,7 @@ const Invoice = () => {
         }
         text={"Invoice"}
       />
-        {dataInvoice.length == 0 ? (
+        {dataInvoice?.length === 0 || paginateData?.length === 0 || !paginateData  ? (
             <div className={"w-full flex justify-center"}>
                 <img src={ImgNull} className={'w-[300px] max-[576px]:w-[200px]'} alt={"null data"}/>
             </div>
@@ -49,6 +52,9 @@ const Invoice = () => {
             <div className="w-full p-5 bg-white border-[1px] border-(--border-color) rounded-[10px]">
                 <div className="w-full overflow-x-auto">
                     <Table dataInvoice={dataInvoice} />
+                </div>
+                <div className={"flex flex-col justify-start"}>
+                    <Pagination data={paginateData}/>
                 </div>
             </div>
         )}
