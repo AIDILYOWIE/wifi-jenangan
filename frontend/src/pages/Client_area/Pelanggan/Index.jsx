@@ -123,7 +123,9 @@ const Pelanggan = () => {
         }}
         onClose={() => {
           setOpen(false);
-          setType(null);
+          setTimeout(function() {
+            setType(null);
+          }, 400); // time disesuakian dengan duration AddPelanggan:142 * 2 
         }}
         newCode={newCode}
         title={title}
