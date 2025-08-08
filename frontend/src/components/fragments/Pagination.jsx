@@ -1,10 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Pagination = ({ data }) => {
-	const current_page = Number(data.current_page);
-	const last_page = Number(data.last_page);
-	const prev_disable = data.prev_page_url === null;
-	const next_disable = data.next_page_url === null;
+	const current_page = Number(data?.current_page) ?? 1;
+	const last_page = Number(data?.last_page);
+	const prev_disable = data?.prev_page_url === null;
+	const next_disable = data?.next_page_url === null ?? null;
+
+	const { pathname } = useLocation()
 
 	const createPagination = () => {
 		const pages = [];
@@ -31,7 +33,7 @@ const Pagination = ({ data }) => {
 		<div className=" flex items-center justify-center gap-2 mt-6 select-none ml-auto">
 			{/* Tombol Previous */}
 			<Link
-				to={`/pelanggan?page=${current_page - 1}`}
+				to={`${pathname}?page=${current_page - 1}`}
 				className={`px-3 py-1.5 rounded-lg border text-sm font-medium ${
 					prev_disable
 						? "bg-gray-100 text-gray-400 pointer-events-none"
@@ -54,7 +56,7 @@ const Pagination = ({ data }) => {
 				return (
 					<Link
 						key={index}
-						to={`/pelanggan?page=${page}`}
+						to={`${pathname}?page=${page}`}
 						className={`px-3 py-1.5 rounded-lg text-sm font-medium border ${
 							current_page === page
 								? "bg-indigo-600 text-white"
@@ -68,7 +70,7 @@ const Pagination = ({ data }) => {
 
 			{/* Tombol Next */}
 			<Link
-				to={`/pelanggan?page=${current_page + 1}`}
+				to={`${pathname}?page=${current_page + 1}`}
 				className={`px-3 py-1.5 rounded-lg border text-sm font-medium ${
 					next_disable
 						? "bg-gray-100 text-gray-400 pointer-events-none"

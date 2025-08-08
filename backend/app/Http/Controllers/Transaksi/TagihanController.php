@@ -54,7 +54,7 @@ class TagihanController extends Controller
                 $end   = Carbon::parse($data['end_date'])->endOfDay();
                 $query->whereBetween('tanggal', [$start, $end]);
 
-                $tagihan = $query->get();
+                $tagihan = $query->paginate(10);
 
                 return response()->json([
                     'message' => "Data Transaksi Didapatkan!",

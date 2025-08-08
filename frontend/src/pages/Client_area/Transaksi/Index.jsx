@@ -50,8 +50,8 @@ const Transaksi = () => {
         };
 
         getDataTransaksi(payload);
-
-    }, [dateRange]);
+        console.log("run");
+    }, [dateRange.start, dateRange.end, page]);
   return (
     <BaseLayout >
       <HeaderPage
