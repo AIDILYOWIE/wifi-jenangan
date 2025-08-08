@@ -3,6 +3,7 @@ import React from 'react'
 const Input = React.memo(({
   label,
   placeholder,
+  name,
   value,
   onChange,
   type = 'text',
@@ -11,11 +12,13 @@ const Input = React.memo(({
 }) => {
   return (
     <div className='w-full flex flex-col gap-[7px]'>
-      <label htmlFor="" className='w-full font-(--font-weight-1) text-(length:--size-text-2) max-[576px]:text-[12px]'>
+      <label htmlFor={name} className='w-full font-(--font-weight-1) text-(length:--size-text-2) max-[576px]:text-[12px]'>
         <p>{label}</p>
       </label>
       <input
         type={type}
+        id={name}
+        name={name}
         placeholder={placeholder}
         value={value}
         onChange={onChange}

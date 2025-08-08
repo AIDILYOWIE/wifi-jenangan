@@ -45,8 +45,8 @@ const Login = () => {
                 </div>
             </div>
             <div className="w-full flex flex-col gap-[18px] mb-6">
-                <Input label="Email" placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                <Input type="password" label="Password" placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <Input name="email" label="Email" placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <Input name="password" type="password" label="Password" placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 <div className="w-full flex justify-end">
                     <p className="text-(--text-color) text-(length:--size-text-2) cursor-pointer" id="forgetPassword"><Link to="/forget-password/confirm-email">Forget Password?</Link></p>
                 </div>

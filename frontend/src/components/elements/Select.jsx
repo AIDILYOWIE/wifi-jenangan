@@ -11,7 +11,7 @@ import { ArrowBackIosNewOutlinedIcon } from "../../assets/RegisterAsset";
 import { api } from "../../utils/helper/helper";
 import { useDataContext } from "../../../context/SendDataContext";
 
-const SelectPaket = React.memo(({value, disabled, variant}) => {
+const SelectPaket = React.memo(({value, disabled, variant, name}) => {
   const [paketList, setPaketList] = useState([]);
   const [selected, setSelected] = useState(null);
   const { setData, data } = useDataContext()
@@ -53,9 +53,9 @@ const SelectPaket = React.memo(({value, disabled, variant}) => {
 
   return (
     <div className="w-full flex flex-col gap-[7px]">
-      <label htmlFor="" className="text-[14px] max-[576px]:text-[12px] font-normal">
+      <p className="text-[14px] max-[576px]:text-[12px] font-normal">
         Paket
-      </label>
+      </p>
 
       <Listbox value={selected} onChange={(item) => {
         setSelected(item)
