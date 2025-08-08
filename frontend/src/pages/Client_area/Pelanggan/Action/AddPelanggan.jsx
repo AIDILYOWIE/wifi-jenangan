@@ -125,12 +125,11 @@ const AddPelanggan = React.memo(
         setDesa("");
         setDusunJalan("");
         setPaket("");
+        setDisabled(false)
       }
 
       if (type == "detail-pelanggan") {
         setDisabled(true);
-      } else {
-        setDisabled(false);
       }
     }, [data?.id, type]);
 
@@ -142,15 +141,15 @@ const AddPelanggan = React.memo(
           className="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"
         />
 
-        <div className="fixed inset-0 z-10 w-screen overflow-y-auto flex justify-center items-center ">
-          <div className="flex flex-col max-[576px]:w-[400px] w-[800px] h-max bg-white rounded-[10px] max-[576px]:px-4 px-8 py-5 gap-[38px]">
+        <div className="fixed inset-0 w-screen h-screen overflow-y-auto flex justify-center items-center ">
+          <div className="flex flex-col max-[576px]:w-[350px] w-[800px] h-max bg-white rounded-[10px] max-[576px]:px-4 px-8 py-5 gap-[38px] max-[576px]:gap-[20px]">
             <header className="w-full flex justify-between">
               <div className="w-full">
-                <h1 className="text-[20px] font-[600]">{title}</h1>
+                <h1 className="text-[length:20px] max-[576px]:text-[length:16px] font-[600]">{title}</h1>
               </div>
               <div className="w-full flex justify-end gap-2">
                 <Button
-                  className="w-max no-hover border-[1px] border-(--primary-color) rounded-[5px] text-(--primary-color) px-3 !py-1.5 gap-1.5 hover:bg-red-700"
+                  className="w-max no-hover border-[1px] border-(--primary-color) rounded-[5px] max-[576px]:text-[12px] text-(--primary-color) px-3 !py-1.5 gap-1.5 hover:bg-red-700"
                   variant="secondary"
                   onClick={onClose}
                 >
@@ -164,27 +163,27 @@ const AddPelanggan = React.memo(
                 </Button>
               </div>
             </header>
-
-            <div className="w-full flex flex-col gap-5">
-              <div className="grid grid-cols-2 max-[576px]:grid-cols-1 w-full gap-[20px]">
+            <div className="w-full flex flex-col max-[576px]:gap-[10px] gap-[20px]">
+              <div className="grid grid-cols-2 max-[576px]:grid-cols-1 w-full gap-[20px] max-[576px]:gap-[10px]">
                 <div className="">
                   <Input
                     label="Kode Pelanggan"
                     value={newCode}
                     onChange={(e) => setKodePelanggan(e.target.value)}
                     disabled={true}
-                    variant={`text-[12px] !text-(--border-color)  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1`}
+                    variant={`text-[12px] max-[576px]:text-[10px] max-[576px]:rounded-[5px] !text-(--border-color)  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1`}
                   />
                 </div>
                 <div className="">
                     <DatePicker
                       value={tanggalMasuk}
-                      disabled={haveTagihan}
+                      disabled={disabled}
+                      haveTagihan={haveTagihan}
                       type={type}
                     />
                 </div>
               </div>
-              <div className="grid grid-cols-2 max-[576px]:grid-cols-1 w-full gap-[20px]">
+              <div className="grid grid-cols-2 max-[576px]:grid-cols-1 w-full gap-[20px] max-[576px]:gap-[10px]">
                 <div className="">
                   <Input
                     label="Nama Pelanggan"
@@ -196,7 +195,7 @@ const AddPelanggan = React.memo(
                       type == "edit-pelanggan" || type == "add-pelanggan"
                         ? "!text-(--text-color) "
                         : "!text-(--border-color) "
-                    }  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1`}
+                    }  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1 max-[576px]:text-[10px] max-[576px]:rounded-[5px]`}
                   />
                 </div>
                 <div className="">
@@ -210,11 +209,11 @@ const AddPelanggan = React.memo(
                       type == "edit-pelanggan" || type == "add-pelanggan"
                         ? "!text-(--text-color) "
                         : "!text-(--border-color) "
-                    }  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1`}
+                    }  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1 max-[576px]:text-[10px] max-[576px]:rounded-[5px]`}
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-2 max-[576px]:grid-cols-1 w-full gap-[20px]">
+              <div className="grid grid-cols-2 max-[576px]:grid-cols-1 w-full gap-[20px] max-[576px]:gap-[10px]">
                 <div className="">
                   <Input
                     label="Desa"
@@ -226,7 +225,7 @@ const AddPelanggan = React.memo(
                       type == "edit-pelanggan" || type == "add-pelanggan"
                         ? "!text-(--text-color) "
                         : "!text-(--border-color) "
-                    } border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1`}
+                    } border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1 max-[576px]:text-[10px] max-[576px]:rounded-[5px]`}
                   />
                 </div>
                 <div className="">
@@ -240,11 +239,11 @@ const AddPelanggan = React.memo(
                       type == "edit-pelanggan" || type == "add-pelanggan"
                         ? "!text-(--text-color) "
                         : "!text-(--border-color) "
-                    } border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1`}
+                    } border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1 max-[576px]:text-[10px] max-[576px]:rounded-[5px]`}
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-2 max-[576px]:grid-cols-1 w-full gap-[20px]">
+              <div className="grid grid-cols-2 max-[576px]:grid-cols-1 w-full gap-[20px] max-[576px]:gap-[10px]">
                 <div className="">
                   <SelectPaket
                     value={paket}
@@ -253,14 +252,14 @@ const AddPelanggan = React.memo(
                       type == "edit-pelanggan" || type == "add-pelanggan"
                         ? "!text-(--text-color) "
                         : "!text-(--border-color) "
-                    }`}
+                    } max-[576px]:text-[10px] max-[576px]:rounded-[5px]`}
                   />
                 </div>
               </div>
 
               <div className="w-full flex justify-end">
                   <Button
-                    className={` ${disabled ? 'hidden' : ''} w-max rounded-[5px] text-(--background-color) px-3 !py-1.5 gap-1.5`}
+                    className={` ${disabled ? 'hidden' : ''} w-max rounded-[5px] max-[576px]:text-[12px] text-(--background-color) px-3 !py-1.5 gap-1.5`}
                     variant="primary"
                     disabled={disabled}
                     onClick={() => {

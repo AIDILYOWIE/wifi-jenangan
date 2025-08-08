@@ -1,3 +1,4 @@
+import { ChevronRightOutlinedIcon, ChevronLeftOutlinedIcon }  from "../../assets/RegisterAsset.js"
 import { Link, useLocation } from "react-router-dom";
 
 const Pagination = ({ data }) => {
@@ -34,13 +35,15 @@ const Pagination = ({ data }) => {
 			{/* Tombol Previous */}
 			<Link
 				to={`${pathname}?page=${current_page - 1}`}
-				className={`px-3 py-1.5 rounded-lg border text-sm font-medium ${
-					prev_disable
-						? "bg-gray-100 text-gray-400 pointer-events-none"
-						: "bg-white hover:bg-gray-100 text-gray-700"
-				}`}
-			>
-				&laquo; Previous
+                className={`flex items-center px-3 py-1.5 rounded-[5px] border-[1px] border-(--border-color) text-[12px] font-normal ${
+                    prev_disable
+                        ? "bg-gray-100 text-(--border-color) pointer-events-none"
+                        : "bg-white hover:bg-gray-100"}`}
+			      >
+				<ChevronLeftOutlinedIcon sx={{
+					fontSize: "16px"
+				}}/>
+				Kembali
 			</Link>
 
 			{/* Nomor halaman */}
@@ -57,11 +60,11 @@ const Pagination = ({ data }) => {
 					<Link
 						key={index}
 						to={`${pathname}?page=${page}`}
-						className={`px-3 py-1.5 rounded-lg text-sm font-medium border ${
-							current_page === page
-								? "bg-indigo-600 text-white"
-								: "bg-white hover:bg-gray-100 text-gray-700"
-						}`}
+                        className={`px-3 py-1.5 rounded-[5px] text-[12px] font-normal border-[1px] border-(--border-color) ${
+                            current_page === page
+                                ? "bg-(--border-color) border-none text-white border-white"
+                                : "bg-white hover:bg-gray-100 text-gray-700"
+                        }`}
 					>
 						{page}
 					</Link>
@@ -71,13 +74,16 @@ const Pagination = ({ data }) => {
 			{/* Tombol Next */}
 			<Link
 				to={`${pathname}?page=${current_page + 1}`}
-				className={`px-3 py-1.5 rounded-lg border text-sm font-medium ${
-					next_disable
-						? "bg-gray-100 text-gray-400 pointer-events-none"
-						: "bg-white hover:bg-gray-100 text-gray-700"
-				}`}
+                className={`flex items-center px-3 py-1.5 rounded-[5px] border-[1px] border-(--border-color) text-[12px] font-normal ${
+                    next_disable
+                        ? "bg-gray-100 text-(--border-color) pointer-events-none"
+                        : "bg-white hover:bg-gray-100"
+                }`}
 			>
-				Next &raquo;
+				Next <ChevronRightOutlinedIcon sx={{
+					fontSize: "16px"
+				}}
+			/>
 			</Link>
 		</div>
 	);

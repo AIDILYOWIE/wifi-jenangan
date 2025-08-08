@@ -11,7 +11,7 @@ const Input = React.memo(({
 }) => {
   return (
     <div className='w-full flex flex-col gap-[7px]'>
-      <label htmlFor="" className='w-full font-(--font-weight-1) text-(length:--size-text-2) '>
+      <label htmlFor="" className='w-full font-(--font-weight-1) text-(length:--size-text-2) max-[576px]:text-[12px]'>
         <p>{label}</p>
       </label>
       <input

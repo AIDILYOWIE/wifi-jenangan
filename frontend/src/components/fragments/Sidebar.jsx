@@ -33,7 +33,7 @@ const Sidebars = ({ setSidebarIsOpen }) => {
             <div className="body pt-7 flex flex-col gap-y-1.5">
                 <Navlink to="/" sidebarOpen={sidebarOpen} icon={<Home/>}>  Dashboard</Navlink>
                 {sidebarOpen && 
-                  <h1 className='ps-3 text-sm font-medium text-gray-500 mt-3'>MENU UTAMA</h1>
+                  <h1 className='ps-3 text-[10px] font-medium text-gray-500 mt-3'>MENU UTAMA</h1>
                 }
                 <Navlink to="/pelanggan" sidebarOpen={sidebarOpen} icon={<PeopleOutlinedIcon/>}> Pelanggan</Navlink>
                 <Navlink to="/transaksi" sidebarOpen={sidebarOpen} icon={<ReceiptOutlinedIcon/>}> Transaksi</Navlink>

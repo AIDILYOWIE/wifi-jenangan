@@ -53,7 +53,7 @@ const SelectPaket = React.memo(({value, disabled, variant}) => {
 
   return (
     <div className="w-full flex flex-col gap-[7px]">
-      <label htmlFor="" className="text-[14px] text-(--text-color)">
+      <label htmlFor="" className="text-[14px] max-[576px]:text-[12px] font-normal">
         Paket
       </label>
 

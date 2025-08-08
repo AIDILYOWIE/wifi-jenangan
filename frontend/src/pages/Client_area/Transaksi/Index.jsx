@@ -50,7 +50,6 @@ const Transaksi = () => {
         };
 
         getDataTransaksi(payload);
-        console.log("run");
     }, [dateRange.start, dateRange.end, page]);
   return (
     <BaseLayout >
@@ -71,7 +70,7 @@ const Transaksi = () => {
         }
         type='date-range'
       />
-        {dataTransaksi?.length === 0 ? (
+        {dataTransaksi?.length === 0 || paginateData?.length === 0 || !paginateData ? (
             <div className={"w-full flex justify-center"}>
                 <img src={ImgNull} className={'w-[300px] max-[576px]:w-[200px]'} alt={"null data"}/>
             </div>
@@ -79,6 +78,8 @@ const Transaksi = () => {
             <div className="w-full p-5 bg-white border-[1px] border-(--border-color) rounded-[10px]">
                 <div className="w-full overflow-x-auto flex flex-col">
                     <Table dataTransaksi={dataTransaksi} />
+                </div>
+                <div className={"flex flex-col justify-start"}>
                     <Pagination data={paginateData}/>
                 </div>
             </div>

@@ -54,9 +54,9 @@ const PrintPage = forwardRef(({ id, onReady }, ref) => {
               PT. ARSYA BINTANG NUSANTARA
             </h1>
             <p className="text-[11px] max-w-46">
-              Dusun / Jalan {dataTagihan?.pelanggan?.dusun} Desa{" "}
-              {dataTagihan?.pelanggan?.desa} Kecamatan{" "}
-              {dataTagihan?.pelanggan?.kecamatan}
+              RT 01 RW 01 Dkh Wonorejo Ds Bedrug
+              Kecamatan Pulung Kabupaten Ponorogo Kode Pos 63481
+              No Tlp / Hand phone : (0352)5730278 / 0813-3178-8779
             </p>
           </div>
           <div className="flex flex-col items-end">
@@ -219,16 +219,6 @@ const PrintPage = forwardRef(({ id, onReady }, ref) => {
           </li>
         </ol>
       </footer>
-
-      {/* CSS khusus untuk print */}
-      <style jsx>{`
-        @media print {
-          .print-bg {
-            -webkit-print-color-adjust: exact !important;
-            color-adjust: exact !important;
-          }
-        }
-      `}</style>
     </section>
   );
 });

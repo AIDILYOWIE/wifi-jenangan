@@ -62,7 +62,7 @@ const DateRangePicker = React.memo(({ placeholder = "Masukan Tanggal" }) => {
       return `${formatDate(startDate)} - ${formatDate(endDate)}`;
     }
     if (startDate) {
-      return `${formatDate(startDate)} - Pilih Tanggal Terakhir`;
+      return `${formatDate(startDate)} -  `;
     }
     return placeholder;
   };
@@ -198,11 +198,9 @@ const DateRangePicker = React.memo(({ placeholder = "Masukan Tanggal" }) => {
       {isOpen && (
         <div
           ref={dropdownRef}
-          className="
-            absolute top-full -left-30 max-[576px]:-left-20 mt-2 bg-white border-gray-200 rounded-xl shadow-2xl
-            z-50 p-6 min-w-80 max-[576px]:min-w-65
-             transition-all duration-200 animate-fadeIn text-(--text-color) 
-          "
+          className=" absolute top-full -left-30 max-[576px]:-left-30 mt-2 bg-white border-gray-200 rounded-xl shadow-2xl
+            z-50 p-6 max-[576px]:w-75
+             transition-all duration-200 animate-fadeIn text-(--text-color)"
         >
           {/* Calendar Header */}
           <div className="flex items-center justify-between mb-6">
