@@ -50,9 +50,9 @@ export const ChangePassword = () => {
   return (
     <ForgetPasswordLayout title="Ubah Password" deskripsi="Sebelum ubah password, pastikan password barumu aman dari siapapun🔐">
         <ToastContainer position="top-center"/>
-        <Input type="password" label="Password lama" placeholder="Masukkan password lama" onChange={(e) => {setOldPassword(e.target.value)}} value={oldPassword}></Input>
-        <Input type="password" label="Password baru" placeholder="Masukkan password baru" onChange={(e) => {setNewPassword(e.target.value)}} value={newPassword}></Input>
-        <Input type="password" label="Konfirmasi Password baru" placeholder="Konfirmasi password baru" onChange={(e) => {handleKonfirmPassword(e)}} value={confirmNewPassword}></Input>
+        <Input name="password_lama" type="password" label="Password lama" placeholder="Masukkan password lama" onChange={(e) => {setOldPassword(e.target.value)}} value={oldPassword}></Input>
+        <Input name="password_baru" type="password" label="Password baru" placeholder="Masukkan password baru" onChange={(e) => {setNewPassword(e.target.value)}} value={newPassword}></Input>
+        <Input name="konfirmasi_password" type="password" label="Konfirmasi Password baru" placeholder="Konfirmasi password baru" onChange={(e) => {handleKonfirmPassword(e)}} value={confirmNewPassword}></Input>
         {confirmPasswordError &&
             <p className="text-xs text-red-700 ps-2">{confirmPasswordError}</p>
         }

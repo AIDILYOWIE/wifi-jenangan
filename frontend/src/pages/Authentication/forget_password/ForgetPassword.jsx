@@ -33,7 +33,7 @@ const ForgetPassword = () => {
   return (
     <ForgetPasswordLayout title="Konfirmasi Email" deskripsi="Ups! Silahkan konfirmasi email dulu agar kami dapat mengenalimu😉">
       <ToastContainer position="top-center"/>
-      <Input placeholder="Masukkan email" type="email" onChange={(e) => {setEmail(e.target.value)}} value={email}></Input>
+      <Input id="email" placeholder="Masukkan email" type="email" onChange={(e) => {setEmail(e.target.value)}} value={email}></Input>
       <Button onClick={() => {handleConfirmEmail()}} className="!py-2 !w-fit px-3 ml-auto">Konfirmasi</Button>
     </ForgetPasswordLayout>
   )
