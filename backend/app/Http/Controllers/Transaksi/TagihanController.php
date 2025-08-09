@@ -30,9 +30,12 @@ class TagihanController extends Controller
                 ->where('status', 'belum lunas')
                 ->when($desa && strtolower($desa) !== 'all', function ($query) use ($desa) {
                     $query->whereHas('pelanggan', function ($q) use ($desa) {
-                        $q->whereRaw('LOWER(desa) LIKE ?', ['%' . strtolower($desa) . '%']);
+                        $desaLower = strtolower($desa);
+                        $q->whereRaw('LOWER(desa) LIKE ?', ['%' . $desaLower . '%'])
+                            ->orWhereRaw('LOWER(kecamatan) LIKE ?', ['%' . $desaLower . '%']);
                     });
                 })
+
                 ->orderBy('tanggal', 'asc')
                 ->paginate(10);
 

@@ -24,6 +24,18 @@ const PrintAllPage = () => {
 	};
 
 	useEffect(() => {
+		const handleAfterPrint = () => {
+			window.history.back();
+		};
+
+		window.addEventListener("afterprint", handleAfterPrint);
+
+		return () => {
+			window.removeEventListener("afterprint", handleAfterPrint);
+		};
+	}, []);
+
+	useEffect(() => {
 		if (desa) {
 			getDataTagihan();
 		}

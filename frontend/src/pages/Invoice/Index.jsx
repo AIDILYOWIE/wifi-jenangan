@@ -36,13 +36,16 @@ const Invoice = () => {
     if (!value.trim()) {
       setFilteredInvoice([]);
     } else {
-      const filtered = dataInvoice.filter(
-        (item) => item.pelanggan.desa?.toLowerCase().includes(value.toLowerCase())
-      );
+      const filtered = dataInvoice.filter((item) => {
+        const desaLower = item.pelanggan.desa?.toLowerCase() || "";
+        const kecamatanLower = item.pelanggan.kecamatan?.toLowerCase() || "";
+        const searchLower = value.toLowerCase();
+        return desaLower.includes(searchLower) || kecamatanLower.includes(searchLower);
+      });
       setFilteredInvoice(filtered);
     }
-
   };
+
 
 
   useEffect(() => {
@@ -52,7 +55,7 @@ const Invoice = () => {
   return (
     <BaseLayout text={"Pelanggan"}>
       <HeaderPage
-        onClick={() => {window.location.href = "/invoice/print-all/" + filterType}}
+        onClick={() => { window.location.href = "/invoice/print-all/" + filterType }}
         textButton="Print All"
         buttonIcon={<PrintIcon />}
         icon={
@@ -76,10 +79,10 @@ const Invoice = () => {
         <div className="w-full p-5 bg-white border-[1px] border-(--border-color) rounded-[10px] flex flex-col items-end">
           <input
             type="text"
-            placeholder="Masukkan desa"
+            placeholder="Masukkan desa/kecamatan"
             value={desa}
             onChange={(e) => handleChangeDesa(e)}
-            className="border px-3 text-sm py-1 rounded-md mb-3 ml-auto"
+            className="border w-full max-w-56 px-3 text-sm py-1 rounded-md mb-3 ml-auto"
           />
           <div className="w-full overflow-x-auto">
             <Table dataInvoice={filteredInvoice.length ? filteredInvoice : dataInvoice} />
