@@ -33,7 +33,7 @@ const HeaderPage = React.memo(
             {type === "date-range" &&
               <DateRangePicker />
             }
-              {(text != 'Transaksi' && text != 'Invoice') && (
+              {(text != 'Transaksi') && (
                   <Button
                       width="w-max"
                       variant="primary"
