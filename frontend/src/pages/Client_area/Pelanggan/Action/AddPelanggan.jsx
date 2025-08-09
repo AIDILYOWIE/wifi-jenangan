@@ -126,10 +126,10 @@ const AddPelanggan = React.memo(
         setDusunJalan("");
         setPaket("");
         setDisabled(false)
-      }
-
-      if (type == "detail-pelanggan") {
+      } else if (type == "detail-pelanggan") {
         setDisabled(true);
+      } else if (type == "edit-pelanggan") {
+        setDisabled(false)
       }
     }, [data?.id, type]);
 
