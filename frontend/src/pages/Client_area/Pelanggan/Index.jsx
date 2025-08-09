@@ -13,7 +13,7 @@ import { useDataContext } from "../../../../context/SendDataContext";
 import PopupDelete from "./Action/PopUp";
 import {ImgNull} from "../../../assets/RegisterAsset";
 import Pagination from "../../../components/fragments/Pagination";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const Pelanggan = () => {
   const [open, setOpen] = useState(false);
@@ -30,11 +30,11 @@ const Pelanggan = () => {
     const getDataPelanggan = async () => {
         try {
             const response = await api.get("/pelanggan?page=" + page );
-            setDataPelanggan(response.data?.data.data);
-            setPaginateData(response.data?.data);
+            setDataPelanggan(response?.data?.data?.data);
+            setPaginateData(response?.data?.data);
             setData((prev) => ({
                 ...prev,
-                dataPelanggan: response.data?.data.data
+                dataPelanggan: response?.data?.data?.data
             }))
         } catch (error) {
             console.log(error);
@@ -65,7 +65,7 @@ const Pelanggan = () => {
   const getNewCodePelanggan = async () => {
     try {
       const response = await api.get("/new-kode-pelanggan");
-      setNewCode(response.data.new_kode_pelanggan);
+      setNewCode(response?.data?.new_kode_pelanggan);
     } catch (error) {
       console.log(error);
     }

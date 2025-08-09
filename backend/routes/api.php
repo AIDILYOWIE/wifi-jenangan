@@ -25,8 +25,8 @@ Route::prefix('/v1')->group( function() {
 
     Route::get('/dashboard', [DashboardController::class, 'index']);
 
-    Route::get('/tagihan', [TagihanController::class, 'index']);
-    Route::get('/transaksi', [TagihanController::class, 'indexTagihanLunas']);
+    Route::get('/tagihan', [TagihanController::class, 'getInvoice']);
+    Route::get('/transaksi', [TagihanController::class, 'getTransaksi']);
     Route::middleware('validId:tagihan')->group(function () {
         Route::get('/tagihan/{tagihan}', [TagihanController::class, 'show']);
         Route::put('/tagihan/{tagihan}', [TagihanController::class, 'confirmTagihan']);

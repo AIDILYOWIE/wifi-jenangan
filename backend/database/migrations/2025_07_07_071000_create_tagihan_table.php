@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('tagihan', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_pelanggan')->constrained('pelanggan')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('id_pelanggan')->nullable()->constrained('pelanggan')->nullOnDelete()->onUpdate('cascade');
+            $table->string('pelanggan_name');
+            $table->string('pelanggan_kecamatan');
             $table->string('name');
             $table->date('tanggal');
             $table->integer('total_tagihan');

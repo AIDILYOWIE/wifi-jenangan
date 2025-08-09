@@ -100,15 +100,15 @@ const Table = React.memo(() => {
                     }}
                   />
                 </ButtonAction>
-                <ButtonAction style={"bg-(--bg-delete)"}>
+                <ButtonAction style={"bg-(--bg-delete)"}
+                  onClick={() => {
+                    setData((prev) => ({
+                      ...prev,
+                      id: item.id,
+                      popupDelete: true,
+                    }));
+                  }}>
                   <DeleteIcon
-                    onClick={() => {
-                      setData((prev) => ({
-                        ...prev,
-                        id: item.id,
-                        popupDelete: true,
-                      }));
-                    }}
                     sx={{
                       color: "#FF0004",
                       fontSize: "20px",

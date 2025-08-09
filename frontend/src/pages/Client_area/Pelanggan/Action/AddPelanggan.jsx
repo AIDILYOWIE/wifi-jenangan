@@ -1,14 +1,10 @@
-import React, { useCallback } from "react";
+import React from "react";
 import {
   Dialog,
   DialogBackdrop,
-  DialogPanel,
-  DialogTitle,
 } from "@headlessui/react";
 import Button from "../../../../components/elements/Button";
 import {
-  AddOutlinedIcon,
-  arrow_down,
   ArrowBackIosNewOutlinedIcon,
   CheckOutlinedIcon,
 } from "../../../../assets/RegisterAsset";
@@ -21,7 +17,7 @@ import {
   updateToastToSuccess,
 } from "../../../../utils/helper/helper";
 import { useDataContext } from "../../../../../context/SendDataContext";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { DatePicker } from "../../../../components/elements/DatePicker";
 import { toast, ToastContainer } from "react-toastify";
 
