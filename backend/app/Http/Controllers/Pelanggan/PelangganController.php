@@ -56,6 +56,8 @@ class PelangganController extends Controller
 
         $data_tagihan = [
             'id_pelanggan' => $pelanggan->id,
+            'pelanggan_name' => $pelanggan->name,
+            'pelanggan_kecamatan' => $pelanggan->kecamatan,
             'name' => 'tagihan ' . $nama_bulan,
             'tanggal' => $tanggal_tagihan,
             'total_tagihan' => $pelanggan->paket->harga,
@@ -174,6 +176,9 @@ class PelangganController extends Controller
                     ]);
                 }
 
+                $last_tagihan->total_tagihan = $pelanggan->paket->harga;
+                $last_tagihan->save();
+
 
                 DB::commit();
             } catch (\Throwable $th) {
@@ -194,7 +199,18 @@ class PelangganController extends Controller
     public function destroy(string $id)
     {
         $pelanggan = Pelanggan::find($id);
-        $pelanggan->delete();
+
+        DB::beginTransaction();
+
+        try {
+            $pelanggan->tagihan()->where('status', 'Belum Lunas')->first()->delete();
+            $pelanggan->delete();
+            DB::commit();
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error' => $th->getMessage()
+            ]);
+        }
 
         return response()->json([
             'message' => 'Pelanggan berhasil dihapus.'

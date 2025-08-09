@@ -1,20 +1,11 @@
 // import { DataGrid, gridClasses } from '@mui/x-data-grid';
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   TableBody,
   TableHead,
 } from "../../../../components/elements/TableStructure";
-import { api } from "../../../../utils/helper/helper";
 import { ToastContainer } from "react-toastify";
-import { toast } from "react-toastify";
-import { ButtonAction } from "../../../../components/elements/Button";
-import {
-  CheckIcon,
-  PrintIcon,
-  SearchIcon,
-} from "../../../../assets/RegisterAsset";
 import Status from "../../../../components/elements/Status";
-import { useDateRange } from "../../../../../context/DateRangeContext";
 
 export const TablePelanggan = React.memo(({ data }) => {
 
@@ -62,14 +53,14 @@ export const TableTransaksi = ({data}) => {
         <TableHead value="Nama Pelanggan" />
         {data &&
           data.map((item, i) => (
-            <TableBody value={item?.pelanggan?.name} key={i} />
+            <TableBody value={item?.pelanggan_name} key={i} />
           ))}
       </div>
       <div className="w-full">
         <TableHead value="Kecamatan" />
         {data &&
           data.map((item, i) => (
-            <TableBody value={item?.pelanggan?.kecamatan} key={i} />
+            <TableBody value={item?.pelanggan_kecamatan} key={i} />
           ))}
       </div>
       <div className="w-full">
@@ -78,7 +69,7 @@ export const TableTransaksi = ({data}) => {
           data.map((item, i) => (
             <TableBody
               value={
-                item.pelanggan.paket.harga.toLocaleString("id-ID", {
+                item.total_tagihan.toLocaleString("id-ID", {
                   style: "currency",
                   currency: "IDR",
                   minimumFractionDigits: 0,
