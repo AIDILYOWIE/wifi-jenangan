@@ -108,7 +108,13 @@ class TagihanController extends Controller
             $tagihan->save();
 
             $tanggal_sebelumnya = Carbon::parse($tagihan->tanggal);
-            $tanggal_tagihan_selanjutnya = $tanggal_sebelumnya->copy()->addMonthNoOverflow()->day(20);
+            $tanggal_tagihan_selanjutnya = $tanggal_sebelumnya->copy()->addMonthNoOverflow();
+
+            if ($tanggal_sebelumnya->day == 1) {
+                $tanggal_tagihan_selanjutnya->day(1);
+            } else {
+                $tanggal_tagihan_selanjutnya->day(20);
+            }
 
             setlocale(LC_TIME, 'id_ID');
             $nama_bulan = $tanggal_tagihan_selanjutnya->isoFormat('MMMM');

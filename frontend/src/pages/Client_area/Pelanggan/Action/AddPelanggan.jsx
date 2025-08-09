@@ -131,6 +131,8 @@ const AddPelanggan = React.memo(
       if (type == "detail-pelanggan") {
         setDisabled(true);
       }
+
+      if (type == "edit-pelanggan") setDisabled(false)
     }, [data?.id, type]);
 
     return (
