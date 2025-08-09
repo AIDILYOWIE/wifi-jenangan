@@ -134,7 +134,7 @@ const Dashboard = () => {
           <div className="w-full overflow-x-auto">
             {dataDashboard.pelanggan?.length != 0   ? (<TablePelanggan data={dataDashboard?.pelanggan} />) : (
                 <div className={"w-full flex justify-center"}>
-                  <img src={ImgNull} srcSet={"tidak ada data"} width={"200px"}/>
+                  <img src={ImgNull} alt={"tidak ada data"} width={"200px"}/>
                 </div>
             )}
           </div>
@@ -151,7 +151,7 @@ const Dashboard = () => {
           <div className="w-full overflow-x-auto">
             {dataDashboard.tagihan?.length != 0  ? (<TableTransaksi data={dataDashboard?.tagihan} />) : (
                 <div className={"w-full flex justify-center"}>
-                  <img src={ImgNull} srcSet={"tidak ada data"} width={"200px"}/>
+                  <img src={ImgNull} alt={"tidak ada data"} width={"200px"}/>
                 </div>
             )}
           </div>

@@ -167,6 +167,7 @@ const AddPelanggan = React.memo(
               <div className="grid grid-cols-2 max-[576px]:grid-cols-1 w-full gap-[20px] max-[576px]:gap-[10px]">
                 <div className="">
                   <Input
+                    name="kode_pelanggan"
                     label="Kode Pelanggan"
                     value={newCode}
                     onChange={(e) => setKodePelanggan(e.target.value)}
@@ -186,6 +187,7 @@ const AddPelanggan = React.memo(
               <div className="grid grid-cols-2 max-[576px]:grid-cols-1 w-full gap-[20px] max-[576px]:gap-[10px]">
                 <div className="">
                   <Input
+                    name="nama_pelanggan"
                     label="Nama Pelanggan"
                     placeholder="Masukan Nama Pelanggan"
                     value={namaPelangan}
@@ -200,6 +202,7 @@ const AddPelanggan = React.memo(
                 </div>
                 <div className="">
                   <Input
+                    name="kecamatan"
                     label="Kecamatan"
                     placeholder="Masukan Kecamatan"
                     value={kecamatan}
@@ -216,6 +219,7 @@ const AddPelanggan = React.memo(
               <div className="grid grid-cols-2 max-[576px]:grid-cols-1 w-full gap-[20px] max-[576px]:gap-[10px]">
                 <div className="">
                   <Input
+                    name="desa"
                     label="Desa"
                     placeholder="Masukan Desa"
                     value={desa}
@@ -230,6 +234,7 @@ const AddPelanggan = React.memo(
                 </div>
                 <div className="">
                   <Input
+                    name="dusun"
                     label="Dusun / Jalan"
                     placeholder="Masukan Dusun / Jalan"
                     value={dusunJalan}
@@ -246,6 +251,7 @@ const AddPelanggan = React.memo(
               <div className="grid grid-cols-2 max-[576px]:grid-cols-1 w-full gap-[20px] max-[576px]:gap-[10px]">
                 <div className="">
                   <SelectPaket
+                    name="paket"
                     value={paket}
                     disabled={disabled}
                     variant={`${

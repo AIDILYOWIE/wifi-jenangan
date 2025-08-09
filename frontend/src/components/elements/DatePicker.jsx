@@ -156,11 +156,13 @@ export const DatePicker = React.memo(
             className="flex flex-col gap-[7px]"
           >
             <label
+              htmlFor="tanggal"
               className={` transition-all duration-200 pointer-events-none top-3 text-[14px] font-normal max-[576px]:text-[12px]`}
             >
               Tanggal Masuk
             </label>
             <input
+              id="tanggal"
               ref={inputRef}
               type="text"
               value={formatDate}

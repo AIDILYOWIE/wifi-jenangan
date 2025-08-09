@@ -82,14 +82,14 @@ input:focus {
 }
 
 #d-sudah-bayar {
-  background-image: url("/public/bg-sudah-bayar.png");
+  background-image: url("/public/bg-sudah-bayar.webp");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 
 #d-belum-bayar {
-  background-image: url("/public/bg-belum-bayar.png");
+  background-image: url("/public/bg-belum-bayar.webp");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
