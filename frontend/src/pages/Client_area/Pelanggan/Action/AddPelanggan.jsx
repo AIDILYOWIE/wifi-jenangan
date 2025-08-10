@@ -22,7 +22,7 @@ import { DatePicker } from "../../../../components/elements/DatePicker";
 import { toast, ToastContainer } from "react-toastify";
 
 const AddPelanggan = React.memo(
-  ({ open, setOpen, onClose, newCode, title }) => {
+  ({ open, setOpen, onClose, newCode, title, getDataPelanggan }) => {
     const { data, type } = useDataContext();
     const [namaPelangan, setNamaPelanggan] = useState("");
     const [kecamatan, setKecamatan] = useState("");

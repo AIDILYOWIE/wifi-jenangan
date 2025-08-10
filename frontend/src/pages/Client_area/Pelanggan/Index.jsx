@@ -108,7 +108,7 @@ const Pelanggan = () => {
         ) : (
             <div className="w-full p-5 bg-white border-[1px] border-(--border-color) rounded-[10px] ">
                 <div className="w-full overflow-x-auto flex flex-col">
-                    <Table />
+                    <Table getDataPelanggan={() => {getDataPelanggan()}} />
                 </div>
                 <div className={"flex flex-col justify-start"}>
                     <Pagination data={paginateData}/>
@@ -129,6 +129,7 @@ const Pelanggan = () => {
             setType(null);
           }, 400); // time disesuakian dengan duration AddPelanggan:142 * 2 
         }}
+        getDataPelanggan={() => {getDataPelanggan()}}
         newCode={newCode}
         title={title}
       />
