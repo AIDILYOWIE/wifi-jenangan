@@ -11,6 +11,7 @@ const HeaderPage = React.memo(
     onClick,
     buttonIcon = null,
     textButton = "Tambah",
+    buttonDisable = false,
     isHidden,
     type,
   }) => {
@@ -39,6 +40,7 @@ const HeaderPage = React.memo(
                       variant="primary"
                       className={` px-4 py-2 max-[576px]:px-2.5 max-[576px]:py-1.5 gap-1.5 max-[576px]:text-[12px] !text-sm max-[576px]:rounded-[6px] ${text == 'Dashboard' ? '' : 'max-[576px]:absolute max-[576px]:bottom-0' }  max-[576px]:right-[8px]`}
                       onClick={onClick}
+                      disabled={buttonDisable}
                   >
                       {buttonIcon}
                       <h6 className={`${text == 'Dashboard' ? '' : 'max-[576px]:hidden' } max-[576px]:text-[length:12px]`}>{textButton}</h6>

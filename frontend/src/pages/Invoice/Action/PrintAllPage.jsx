@@ -12,14 +12,14 @@ const PrintAllPage = () => {
 		try {
 			setIsLoading(true);
 			const response = await api.get(`/tagihan`, { params: { now, filter: desa } });
-			setDataTagihan(response.data.data.data || []);
+			setDataTagihan(response?.data?.data?.data || []);
 		} catch (error) {
 			console.error(error);
 		} finally {
 			setIsLoading(false);
 			setTimeout(function () {
 				window.print()
-			}, 300);
+			}, 500);
 		}
 	};
 

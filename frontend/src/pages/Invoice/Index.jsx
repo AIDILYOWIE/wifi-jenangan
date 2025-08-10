@@ -58,6 +58,7 @@ const Invoice = () => {
         onClick={() => { window.location.href = "/invoice/print-all/" + filterType }}
         textButton="Print All"
         buttonIcon={<PrintIcon />}
+        buttonDisable={filteredInvoice.length === 0 && desa.trim().length != 0 || desa === null}
         icon={
           <PrintIcon
             sx={{
@@ -85,7 +86,8 @@ const Invoice = () => {
             className="border w-full max-w-56 px-3 text-sm py-1 rounded-md mb-3 ml-auto"
           />
           <div className="w-full overflow-x-auto">
-            <Table dataInvoice={filteredInvoice.length ? filteredInvoice : dataInvoice} />
+            <Table dataInvoice={desa.trim().length > 0 ? filteredInvoice : dataInvoice} />
+            {/* <Table dataInvoice={filteredInvoice.length ? filteredInvoice : dataInvoice} /> */}
           </div>
           <div className={"flex flex-col justify-start"}>
             <Pagination data={paginateData} />
