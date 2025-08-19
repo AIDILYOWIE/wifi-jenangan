@@ -10,6 +10,7 @@ import Invoice from "../pages/Invoice/Index.jsx";
 import Transaksi from "../pages/Client_area/Transaksi/Index.jsx";
 import AddPelanggan from "../pages/Client_area/Pelanggan/Action/AddPelanggan.jsx";
 import PrintPage from "../pages/Invoice/Action/PrintPage.jsx";
+import PrintAllPage from "../pages/Invoice/Action/PrintAllPage.jsx";
 
 const router = createBrowserRouter([
     {
@@ -47,7 +48,16 @@ const router = createBrowserRouter([
     },
     {
         path : '/invoice',
-        element : <AuthMiddleware> <Invoice/> </AuthMiddleware>
+        children : [
+            {
+                index : true,
+                element : <AuthMiddleware> <Invoice/> </AuthMiddleware>
+            },
+            {
+                path : 'print-all/:desa?',
+                element : <AuthMiddleware> <PrintAllPage/> </AuthMiddleware>
+            }
+        ]
     },
 ])
 

@@ -18,7 +18,7 @@ import {
 import { useDataContext } from "../../../../../context/SendDataContext";
 import { toast, ToastContainer } from "react-toastify";
 
-const Table = React.memo(() => {
+const Table = React.memo(({ getDataPelanggan }) => {
   const { setData, setType, data } = useDataContext();
   const dataPelanggan = data?.dataPelanggan
 
@@ -39,7 +39,7 @@ const Table = React.memo(() => {
           const response = await api.delete(`/pelanggan/${data?.id}`);
           updateToastToSuccess(toastId, response.data.message);
           setTimeout(() => {
-            window.location.reload();
+            getDataPelanggan()
           }, 500);
         } catch (error) {
           updateToastToError(toastId, error.response.data.message);

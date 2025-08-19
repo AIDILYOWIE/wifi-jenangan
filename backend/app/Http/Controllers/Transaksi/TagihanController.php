@@ -16,15 +16,29 @@ class TagihanController extends Controller
 {
     public function getInvoice(Request $request)
     {
-
         $request->validate([
             "now" => ['required', 'date'],
+            "filter" => ['nullable', 'string']
         ]);
 
-        $now = $request->only('now');
+        $desa = $request->input('filter');
+        $now = $request->input('now');
 
         try {
-            $tagihan = Tagihan::with('pelanggan.paket')->where('tanggal', '<=', $now)->where('status', 'belum lunas')->orderBy('tanggal', 'asc')->paginate(10);
+            $tagihan = Tagihan::with('pelanggan.paket')
+                ->where('tanggal', '<=', $now)
+                ->where('status', 'belum lunas')
+                ->when($desa && strtolower($desa) !== 'all', function ($query) use ($desa) {
+                    $query->whereHas('pelanggan', function ($q) use ($desa) {
+                        $desaLower = strtolower($desa);
+                        $q->whereRaw('LOWER(desa) LIKE ?', ['%' . $desaLower . '%'])
+                            ->orWhereRaw('LOWER(kecamatan) LIKE ?', ['%' . $desaLower . '%']);
+                    });
+                })
+
+                ->orderBy('tanggal', 'asc')
+                ->paginate(10);
+
             return response()->json([
                 'message' => "Data Tagihan Didapatkan!",
                 'data' => $tagihan
@@ -36,6 +50,7 @@ class TagihanController extends Controller
             ]);
         }
     }
+
 
     public function getTransaksi(Request $request)
     {
@@ -55,7 +70,6 @@ class TagihanController extends Controller
                 // Start date saja → sampai sekarang
                 $endDate = Carbon::now()->endOfDay();
                 $query->whereBetween('tanggal', [$startDate, $endDate]);
-
             } elseif ($startDate && $endDate) {
                 // Start & end date ada
                 $query->whereBetween('tanggal', [$startDate, $endDate]);
@@ -73,7 +87,6 @@ class TagihanController extends Controller
                 'message' => "Data Transaksi Didapatkan!",
                 'data' => $tagihan
             ]);
-
         } catch (Exception $e) {
             return response()->json([
                 'message' => "Data Tagihan Gagal Didapatkan!",
