@@ -1,4 +1,4 @@
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import {
   TableBody,
   TableHead,
@@ -20,14 +20,14 @@ const Table = ({dataTransaksi}) => {
         <TableHead value="Nama Pelanggan" />
         {dataTransaksi &&
           dataTransaksi.map((item, i) => (
-            <TableBody value={item?.pelanggan?.name} key={i} />
+            <TableBody value={item?.pelanggan_name} key={i} />
           ))}
       </div>
       <div className="w-full">
         <TableHead value="Kecamatan" />
         {dataTransaksi &&
           dataTransaksi.map((item, i) => (
-            <TableBody value={item?.pelanggan?.kecamatan} key={i} />
+            <TableBody value={item?.pelanggan_kecamatan} key={i} />
           ))}
       </div>
       <div className="w-full">
@@ -36,7 +36,7 @@ const Table = ({dataTransaksi}) => {
           dataTransaksi.map((item, i) => (
             <TableBody
               value={
-                item.pelanggan.paket.harga.toLocaleString("id-ID", {
+                item.total_tagihan.toLocaleString("id-ID", {
                   style: "currency",
                   currency: "IDR",
                   minimumFractionDigits: 0,

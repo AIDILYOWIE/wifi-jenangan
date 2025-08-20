@@ -14,11 +14,39 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        // user
         User::factory()->create([
             'name' => 'admin',
-            'email' => 'admin@gmail.com',
+            'email' => 'admin@mail.com',
+        ]);
+
+        // paket
+        Paket::insert([
+            [
+                'name' => 'Paket 1',
+                'harga' => 100000,
+                'created_at' => now()
+            ],
+            [
+                'name' => 'Paket 2',
+                'harga' => 150000,
+                'created_at' => now()
+            ],
+            [
+                'name' => 'Paket 3',
+                'harga' => 200000,
+                 'created_at' => now()
+            ],
+            [
+                'name' => 'Paket 4',
+                'harga' => 250000,
+                'created_at' => now()
+            ],
+            [
+                'name' => 'Paket 5',
+                'harga' => 300000,
+                'created_at' => now()
+            ],
         ]);
 
 

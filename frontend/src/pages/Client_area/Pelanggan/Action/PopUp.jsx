@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
 ("use client");
+import { useEffect } from "react";
 
 import { useState } from "react";
 import {
@@ -68,7 +68,7 @@ const PopupDelete = () => {
                     isDelete: true,
                   }));
                 }}
-                className="inline-flex w-full justify-center rounded-md bg-(--color-delete) px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 sm:ml-3 sm:w-auto"
+                className="inline-flex w-full cursor-pointer justify-center rounded-md bg-(--color-delete) px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 sm:ml-3 sm:w-auto"
               >
                 Delete
               </button>
@@ -82,7 +82,7 @@ const PopupDelete = () => {
                     popupDelete: false,
                   }))
                 }}
-                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-light text-(--border-color) border-(--border-color) border-[1px] ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                className="mt-3 inline-flex cursor-pointer w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-light text-(--border-color) border-(--border-color) border-[1px] ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto"
               >
                 Cancel
               </button>

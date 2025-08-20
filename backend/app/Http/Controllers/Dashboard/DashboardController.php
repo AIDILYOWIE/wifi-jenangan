@@ -40,12 +40,12 @@ class DashboardController extends Controller
             $belumLunasSum = (clone $baseQuery)
                 ->where('status', 'Belum Lunas')
                 ->get()
-                ->sum(fn($t) => optional(optional($t->pelanggan)->paket)->harga ?? 0);
+                ->sum(fn($t) => $t->total_tagihan ?? 0);
 
             $lunasSum = (clone $baseQuery)
                 ->where('status', 'Lunas')
                 ->get()
-                ->sum(fn($t) => optional(optional($t->pelanggan)->paket)->harga ?? 0);
+                ->sum(fn($t) => $t->total_tagihan ?? 0);
 
             // Ambil 5 pelanggan terbaru (berdasarkan tanggal_pemasangan di rentang yang sama)
             $pelangganMasuk = Pelanggan::whereBetween('tanggal_pemasangan', [$startDate, $endDate])
