@@ -4,7 +4,7 @@ import {
   TableHead,
 } from "../../../components/elements/TableStructure";
 import { ButtonAction } from "../../../components/elements/Button";
-import { api, throttle, updateToastToError, updateToastToSuccess } from "../../../utils/helper/helper";
+import { api, getRole, throttle, updateToastToError, updateToastToSuccess } from "../../../utils/helper/helper";
 import { CheckIcon, PrintIcon } from "../../../assets/RegisterAsset";
 import { toast, ToastContainer } from "react-toastify";
 import PrintPage from "../Action/PrintPage";
@@ -65,16 +65,16 @@ const Table = ({dataInvoice}) => {
   }, [isPrintReady, triggerPrint, selectedId, reactToPrintFn]);
 
   const confirmTagihan = (id) => {throttle(() => {
-    const toastId = toast.loading("Mengkonfirmasi...");
-    api
-      .put(`/tagihan/${id}`)
-      .then(() => {
-        updateToastToSuccess(toastId, "Tagihan berhasil dikonfirmasi!");
-        setTimeout(() => window.location.reload(), 1000);
-      })
-      .catch((err) => updateToastToError(toastId, err.response.data.message));
-  
-  }, 3000)};
+      const toastId = toast.loading("Mengkonfirmasi...");
+      api
+        .put(`/tagihan/${id}`)
+        .then(() => {
+          updateToastToSuccess(toastId, "Tagihan berhasil dikonfirmasi!");
+          setTimeout(() => window.location.reload(), 1000);
+        })
+        .catch((err) => updateToastToError(toastId, err.response.data.message));
+
+    }, 3000)};
 
   return (
     <>
@@ -114,13 +114,15 @@ const Table = ({dataInvoice}) => {
               >
                 <CheckIcon sx={{ fontSize: "20px" }} />
               </ButtonAction>
-              <ButtonAction
-                onClick={() => handlePrint(item.id)}
-                style={"bg-(--bg-detail)"}
-                disabled={triggerPrint} // Disable saat sedang print
-              >
-                <PrintIcon sx={{ color: "#5FC7FF", fontSize: "20px" }} />
-              </ButtonAction>
+              {getRole.get() == 'admin' &&
+                <ButtonAction
+                  onClick={() => handlePrint(item.id)}
+                  style={"bg-(--bg-detail)"}
+                  disabled={triggerPrint} // Disable saat sedang print
+                >
+                  <PrintIcon sx={{ color: "#5FC7FF", fontSize: "20px" }} />
+                </ButtonAction>
+              }
             </TableBody>
           ))}
         </div>

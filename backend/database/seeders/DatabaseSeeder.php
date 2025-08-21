@@ -3,7 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\Paket;
+use App\Models\Pelanggan;
+use App\Models\Tagihan;
 use App\Models\User;
+use App\Models\UserRoles;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +17,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
+        // roles
+        foreach (["collector", "admin"] as $role) {
+            UserRoles::insert([
+                "name" => $role
+            ]);
+        }
+        
         // user
         User::factory()->create([
             'name' => 'admin',
