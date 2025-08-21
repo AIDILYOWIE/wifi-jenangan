@@ -21,7 +21,7 @@ import { useEffect, useState } from "react";
 import { DatePicker } from "../../../../components/elements/DatePicker";
 import { toast, ToastContainer } from "react-toastify";
 
-const AddPelanggan = React.memo(
+const AddCollector = React.memo(
   ({ open, setOpen, onClose, newCode, title, getDataPelanggan }) => {
     const { data, type } = useDataContext();
     const [namaKolektor, setNamaKolektor] = useState("");
@@ -264,4 +264,4 @@ const AddPelanggan = React.memo(
     );
   }
 );
-export default AddPelanggan;
+export default AddCollector;
