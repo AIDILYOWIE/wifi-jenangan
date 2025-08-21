@@ -276,7 +276,7 @@ const AddPelanggan = React.memo(
                       } max-[576px]:text-[10px] max-[576px]:rounded-[5px]`}
                   />
                 </div>
-                <div className="">
+                <div className="w-full flex flex-col gap-[7px]">
                   <p className="text-[14px] max-[576px]:text-[12px] font-normal">
                     Penarik
                   </p>
@@ -284,8 +284,12 @@ const AddPelanggan = React.memo(
                     name="collector"
                     id="collector"
                     value={collectorId}
+                    disabled={disabled}
                     onChange={(e) => setCollectorId(Number(e.target.value))}
-                    className="w-full border border-gray-400 text-gray-700 rounded-lg px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className={`w-full border border-gray-400 text-gray-700 rounded-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 ${type == "edit-pelanggan" || type == "add-pelanggan"
+                      ? "!text-(--text-color) "
+                      : "!text-(--border-color) "
+                      } max-[576px]:text-[1px] max-[576px]:rounded-[5px]`}
                   >
                     <option value={0}>-- Pilih --</option>
                     {collector.map((item, i) => (
