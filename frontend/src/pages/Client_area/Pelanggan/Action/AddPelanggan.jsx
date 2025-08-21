@@ -22,7 +22,7 @@ import { DatePicker } from "../../../../components/elements/DatePicker";
 import { toast, ToastContainer } from "react-toastify";
 
 const AddPelanggan = React.memo(
-  ({ open, setOpen, onClose, newCode, title, getDataPelanggan }) => {
+  ({ open, setOpen, onClose, newCode, title, getDataPelanggan, collectorId, setCollectorId }) => {
     const { data, type } = useDataContext();
     const [namaPelangan, setNamaPelanggan] = useState("");
     const [kecamatan, setKecamatan] = useState("");
@@ -34,17 +34,21 @@ const AddPelanggan = React.memo(
     const [disabled, setDisabled] = useState(false);
     const [haveTagihan, setHaveTagihan] = useState(false);
 
+    const [collector, setCollector] = useState([])
+
 
     // handle kondisi
-    const handleSubmit = () => {throttle(async () => {
-      if (type == "add-pelanggan") {
-        handleAddPelanggan();
-      } else if (type == "edit-pelanggan") {
-        handleEditPelanggan();
-      } else {
-        setDisabled(false)
-      }
-    }, 3000)}
+    const handleSubmit = () => {
+      throttle(async () => {
+        if (type == "add-pelanggan") {
+          handleAddPelanggan();
+        } else if (type == "edit-pelanggan") {
+          handleEditPelanggan();
+        } else {
+          setDisabled(false)
+        }
+      }, 3000)
+    }
 
     // handle Add Pelanggan
     const handleAddPelanggan = async () => {
@@ -57,6 +61,7 @@ const AddPelanggan = React.memo(
           desa: desa,
           dusun: dusunJalan,
           id_paket: data?.paket_id,
+          assign_to: collectorId === 0 ? null : collectorId,
         });
 
         updateToastToSuccess(toastId, response.data.message);
@@ -79,6 +84,7 @@ const AddPelanggan = React.memo(
           desa: dusunJalan,
           dusun: dusunJalan,
           id_paket: data?.paket_id || paket,
+          assign_to: collectorId === 0 ? null : collectorId,
         });
         updateToastToSuccess(toastId, response.data.message);
         setTimeout(() => {
@@ -102,10 +108,12 @@ const AddPelanggan = React.memo(
         setDesa(res.desa);
         setDusunJalan(res.dusun);
         setPaket(res.paket.id || paket);
+        setCollectorId(res.collector?.id || 0);
       } catch (error) {
         console.log(error);
       }
     };
+
     useEffect(() => {
       if (
         data?.id &&
@@ -130,6 +138,20 @@ const AddPelanggan = React.memo(
 
       if (type == "edit-pelanggan") setDisabled(false)
     }, [data?.id, type]);
+
+    function getCollector() {
+      api.get('/kolektor?take=9999')
+        .then(res => {
+          setCollector(res.data?.data.data || []);
+        })
+        .catch(err => {
+          console.log(err.response)
+        })
+    }
+    useEffect(() => {
+      getCollector()
+    
+    }, [])
 
     return (
       <Dialog open={open} onClose={setOpen} className="relative z-90">
@@ -174,12 +196,12 @@ const AddPelanggan = React.memo(
                   />
                 </div>
                 <div className="">
-                    <DatePicker
-                      value={tanggalMasuk}
-                      disabled={disabled}
-                      haveTagihan={haveTagihan}
-                      type={type}
-                    />
+                  <DatePicker
+                    value={tanggalMasuk}
+                    disabled={disabled}
+                    haveTagihan={haveTagihan}
+                    type={type}
+                  />
                 </div>
               </div>
               <div className="grid grid-cols-2 max-[576px]:grid-cols-1 w-full gap-[20px] max-[576px]:gap-[10px]">
@@ -191,11 +213,10 @@ const AddPelanggan = React.memo(
                     value={namaPelangan}
                     disabled={disabled}
                     onChange={(e) => setNamaPelanggan(e.target.value)}
-                    variant={`text-[12px] ${
-                      type == "edit-pelanggan" || type == "add-pelanggan"
-                        ? "!text-(--text-color) "
-                        : "!text-(--border-color) "
-                    }  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1 max-[576px]:text-[10px] max-[576px]:rounded-[5px]`}
+                    variant={`text-[12px] ${type == "edit-pelanggan" || type == "add-pelanggan"
+                      ? "!text-(--text-color) "
+                      : "!text-(--border-color) "
+                      }  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1 max-[576px]:text-[10px] max-[576px]:rounded-[5px]`}
                   />
                 </div>
                 <div className="">
@@ -206,11 +227,10 @@ const AddPelanggan = React.memo(
                     value={kecamatan}
                     disabled={disabled}
                     onChange={(e) => setKecamatan(e.target.value)}
-                    variant={`text-[12px] ${
-                      type == "edit-pelanggan" || type == "add-pelanggan"
-                        ? "!text-(--text-color) "
-                        : "!text-(--border-color) "
-                    }  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1 max-[576px]:text-[10px] max-[576px]:rounded-[5px]`}
+                    variant={`text-[12px] ${type == "edit-pelanggan" || type == "add-pelanggan"
+                      ? "!text-(--text-color) "
+                      : "!text-(--border-color) "
+                      }  border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1 max-[576px]:text-[10px] max-[576px]:rounded-[5px]`}
                   />
                 </div>
               </div>
@@ -223,11 +243,10 @@ const AddPelanggan = React.memo(
                     value={desa}
                     disabled={disabled}
                     onChange={(e) => setDesa(e.target.value)}
-                    variant={`text-[12px] ${
-                      type == "edit-pelanggan" || type == "add-pelanggan"
-                        ? "!text-(--text-color) "
-                        : "!text-(--border-color) "
-                    } border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1 max-[576px]:text-[10px] max-[576px]:rounded-[5px]`}
+                    variant={`text-[12px] ${type == "edit-pelanggan" || type == "add-pelanggan"
+                      ? "!text-(--text-color) "
+                      : "!text-(--border-color) "
+                      } border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1 max-[576px]:text-[10px] max-[576px]:rounded-[5px]`}
                   />
                 </div>
                 <div className="">
@@ -238,11 +257,10 @@ const AddPelanggan = React.memo(
                     value={dusunJalan}
                     disabled={disabled}
                     onChange={(e) => setDusunJalan(e.target.value)}
-                    variant={`text-[12px] ${
-                      type == "edit-pelanggan" || type == "add-pelanggan"
-                        ? "!text-(--text-color) "
-                        : "!text-(--border-color) "
-                    } border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1 max-[576px]:text-[10px] max-[576px]:rounded-[5px]`}
+                    variant={`text-[12px] ${type == "edit-pelanggan" || type == "add-pelanggan"
+                      ? "!text-(--text-color) "
+                      : "!text-(--border-color) "
+                      } border-[1px] rounded-(--border-radius) border-(--border-color) px-2.5 py-1.5 gap-1 max-[576px]:text-[10px] max-[576px]:rounded-[5px]`}
                   />
                 </div>
               </div>
@@ -252,32 +270,50 @@ const AddPelanggan = React.memo(
                     name="paket"
                     value={paket}
                     disabled={disabled}
-                    variant={`${
-                      type == "edit-pelanggan" || type == "add-pelanggan"
-                        ? "!text-(--text-color) "
-                        : "!text-(--border-color) "
-                    } max-[576px]:text-[10px] max-[576px]:rounded-[5px]`}
+                    variant={`${type == "edit-pelanggan" || type == "add-pelanggan"
+                      ? "!text-(--text-color) "
+                      : "!text-(--border-color) "
+                      } max-[576px]:text-[10px] max-[576px]:rounded-[5px]`}
                   />
+                </div>
+                <div className="">
+                  <p className="text-[14px] max-[576px]:text-[12px] font-normal">
+                    Penarik
+                  </p>
+                  <select
+                    name="collector"
+                    id="collector"
+                    value={collectorId}
+                    onChange={(e) => setCollectorId(Number(e.target.value))}
+                    className="w-full border border-gray-400 text-gray-700 rounded-lg px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value={0}>-- Pilih --</option>
+                    {collector.map((item, i) => (
+                      <option key={i} value={item.id}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
 
               <div className="w-full flex justify-end">
-                  <Button
-                    className={` ${disabled ? 'hidden' : ''} w-max rounded-[5px] max-[576px]:text-[12px] text-(--background-color) px-3 !py-1.5 gap-1.5`}
-                    variant="primary"
-                    disabled={disabled}
-                    onClick={() => {
-                      handleSubmit();
+                <Button
+                  className={` ${disabled ? 'hidden' : ''} w-max rounded-[5px] max-[576px]:text-[12px] text-(--background-color) px-3 !py-1.5 gap-1.5`}
+                  variant="primary"
+                  disabled={disabled}
+                  onClick={() => {
+                    handleSubmit();
+                  }}
+                >
+                  <CheckOutlinedIcon
+                    sx={{
+                      fontSize: "14px",
+                      color: " #ffff",
                     }}
-                  >
-                    <CheckOutlinedIcon
-                      sx={{
-                        fontSize: "14px",
-                        color: " #ffff",
-                      }}
-                    />
-                    Submit
-                  </Button>
+                  />
+                  Submit
+                </Button>
               </div>
             </div>
           </div>

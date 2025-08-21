@@ -11,7 +11,7 @@ import AddPelanggan from "./Action/AddPelanggan";
 import { api } from "../../../utils/helper/helper";
 import { useDataContext } from "../../../../context/SendDataContext";
 import PopupDelete from "./Action/PopUp";
-import {ImgNull} from "../../../assets/RegisterAsset";
+import { ImgNull } from "../../../assets/RegisterAsset";
 import Pagination from "../../../components/fragments/Pagination";
 import { useSearchParams } from "react-router-dom";
 
@@ -27,23 +27,26 @@ const Pelanggan = () => {
   const [title, setTitle] = useState('')
   const [dataPelanggan, setDataPelanggan] = useState([])
 
-    const getDataPelanggan = async () => {
-        try {
-            const response = await api.get("/pelanggan?page=" + page );
-            setDataPelanggan(response?.data?.data?.data);
-            setPaginateData(response?.data?.data);
-            setData((prev) => ({
-                ...prev,
-                dataPelanggan: response?.data?.data?.data
-            }))
-        } catch (error) {
-            console.log(error);
-        }
-    };
+  const [collectorId, setCollectorId] = useState("");
 
-    useEffect(() => {
-        getDataPelanggan();
-    }, [page]);
+
+  const getDataPelanggan = async () => {
+    try {
+      const response = await api.get("/pelanggan?page=" + page);
+      setDataPelanggan(response?.data?.data?.data);
+      setPaginateData(response?.data?.data);
+      setData((prev) => ({
+        ...prev,
+        dataPelanggan: response?.data?.data?.data
+      }))
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getDataPelanggan();
+  }, [page]);
 
   function toggleModalCreate() {
     setType("add-pelanggan");
@@ -57,7 +60,7 @@ const Pelanggan = () => {
       setOpen(true);
       setTitle('Buat Pelanggan')
     } else if (type == 'detail-pelanggan') {
-      setOpen(true) 
+      setOpen(true)
       setTitle('Detail Pelanggan')
     }
   }, [data, type]);
@@ -101,20 +104,20 @@ const Pelanggan = () => {
           />
         }
       />
-        {dataPelanggan?.length === 0 || paginateData?.length === 0 || !paginateData  ? (
-            <div className={"w-full flex justify-center"}>
-                <img src={ImgNull} className={'w-[300px] max-[576px]:w-[200px]'} alt={"null data"}/>
-            </div>
-        ) : (
-            <div className="w-full p-5 bg-white border-[1px] border-(--border-color) rounded-[10px] ">
-                <div className="w-full overflow-x-auto flex flex-col">
-                    <Table getDataPelanggan={() => {getDataPelanggan()}} />
-                </div>
-                <div className={"flex flex-col justify-start"}>
-                    <Pagination data={paginateData}/>
-                </div>
-            </div>
-        )}
+      {dataPelanggan?.length === 0 || paginateData?.length === 0 || !paginateData ? (
+        <div className={"w-full flex justify-center"}>
+          <img src={ImgNull} className={'w-[300px] max-[576px]:w-[200px]'} alt={"null data"} />
+        </div>
+      ) : (
+        <div className="w-full p-5 bg-white border-[1px] border-(--border-color) rounded-[10px] ">
+          <div className="w-full overflow-x-auto flex flex-col">
+            <Table getDataPelanggan={() => { getDataPelanggan() }} />
+          </div>
+          <div className={"flex flex-col justify-start"}>
+            <Pagination data={paginateData} />
+          </div>
+        </div>
+      )}
 
       {/* Modal */}
       <AddPelanggan
@@ -123,22 +126,25 @@ const Pelanggan = () => {
           setOpen(false);
           setType('add-pelanggan');
         }}
+        collectorId = {collectorId}
+        setCollectorId = {setCollectorId}
         onClose={() => {
           setOpen(false);
-          setTimeout(function() {
+          setCollectorId(0)
+          setTimeout(function () {
             setType(null);
           }, 400); // time disesuakian dengan duration AddPelanggan:142 * 2 
         }}
-        getDataPelanggan={() => {getDataPelanggan()}}
+        getDataPelanggan={() => { getDataPelanggan() }}
         newCode={newCode}
         title={title}
       />
 
-      <PopupDelete/>
+      <PopupDelete />
 
     </BaseLayout>
 
-    
+
   );
 };
 

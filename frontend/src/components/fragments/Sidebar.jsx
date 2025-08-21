@@ -39,10 +39,10 @@ const Sidebars = ({ setSidebarIsOpen }) => {
           {getRole.get() == "admin" &&
             <>
               <Navlink to="/kolektor" sidebarOpen={sidebarOpen} icon={<Person4Icon />}> Kolektor</Navlink>
-              <Navlink to="/pelanggan" sidebarOpen={sidebarOpen} icon={<PeopleOutlinedIcon />}> Pelanggan</Navlink>
-              <Navlink to="/transaksi" sidebarOpen={sidebarOpen} icon={<ReceiptOutlinedIcon />}> Transaksi</Navlink>
             </>
           }
+          <Navlink to="/pelanggan" sidebarOpen={sidebarOpen} icon={<PeopleOutlinedIcon />}> Pelanggan</Navlink>
+          <Navlink to="/transaksi" sidebarOpen={sidebarOpen} icon={<ReceiptOutlinedIcon />}> Transaksi</Navlink>
           <Navlink to="/invoice" sidebarOpen={sidebarOpen} icon={<ReceiptLongOutlinedIcon />}> Invoice</Navlink>
 
         </div>

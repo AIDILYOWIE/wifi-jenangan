@@ -14,6 +14,7 @@ import {
   api,
   updateToastToSuccess,
   updateToastToError,
+  getRole,
 } from "../../../../utils/helper/helper";
 import { useDataContext } from "../../../../../context/SendDataContext";
 import { toast, ToastContainer } from "react-toastify";
@@ -82,39 +83,50 @@ const Table = React.memo(({ getDataPelanggan }) => {
           ))}
       </div>
       <div className="w-full">
+        <TableHead value="Penarik" />
+        {dataPelanggan &&
+          dataPelanggan.map((item, i) => (
+            <TableBody value={item.collector?.name ?? '-'} key={i} />
+          ))}
+      </div>
+      <div className="w-full">
         <TableHead value="Action" style="rounded-r-[10px]" />
         {dataPelanggan &&
           dataPelanggan.map((item, i) => {
             return (
               <TableBody type="action" key={i}>
-                <ButtonAction
-                  style={"bg-(--bg-edit)"}
-                  onClick={() => {
-                    handleEdit(item.id);
-                  }}
-                >
-                  <EditIcon
-                    sx={{
-                      color: "#FFDC00",
-                      fontSize: "20px",
-                    }}
-                  />
-                </ButtonAction>
-                <ButtonAction style={"bg-(--bg-delete)"}
-                  onClick={() => {
-                    setData((prev) => ({
-                      ...prev,
-                      id: item.id,
-                      popupDelete: true,
-                    }));
-                  }}>
-                  <DeleteIcon
-                    sx={{
-                      color: "#FF0004",
-                      fontSize: "20px",
-                    }}
-                  />
-                </ButtonAction>
+                {getRole.get() == 'admin' &&
+                  <>
+                    <ButtonAction
+                      style={"bg-(--bg-edit)"}
+                      onClick={() => {
+                        handleEdit(item.id);
+                      }}
+                    >
+                      <EditIcon
+                        sx={{
+                          color: "#FFDC00",
+                          fontSize: "20px",
+                        }}
+                      />
+                    </ButtonAction>
+                    <ButtonAction style={"bg-(--bg-delete)"}
+                      onClick={() => {
+                        setData((prev) => ({
+                          ...prev,
+                          id: item.id,
+                          popupDelete: true,
+                        }));
+                      }}>
+                      <DeleteIcon
+                        sx={{
+                          color: "#FF0004",
+                          fontSize: "20px",
+                        }}
+                      />
+                    </ButtonAction>
+                  </>
+                }
                 <ButtonAction
                   style={"bg-(--bg-detail)"}
                   onClick={() => handleDetail(item.id)}

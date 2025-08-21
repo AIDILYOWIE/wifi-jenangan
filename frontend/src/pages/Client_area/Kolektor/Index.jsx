@@ -8,7 +8,6 @@ import {
 import Table from "./Datagrid/Table";
 import { useEffect, useState } from "react";
 import HeaderPage from "../../../components/fragments/Header";
-import AddPelanggan from "./Action/AddPelanggan";
 import { api, updateToastToError, updateToastToSuccess } from "../../../utils/helper/helper";
 import { useDataContext } from "../../../../context/SendDataContext";
 import PopupDelete from "./Action/PopUp";
@@ -16,6 +15,7 @@ import { ImgNull } from "../../../assets/RegisterAsset";
 import Pagination from "../../../components/fragments/Pagination";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import AddCollector from "./Action/AddCollector";
 
 const Kolektor = () => {
   const [open, setOpen] = useState(false);
@@ -137,7 +137,7 @@ const Kolektor = () => {
       )}
 
       {/* Modal */}
-      <AddPelanggan
+      <AddCollector
         open={open}
         setOpen={() => {
           setOpen(false);
