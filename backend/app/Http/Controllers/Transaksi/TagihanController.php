@@ -35,7 +35,11 @@ class TagihanController extends Controller
                             ->orWhereRaw('LOWER(kecamatan) LIKE ?', ['%' . $desaLower . '%']);
                     });
                 })
-
+                ->when(auth()->user()->role_id == 1, function ($q) {
+                    $q->whereHas('pelanggan', function ($sub) {
+                        $sub->where('assign_to', auth()->id());
+                    });
+                })
                 ->orderBy('tanggal', 'asc')
                 ->paginate(10);
 
@@ -81,7 +85,14 @@ class TagihanController extends Controller
                 $query->whereBetween('tanggal', [$startDate, $endDate]);
             }
 
-            $tagihan = $query->paginate(10);
+            $tagihan = $query
+                ->when(auth()->user()->role_id == 1, function ($q) {
+                    $q->whereHas('pelanggan', function ($sub) {
+                        $sub->where('assign_to', auth()->id());
+                    });
+                })
+                ->paginate(10);
+
 
             return response()->json([
                 'message' => "Data Transaksi Didapatkan!",

@@ -10,6 +10,13 @@ export const CurrentToken = {
     remove : () => localStorage.removeItem('auth_token')
 }
 
+// role service
+export const getRole =  {
+    get : () => localStorage.getItem('role'),
+    set : (role) => localStorage.setItem('role', role),
+    remove : () => localStorage.removeItem('role')
+}
+
 // api helper
 import axios from "axios";
 

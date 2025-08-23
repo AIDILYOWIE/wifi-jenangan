@@ -11,6 +11,7 @@ import Transaksi from "../pages/Client_area/Transaksi/Index.jsx";
 import AddPelanggan from "../pages/Client_area/Pelanggan/Action/AddPelanggan.jsx";
 import PrintPage from "../pages/Invoice/Action/PrintPage.jsx";
 import PrintAllPage from "../pages/Invoice/Action/PrintAllPage.jsx";
+import Kolektor from "../pages/Client_area/Kolektor/Index.jsx";
 
 const router = createBrowserRouter([
     {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
     {
         path : '/',
         element : <AuthMiddleware> <Dashboard/> </AuthMiddleware>
+    },
+    {
+        path : '/kolektor',
+        element : <AuthMiddleware> <Kolektor/></AuthMiddleware>
     },
     {
         path : '/pelanggan',

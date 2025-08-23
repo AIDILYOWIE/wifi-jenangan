@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('desa');
             $table->string('kecamatan');
             $table->date('tanggal_pemasangan');
+            $table->foreignId('assign_to')->nullable()->constrained('users')->nullOnDelete()->onUpdate('cascade');
         });
     }
 

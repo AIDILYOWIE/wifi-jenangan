@@ -34,7 +34,12 @@ class DashboardController extends Controller
             $endDate = Carbon::parse($endDate)->timezone('Asia/Jakarta')->toDateString();
 
             // Base query dengan eager loading
-            $baseQuery = Tagihan::with('pelanggan.paket')->whereBetween('tanggal', [$startDate, $endDate]);
+            $baseQuery = Tagihan::with('pelanggan.paket')
+                ->when(auth()->user()->role_id == 1, function ($q) {
+                    $q->whereHas('pelanggan', function ($sub) {
+                        $sub->where('assign_to', auth()->id());
+                    });
+                })->whereBetween('tanggal', [$startDate, $endDate]);
 
             // Hitung total berdasarkan status
             $belumLunasSum = (clone $baseQuery)
@@ -49,6 +54,9 @@ class DashboardController extends Controller
 
             // Ambil 5 pelanggan terbaru (berdasarkan tanggal_pemasangan di rentang yang sama)
             $pelangganMasuk = Pelanggan::whereBetween('tanggal_pemasangan', [$startDate, $endDate])
+                ->when(auth()->user()->role_id == 1, function ($q) {
+                    $q->where('assign_to', auth()->id());
+                })
                 ->orderByDesc('tanggal_pemasangan')
                 ->limit(5)
                 ->get();
