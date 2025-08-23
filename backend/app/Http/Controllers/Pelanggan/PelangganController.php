@@ -35,9 +35,10 @@ class PelangganController extends Controller
             'desa' => ['required'],
             'dusun' => ['required'],
             'id_paket' => ['required', 'exists:paket,id'],
+            'assign_to' => ['nullable', 'exists:users,id']
         ]);
 
-        return $request->only(['name', 'tanggal_pemasangan', 'dusun', 'desa', 'kecamatan', 'id_paket']);
+        return $request->only(['name', 'tanggal_pemasangan', 'dusun', 'desa', 'kecamatan', 'id_paket', 'assign_to']);
     }
 
     private function prepareDataTagihan($request, $pelanggan)
@@ -94,7 +95,11 @@ class PelangganController extends Controller
     public function index()
     {
         try {
-            $pelanggan = Pelanggan::with('tagihan')->orderByDesc('kode_pelanggan')->paginate(10);
+            $pelanggan = Pelanggan::with(['tagihan', 'collector'])->orderByDesc('kode_pelanggan')
+            ->when(auth()->user()->role_id == 1, function ($q) {
+                $q->where('assign_to', auth()->id());
+            })
+            ->paginate(10);
 
             return response()->json([
                 'message' => 'List pelanggan berhasil diambil.',
@@ -140,7 +145,7 @@ class PelangganController extends Controller
      */
     public function show(string $id)
     {
-        $pelanggan = Pelanggan::with(['paket', 'tagihan'])->find($id);
+        $pelanggan = Pelanggan::with(['paket', 'tagihan', 'collector'])->find($id);
 
         $pelanggan->have_tagihan_lunas = $pelanggan->tagihan->contains('status', 'Lunas');
 

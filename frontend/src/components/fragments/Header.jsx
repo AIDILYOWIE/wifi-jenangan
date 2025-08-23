@@ -3,6 +3,7 @@ import { AddOutlinedIcon } from "../../assets/RegisterAsset";
 import Button from "../elements/Button";
 import ButtonContext, { ButtonProvider } from "../../../context/ButtonContext";
 import DateRangePicker from "../elements/DateRangePicker";
+import { getRole } from "../../utils/helper/helper";
 
 const HeaderPage = React.memo(
   ({
@@ -27,24 +28,32 @@ const HeaderPage = React.memo(
             </h1>
           </div>
           <div
-            className={`w-full justify-end items-center gap-x-3 ${
-              isHidden !== true ? "flex" : "hidden"
-            }`}
+            className={`w-full justify-end items-center gap-x-3 ${isHidden !== true ? "flex" : "hidden"
+              }`}
           >
             {type === "date-range" &&
               <DateRangePicker />
             }
-              {(text != 'Transaksi') && (
-                  <Button
-                      width="w-max"
-                      variant="primary"
-                      className={` px-4 py-2 max-[576px]:px-2.5 max-[576px]:py-1.5 gap-1.5 max-[576px]:text-[12px] !text-sm max-[576px]:rounded-[6px] ${text == 'Dashboard' ? '' : 'max-[576px]:absolute max-[576px]:bottom-0' }  max-[576px]:right-[8px]`}
-                      onClick={onClick}
-                      disabled={buttonDisable}
-                  >
-                      {buttonIcon}
-                      <h6 className={`${text == 'Dashboard' ? '' : 'max-[576px]:hidden' } max-[576px]:text-[length:12px]`}>{textButton}</h6>
-                  </Button>)}
+            {getRole.get() === 'admin' && text !== 'Transaksi' && (
+              <Button
+                width="w-max"
+                variant="primary"
+                className={`px-4 py-2 max-[576px]:px-2.5 max-[576px]:py-1.5 gap-1.5 max-[576px]:text-[12px] !text-sm max-[576px]:rounded-[6px] ${text === 'Dashboard'
+                    ? ''
+                    : 'max-[576px]:absolute max-[576px]:bottom-0'
+                  } max-[576px]:right-[8px]`}
+                onClick={onClick}
+                disabled={buttonDisable}
+              >
+                {buttonIcon}
+                <h6
+                  className={`${text === 'Dashboard' ? '' : 'max-[576px]:hidden'
+                    } max-[576px]:text-[length:12px]`}
+                >
+                  {textButton}
+                </h6>
+              </Button>
+            )}
           </div>
         </div>
       </ButtonProvider>

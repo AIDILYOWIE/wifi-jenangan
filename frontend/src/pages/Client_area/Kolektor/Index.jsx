@@ -2,21 +2,26 @@ import BaseLayout from "../../../components/layouts/BaseLayout";
 import {
   AddOutlinedIcon,
   PeopleAltOutlinedIcon,
+  Person4Icon,
   PrintIcon,
 } from "../../../assets/RegisterAsset";
 import Table from "./Datagrid/Table";
 import { useEffect, useState } from "react";
 import HeaderPage from "../../../components/fragments/Header";
-import AddPelanggan from "./Action/AddPelanggan";
-import { api } from "../../../utils/helper/helper";
+import { api, updateToastToError, updateToastToSuccess } from "../../../utils/helper/helper";
 import { useDataContext } from "../../../../context/SendDataContext";
 import PopupDelete from "./Action/PopUp";
 import { ImgNull } from "../../../assets/RegisterAsset";
 import Pagination from "../../../components/fragments/Pagination";
 import { useSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import AddCollector from "./Action/AddCollector";
 
-const Pelanggan = () => {
+const Kolektor = () => {
   const [open, setOpen] = useState(false);
+  const [openModalDelete, setOpenModalDelete] = useState(false);
+
+  const [selectedId, setSelectedId] = useState(null)
 
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page") || "1";
@@ -25,19 +30,16 @@ const Pelanggan = () => {
   const { type, setType, setData, data } = useDataContext();
   const [paginateData, setPaginateData] = useState();
   const [title, setTitle] = useState('')
-  const [dataPelanggan, setDataPelanggan] = useState([])
+  const [dataKolektor, setDataKolektor] = useState([])
 
-  const [collectorId, setCollectorId] = useState("");
-
-
-  const getDataPelanggan = async () => {
+  const getDataKolektor = async () => {
     try {
-      const response = await api.get("/pelanggan?page=" + page);
-      setDataPelanggan(response?.data?.data?.data);
+      const response = await api.get("/kolektor?page=" + page);
+      setDataKolektor(response?.data?.data?.data);
       setPaginateData(response?.data?.data);
       setData((prev) => ({
         ...prev,
-        dataPelanggan: response?.data?.data?.data
+        dataKolektor: response?.data?.data?.data
       }))
     } catch (error) {
       console.log(error);
@@ -45,7 +47,7 @@ const Pelanggan = () => {
   };
 
   useEffect(() => {
-    getDataPelanggan();
+    getDataKolektor();
   }, [page]);
 
   function toggleModalCreate() {
@@ -77,12 +79,27 @@ const Pelanggan = () => {
   useEffect(() => {
     getNewCodePelanggan();
   }, []);
+
+  const handleDelete = async () => {
+    if (!selectedId) return;
+    const toastId = toast.loading("Delete Kolektor");
+    try {
+      const response = await api.delete(`/kolektor/${selectedId}`);
+      updateToastToSuccess(toastId, response.data.message);
+      setTimeout(() => {
+        getDataKolektor()
+      }, 500);
+    } catch (error) {
+      updateToastToError(toastId, error.response.data.message);
+    }
+  };
+
   return (
-    <BaseLayout text={"Pelanggan"}>
+    <BaseLayout text={"Kolektor"}>
       <HeaderPage
         onClick={() => toggleModalCreate()}
         icon={
-          <PeopleAltOutlinedIcon
+          <Person4Icon
             sx={{
               fontSize: {
                 sm: "28px",
@@ -92,7 +109,7 @@ const Pelanggan = () => {
             }}
           />
         }
-        text={"Pelanggan"}
+        text={"Kolektor"}
         buttonIcon={
           <AddOutlinedIcon
             sx={{
@@ -104,14 +121,14 @@ const Pelanggan = () => {
           />
         }
       />
-      {dataPelanggan?.length === 0 || paginateData?.length === 0 || !paginateData ? (
+      {dataKolektor?.length === 0 || paginateData?.length === 0 || !paginateData ? (
         <div className={"w-full flex justify-center"}>
           <img src={ImgNull} className={'w-[300px] max-[576px]:w-[200px]'} alt={"null data"} />
         </div>
       ) : (
         <div className="w-full p-5 bg-white border-[1px] border-(--border-color) rounded-[10px] ">
           <div className="w-full overflow-x-auto flex flex-col">
-            <Table getDataPelanggan={() => { getDataPelanggan() }} />
+            <Table setOpenModalDelete={setOpenModalDelete} setSelectedId={setSelectedId} getDataKolektor={() => { getDataKolektor() }} />
           </div>
           <div className={"flex flex-col justify-start"}>
             <Pagination data={paginateData} />
@@ -120,17 +137,14 @@ const Pelanggan = () => {
       )}
 
       {/* Modal */}
-      <AddPelanggan
+      <AddCollector
         open={open}
         setOpen={() => {
           setOpen(false);
           setType('add-pelanggan');
         }}
-        collectorId = {collectorId}
-        setCollectorId = {setCollectorId}
         onClose={() => {
           setOpen(false);
-          setCollectorId(0)
           setTimeout(function () {
             setType(null);
           }, 400); // time disesuakian dengan duration AddPelanggan:142 * 2 
@@ -140,7 +154,9 @@ const Pelanggan = () => {
         title={title}
       />
 
-      <PopupDelete />
+      {openModalDelete &&
+        <PopupDelete open={openModalDelete} onClose={setOpenModalDelete} id={selectedId} onDelete={handleDelete} />
+      }
 
     </BaseLayout>
 
@@ -148,4 +164,4 @@ const Pelanggan = () => {
   );
 };
 
-export default Pelanggan;
+export default Kolektor;

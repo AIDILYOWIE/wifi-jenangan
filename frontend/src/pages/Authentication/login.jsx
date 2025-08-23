@@ -20,6 +20,7 @@ const Login = () => {
             })
             updateToastToSuccess(toastId, "Login berhasil")                 
             CurrentToken.set(res.data.token)
+            localStorage.setItem('role', res.data?.role)
             setTimeout(function() {
                 window.location.reload()
             }, 1500);
