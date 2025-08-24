@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class AuthenticationController extends Controller
@@ -35,6 +36,23 @@ class AuthenticationController extends Controller
             'message' => 'email atau password salah!'
         ], 401);
 
+    }
+
+    public function logout() {
+        $user = auth()->user();
+        DB::beginTransaction();
+        try {
+            $user->currentAccessToken()->delete();
+            Auth::logout();
+            DB::commit();
+            return response()->json([
+                'message' => "Logout Success!"
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage()
+            ]);
+        }
     }
 
     public function confirmEmail (Request $request) {

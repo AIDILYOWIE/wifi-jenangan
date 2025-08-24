@@ -10,7 +10,7 @@ import { toast, ToastContainer } from "react-toastify";
 import PrintPage from "../Action/PrintPage";
 import { useReactToPrint } from "react-to-print";
 
-const Table = ({dataInvoice}) => {
+const Table = ({ dataInvoice }) => {
   const [selectedId, setSelectedId] = useState(null);
   const [triggerPrint, setTriggerPrint] = useState(false);
   const printComponentRef = useRef(null);
@@ -64,7 +64,8 @@ const Table = ({dataInvoice}) => {
     }
   }, [isPrintReady, triggerPrint, selectedId, reactToPrintFn]);
 
-  const confirmTagihan = (id) => {throttle(() => {
+  const confirmTagihan = (id) => {
+    throttle(() => {
       const toastId = toast.loading("Mengkonfirmasi...");
       api
         .put(`/tagihan/${id}`)
@@ -74,18 +75,21 @@ const Table = ({dataInvoice}) => {
         })
         .catch((err) => updateToastToError(toastId, err.response.data.message));
 
-    }, 3000)};
+    }, 3000)
+  };
 
   return (
     <>
       <ToastContainer position="top-center" />
       <div className="min-[1000px]:w-full max-[1000px]:w-[1000px] flex">
-        <div className="w-full">
-          <TableHead value="Kode Pelanggan" style="rounded-l-[10px]" />
-          {dataInvoice?.map((item, i) => (
-            <TableBody value={item.pelanggan.kode_pelanggan} key={i} />
-          ))}
-        </div>
+        {getRole.get() == 'admin' &&
+          <div className="w-full">
+            <TableHead value="Kode Pelanggan" style="rounded-l-[10px]" />
+            {dataInvoice?.map((item, i) => (
+              <TableBody value={item.pelanggan.kode_pelanggan} key={i} />
+            ))}
+          </div>
+        }
         <div className="w-full">
           <TableHead value="Nama Pelanggan" />
           {dataInvoice?.map((item, i) => (
@@ -98,10 +102,26 @@ const Table = ({dataInvoice}) => {
             <TableBody value={item.tanggal} key={i} />
           ))}
         </div>
+        {getRole.get() == 'collector' &&
+          <>
+            <div className="w-full">
+              <TableHead value="Desa" style="rounded-l-[10px]" />
+              {dataInvoice?.map((item, i) => (
+                <TableBody value={item.pelanggan.desa} key={i} />
+              ))}
+            </div>
+            <div className="w-full">
+              <TableHead value="Kecamatan" style="rounded-l-[10px]" />
+              {dataInvoice?.map((item, i) => (
+                <TableBody value={item.pelanggan.kecamatan} key={i} />
+              ))}
+            </div>
+          </>
+        }
         <div className="w-full">
           <TableHead value="Paket" />
           {dataInvoice?.map((item, i) => (
-            <TableBody value={item.pelanggan.paket.harga.toLocaleString('id-ID', {style: 'currency', currency: 'IDR', minimumFractionDigits: 0}) + "/Bln"} key={i} />
+            <TableBody value={item.pelanggan.paket.harga.toLocaleString('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }) + "/Bln"} key={i} />
           ))}
         </div>
         <div className="w-full">

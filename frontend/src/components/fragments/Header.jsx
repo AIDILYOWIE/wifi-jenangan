@@ -1,9 +1,10 @@
 import React from "react";
-import { AddOutlinedIcon } from "../../assets/RegisterAsset";
+import { AddOutlinedIcon, LogoutIcon } from "../../assets/RegisterAsset";
 import Button from "../elements/Button";
 import ButtonContext, { ButtonProvider } from "../../../context/ButtonContext";
 import DateRangePicker from "../elements/DateRangePicker";
-import { getRole } from "../../utils/helper/helper";
+import { api, CurrentToken, getRole, updateToastToSuccess } from "../../utils/helper/helper";
+import { toast } from "react-toastify";
 
 const HeaderPage = React.memo(
   ({
@@ -16,6 +17,21 @@ const HeaderPage = React.memo(
     isHidden,
     type,
   }) => {
+
+    function handleLogout() {
+      const toastId = toast.loading('logout!')
+      api.post('/logout')
+      .then(res => {
+        CurrentToken.remove()
+        getRole.remove()
+        updateToastToSuccess(toastId, 'Berhasil Logout!')
+
+        setTimeout(function() {
+          window.location.reload()
+        }, 1000);
+      })
+    }
+    
     return (
       <ButtonProvider>
         <div className={`w-full flex max-[576px]:flex-col justify-between gap-[10px]`}>
@@ -39,8 +55,8 @@ const HeaderPage = React.memo(
                 width="w-max"
                 variant="primary"
                 className={`px-4 py-2 max-[576px]:px-2.5 max-[576px]:py-1.5 gap-1.5 max-[576px]:text-[12px] !text-sm max-[576px]:rounded-[6px] ${text === 'Dashboard'
-                    ? ''
-                    : 'max-[576px]:absolute max-[576px]:bottom-0'
+                  ? ''
+                  : 'max-[576px]:absolute max-[576px]:bottom-0'
                   } max-[576px]:right-[8px]`}
                 onClick={onClick}
                 disabled={buttonDisable}
@@ -54,6 +70,26 @@ const HeaderPage = React.memo(
                 </h6>
               </Button>
             )}
+            <Button
+              width="w-max"
+              variant="primary"
+              className={`px-4 py-2 gap-1.5 
+              max-[576px]:px-2.5 
+              max-[576px]:py-1.5 
+              max-[576px]:text-[12px] 
+              !bg-red-600 !text-white hover:!bg-red-700 
+              !text-sm max-[576px]:rounded-[6px]`}
+              onClick={() => { handleLogout() }}
+              disabled={buttonDisable}
+            >
+              <LogoutIcon />
+              <h6
+                className={`${text === 'Dashboard' ? '' : 'max-[576px]:hidden'} max-[576px]:text-[length:12px]`}
+              >
+                Logout
+              </h6>
+            </Button>
+
           </div>
         </div>
       </ButtonProvider>

@@ -84,4 +84,36 @@ class DashboardController extends Controller
             ], 500);
         }
     }
+
+    public function dashboardClient(Request $request)
+    {
+        $today = now()->toDateString();
+
+        $pelanggan = Pelanggan::with(['tagihan' => function ($q) use ($today) {
+            $q->whereDate('tanggal', '<=', $today);
+        }, 'paket'])
+            ->where('assign_to', auth()->id())
+            ->get();
+
+        if ($pelanggan->isEmpty()) {
+            return response()->json([
+                'message' => 'Pelanggan tidak ditemukan',
+                'belum_lunas' => 0,
+                'lunas' => 0
+            ]);
+        }
+
+        $belumLunas = $pelanggan->flatMap->tagihan
+            ->where('status', 'Belum Lunas')
+            ->sum('total_tagihan');
+
+        $lunas = $pelanggan->flatMap->tagihan
+            ->where('status', 'Lunas')
+            ->sum('total_tagihan');
+
+        return response()->json([
+            'belum_lunas' => $belumLunas,
+            'lunas' => $lunas,
+        ]);
+    }
 }
