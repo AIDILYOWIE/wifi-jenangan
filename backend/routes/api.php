@@ -20,6 +20,7 @@ Route::prefix('/v1')->group( function() {
     Route::post('/change-password', [AuthenticationController::class, 'changePassword']);
 
     Route::post('/login', [AuthenticationController::class, 'login']);
+    Route::post('/logout', [AuthenticationController::class, 'logout']);
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::resource('/pelanggan', PelangganController::class)->only(['index', 'store']);
@@ -28,6 +29,7 @@ Route::prefix('/v1')->group( function() {
         Route::get('/new-kode-pelanggan', [PelangganController::class, 'generateKodePelanggan']);
     
         Route::get('/dashboard', [DashboardController::class, 'index']);
+        Route::get('/dashboard/client', [DashboardController::class, 'dashboardClient']);
     
         Route::get('/tagihan', [TagihanController::class, 'getInvoice']);
         Route::get('/transaksi', [TagihanController::class, 'getTransaksi']);

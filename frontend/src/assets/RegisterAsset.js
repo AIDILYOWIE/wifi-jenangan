@@ -28,6 +28,7 @@ import ImgNull from '../../public/null.webp'
 import ChevronLeftOutlinedIcon from '@mui/icons-material/ChevronLeftOutlined';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import Person4Icon from '@mui/icons-material/Person4';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 export {
     logo, arrow_down, add, 
@@ -40,6 +41,6 @@ export {
     ArrowBackIosNewOutlinedIcon, CheckOutlinedIcon, PrintIcon,
     CheckIcon, GridViewIcon, CloudUploadIcon,
     DeleteOutlineOutlinedIcon, ImgNull, ChevronLeftOutlinedIcon,
-    ChevronRightOutlinedIcon, Person4Icon
+    ChevronRightOutlinedIcon, Person4Icon, LogoutIcon
 
 }
